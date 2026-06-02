@@ -1,0 +1,79 @@
+.card{
+  border-radius: 15px;
+  margin:0px;
+}
+.col-avatar{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  margin-top: 0rem;
+  margin-right: 0rem;
+  margin-left: 1rem;
+}
+
+.texto{
+  color:black;
+  font-size:1.2rem;
+}
+
+.col-boton{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+.boton {
+  width: 5.5rem;
+  height: 2.5rem; /* aumenta la altura */
+  margin-right: 1rem;
+  --background: linear-gradient(360deg, #f45097, #b0d2ff);
+  --color: #fff;
+  font-size: 0.9rem; /* ajusta tamaño de texto */
+  --border-radius: 10px;
+}
+
+.boton-seguido {
+  width: 6rem;
+  height: 2.5rem;
+  margin-right: 1rem;
+  --background: #F0F0F0;
+  --color: #2c2c2c;
+  font-size: 0.9rem;
+
+}
+.izquierda{
+  display:flex;
+  justify-content: left;
+  align-items: center;
+}
+.sin-margen{
+  margin: 0;
+  padding: 0;
+}
+.margen-top{
+  margin-top:1vh;
+  margin-left: 1vh;
+}
+.margen-left{
+  margin-left: 1vh;
+}
+.estrella-color{
+  color: #D7BF3B;
+}
+
+.margen-lateral{
+  margin-left: 3vw;
+  margin-right: 3vw;
+}
+
+.margen-icono{
+  margin-left: 4vw;
+}

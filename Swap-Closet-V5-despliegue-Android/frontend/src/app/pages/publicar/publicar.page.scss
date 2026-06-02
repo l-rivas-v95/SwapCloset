@@ -1,0 +1,62 @@
+.fondo{
+  background-color: #ffffff;
+  --background: #ffffff;
+  box-shadow: 0 2px 8px rgba(131, 131, 131, 0.4);
+}
+.menu-superior{
+  height: 10vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #f6f7f9;
+  border-bottom: 1px solid grey;
+}
+.sub-menu-superior{
+  height: 8vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #f6f7f9;
+}
+
+.caja-menu-sup{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 2vw;
+
+}
+ion-icon{
+  text-align: center;
+}
+.centro{
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+}
+.izquierda{
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+.derecha{
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+.altura-subarra{
+  height: 66px;
+}
+.margen{
+  margin-left: 2vw;
+}
+.cajas {
+  background-color: #ffffff;
+  border-radius: 15px;
+  gap: 2vh;
+  margin-top: 2vh;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+

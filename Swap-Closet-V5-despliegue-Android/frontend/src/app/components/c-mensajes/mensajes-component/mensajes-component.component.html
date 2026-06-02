@@ -1,0 +1,173 @@
+<ion-content>
+  <ion-toolbar class="fondo bordes-redondeados sin-padding-lateral">
+    <ion-grid>
+      <ion-row class="centro">
+
+        <ion-col size="2.5">
+          <img class="img_prod margen-izq" salt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+        </ion-col>
+
+        <ion-col>
+
+          <ion-row>
+            <p class="sin-margen margen-izq">Vestido Verde Versace</p>
+          </ion-row>
+
+          <ion-row class="sin-margen">
+            <p class="sin-margen margen-izq color-nombre">Intercambio</p>
+            <p class="sin-margen margen-izq"> · </p>
+            <p class="sin-margen margen-izq">Talla</p>
+            <p class="sin-margen margen-izq"> M</p>
+          </ion-row>
+
+          <ion-row  class="sin-margen icono margen-izq">
+            <ion-icon name="calendar-outline"></ion-icon>
+            <p class="sin-margen margen-izq">25/05/2025</p>
+          </ion-row>
+
+        </ion-col>
+
+        <ion-col class="sin-margen" size="2">
+          <ion-button class="sin-margen chip-rosa">Ver</ion-button>
+        </ion-col>
+
+      </ion-row>
+
+    </ion-grid>
+  </ion-toolbar>
+  <div class="chat-container">
+
+    <!-- Header del producto -->
+
+    <div class="divider"></div>
+
+    <!-- Mensajes -->
+    <div class="message user">
+      <div class="message-content">
+        <div class="message-text">Hola Ana, estaba interesado en el vestido.</div>
+        <div class="message-time">18:50</div>
+      </div>
+    </div>
+
+    <div class="message ana">
+      <div class="message-content">
+        <div class="message-text">Hola Guillermo! Me alegra que te gusta. ¿Qué talla tienes para intercambiar? Voy a mirar...</div>
+        <div class="message-time">16:25</div>
+      </div>
+    </div>
+
+    <!-- Notificación del sistema -->
+    <div class="system-notification">
+      Ana ha seleccionado tu producto
+    </div>
+
+    <div class="options-container padding">
+      <div class="option-item">
+        <app-carta-chat-producto></app-carta-chat-producto>
+      </div>
+    </div>
+
+    <div class="message-time-small">17:02</div>
+
+    <div class="message ana">
+      <div class="message-content">
+        <div class="message-text">Me encanta! Me interesa hasta el 1 de noviembre. ¿Podemos vernos mañana?</div>
+        <div class="message-time">11:33</div>
+      </div>
+    </div>
+
+    <div class="system-notification">
+      Ana ha seleccionado una fecha
+    </div>
+
+    <div class="options-container">
+      <div class="option-item">
+        <app-mensaje-fecha></app-mensaje-fecha>
+      </div>
+    </div>
+
+    <div class="system-notification">
+      Ana ha seleccionado una ubicación
+    </div>
+
+    <div class="options-container">
+      <div class="option-item">
+        <app-mensaje-ubicacion></app-mensaje-ubicacion>
+      </div>
+    </div>
+
+    <div class="centro">
+      <ion-button fill="clear" expand="block" class="btn-publicar">
+        <b>¡Se ha confirmado el intercambio!</b>
+      </ion-button>
+    </div>
+
+    <div class="message user">
+      <div class="message-content">
+        <div class="message-text">Perfecto, allí nos vemos!.</div>
+        <div class="message-time">18:55</div>
+      </div>
+    </div>
+
+    <!-- Propuestas existentes -->
+    <div class="proposal-item" *ngIf="selectedDate">
+      <div class="proposal-label">Fecha propuesta:</div>
+      <div class="proposal-value">{{ selectedDate }}</div>
+    </div>
+
+    <div class="proposal-item" *ngIf="selectedLocation">
+      <div class="proposal-label">Lugar propuesto:</div>
+      <div class="proposal-value">{{ selectedLocation }}</div>
+      <div class="location-distance">9 Km</div>
+    </div>
+
+    <!-- Botón de confirmación -->
+    <div class="confirmation-section" *ngIf="selectedDate && selectedLocation">
+      <ion-button expand="block" color="primary" (click)="confirmExchange()">
+        Confirmar intercambio
+      </ion-button>
+    </div>
+
+    <div class="confirmation-message" *ngIf="isConfirmed">
+      Se ha confirmado el incremento.
+    </div>
+
+  </div>
+
+  <ion-footer>
+    <!-- Botones de acción -->
+    <div class="action-buttons">
+      <ion-button expand="block" fill="clear" (click)="proposeDate()">
+        <ion-chip class="chip-intercambio">
+          <p>📍</p>
+          <p><b>Fecha</b></p>
+        </ion-chip>
+      </ion-button>
+
+      <ion-button expand="block" fill="clear" (click)="confirmExchange()">
+        <ion-chip class="chip-confirmar">
+          <p><b>Confirmar</b></p>
+        </ion-chip>
+      </ion-button>
+
+      <ion-button expand="block" fill="clear" (click)="proposeLocation()">
+        <ion-chip class="chip-rosa">
+          <p>📅</p>
+          <p><b>Lugar</b></p>
+        </ion-chip>
+      </ion-button>
+    </div>
+
+    <ion-toolbar>
+      <ion-input placeholder=" Escribe un mensaje..." [(ngModel)]="newMessage"></ion-input>
+      <ion-buttons slot="end">
+        <ion-button (click)="sendMessage()" [disabled]="!newMessage">
+          <ion-icon name="send"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-footer>
+
+</ion-content>
+
+

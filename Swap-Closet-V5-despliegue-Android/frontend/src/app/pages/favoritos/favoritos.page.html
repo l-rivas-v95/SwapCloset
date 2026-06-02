@@ -1,0 +1,65 @@
+<ion-header class="fondo bordes-redondeados">
+  <ion-toolbar class="menu-superior fondo">
+    <ion-grid>
+
+      <ion-row class="caja-menu-sup">
+
+        <ion-col size="2" >
+          <ion-button fill="clear" (click)="volver()" >
+            <ion-icon size="large" name="arrow-back-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+
+        <ion-col>
+          <h2 class="titulo"><b>Favoritos</b></h2>
+        </ion-col>
+
+        <ion-col size="2" class="derecha">
+          <ion-icon size="large" name="heart"></ion-icon>
+        </ion-col>
+
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+
+  <ion-toolbar class="fondo">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-segment [(ngModel)]="segmentoSeleccionado" class="botones-seleccion">
+            <ion-segment-button value="prestamos">
+              <ion-label><b>Intercambios</b></ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="intercambios">
+              <ion-label><b>Préstamos</b></ion-label>
+            </ion-segment-button>
+          </ion-segment>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="centro">
+        <ion-col>
+          <ion-searchbar class="barra" placeholder="Buscar producto"></ion-searchbar>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        @for(pro of productosFiltrados; track pro.id){
+          @if(pro.id !== undefined && pro.id !== null){
+            <app-carta-horizontal-intercambio
+              [producto]="pro"
+              [routerLink]="['/anuncio-intercambio', pro.id]"
+              class="contenedor-cartas"/>
+          }
+        }
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

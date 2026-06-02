@@ -1,0 +1,96 @@
+<ion-card class="info-card">
+  <ion-card-header>
+    <ion-card-title>Detalles</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+
+    <!-- CATEGORÍA -->
+    <div class="section">
+      <ion-label class="section-title">Categoría</ion-label>
+      <div class="chip-group">
+        <ion-chip
+          class="chip-rosa"
+          *ngFor="let cat of categorias"
+          [class.selected]="categoriaSeleccionada === cat"
+          (click)="seleccionarUnico('categoria', cat)"
+        >
+          {{ cat }}
+        </ion-chip>
+        <ion-chip class="chip-add-rosa" (click)="abrirMenuExtra('categoria')">
+          <ion-icon class="icono-rosa" name="add-outline"></ion-icon>
+        </ion-chip>
+      </div>
+    </div>
+
+    <!-- TALLA -->
+    <div class="section">
+      <ion-label class="section-title">Talla</ion-label>
+      <div class="chip-group">
+        <ion-chip
+          class="chip-azul"
+          *ngFor="let talla of tallas"
+          [class.selected]="tallaSeleccionada === talla"
+          (click)="seleccionarUnico('talla', talla)"
+        >
+          {{ talla }}
+        </ion-chip>
+      </div>
+    </div>
+
+    <!-- ESTADO -->
+    <div class="section">
+      <ion-label class="section-title">Estado</ion-label>
+      <div class="chip-group">
+        <ion-chip
+          class="chip-rosa"
+          *ngFor="let est of estados"
+          [class.selected]="estadoSeleccionado === est"
+          (click)="seleccionarUnico('estado', est)"
+        >
+          {{ est }}
+        </ion-chip>
+      </div>
+    </div>
+
+    <!-- COLOR -->
+    <div class="section">
+      <ion-label class="section-title">Color</ion-label>
+      <div class="chip-group">
+        <ion-chip
+          class="chip-azul"
+          *ngFor="let col of colores"
+          [class.selected]="coloresSeleccionados.includes(col)"
+          (click)="toggleSeleccion(coloresSeleccionados, col, 'color')"
+        >
+          {{ col }}
+        </ion-chip>
+        <ion-chip class="chip-add-azul" (click)="abrirMenuExtra('color')">
+          <ion-icon class="icono-azul" name="add-outline"></ion-icon>
+        </ion-chip>
+      </div>
+    </div>
+
+    <!-- ESTILO -->
+    <div class="section">
+      <ion-label class="section-title">Estilo</ion-label>
+      <div class="chip-group">
+        <ion-chip
+          class="chip-rosa"
+          *ngFor="let est of estilos"
+          [class.selected]="estilosSeleccionados.includes(est)"
+          (click)="toggleSeleccion(estilosSeleccionados, est, 'estilo')"
+        >
+          {{ est }}
+        </ion-chip>
+        <ion-chip class="chip-add-rosa" (click)="abrirMenuExtra('estilo')">
+          <ion-icon class="icono-rosa" name="add-outline"></ion-icon>
+        </ion-chip>
+      </div>
+    </div>
+
+  </ion-card-content>
+</ion-card>
+
+
+

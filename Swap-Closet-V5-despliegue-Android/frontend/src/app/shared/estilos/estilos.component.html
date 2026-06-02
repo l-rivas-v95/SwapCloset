@@ -1,0 +1,16 @@
+<ion-card class="info-card fondo">
+  <ion-card-header>
+    <ion-card-title>Estilos</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <div class="section">
+      <div class="chip-group">
+        <!-- Mostrar todos los estilos del usuario -->
+        <ion-chip class="chip-rosa" *ngFor="let est of estilosSeleccionados">
+          {{ est }}
+        </ion-chip>
+      </div>
+    </div>
+  </ion-card-content>
+</ion-card>

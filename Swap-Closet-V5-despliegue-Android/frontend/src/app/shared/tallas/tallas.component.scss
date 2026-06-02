@@ -1,0 +1,30 @@
+.info-card {
+  border-radius: 16px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  margin: 10px 5px 0px;
+}
+.tallas-container {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.talla-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.talla-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #e1ecff;
+  color: #2c49ff;
+  width: 3rem;
+  font-weight: 600;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(96, 95, 95, 0.5);
+  cursor: pointer;
+}

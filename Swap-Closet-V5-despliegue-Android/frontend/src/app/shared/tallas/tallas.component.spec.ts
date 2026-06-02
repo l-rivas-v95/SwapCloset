@@ -1,0 +1,22 @@
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+
+import { TallasComponent } from './tallas.component';
+
+describe('TallasComponent', () => {
+  let component: TallasComponent;
+  let fixture: ComponentFixture<TallasComponent>;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [TallasComponent],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(TallasComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  }));
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

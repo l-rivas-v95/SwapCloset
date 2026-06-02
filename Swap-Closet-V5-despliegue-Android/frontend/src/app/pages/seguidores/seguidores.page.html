@@ -1,0 +1,77 @@
+<ion-header class="fondo bordes-redondeados">
+  <ion-toolbar class="menu-superior fondo">
+    <ion-grid>
+
+      <ion-row class="caja-menu-sup">
+
+        <ion-col size="2">
+          <ion-button fill="clear" (click)="volver()">
+            <ion-icon size="large" name="arrow-back-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+
+        <ion-col>
+          <h2 class="titulo"><b>Seguidores</b></h2>
+        </ion-col>
+
+        <ion-col size="2" class="derecha">
+          <ion-icon size="large" name="people"></ion-icon>
+        </ion-col>
+
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+
+  <ion-toolbar class="fondo">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-segment [(ngModel)]="segmentoSeleccionado" class="botones-seleccion">
+            <ion-segment-button value="seguidores">
+              <ion-label><b>Seguidores</b></ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="siguiendo">
+              <ion-label><b>Siguiendo</b></ion-label>
+            </ion-segment-button>
+          </ion-segment>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="centro">
+        <ion-col>
+          <ion-searchbar class="barra" placeholder="Buscar persona"></ion-searchbar>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-grid>
+
+    <!-- SEGUIDORES -->
+    <ion-row *ngIf="segmentoSeleccionado === 'seguidores'">
+      <ion-col size="12" *ngFor="let seguidor of seguidores()">
+        <app-tarjeta-seguidor [usuario]="seguidor"></app-tarjeta-seguidor>
+      </ion-col>
+
+      <ion-col size="12" *ngIf="seguidores().length === 0">
+        <p>No tienes seguidores.</p>
+      </ion-col>
+    </ion-row>
+
+    <!-- SIGUIENDO -->
+    <ion-row *ngIf="segmentoSeleccionado === 'siguiendo'">
+      <ion-col size="12" *ngFor="let seguido of seguidos()">
+        <app-tarjeta-seguidor [usuario]="seguido"></app-tarjeta-seguidor>
+      </ion-col>
+
+      <ion-col size="12" *ngIf="seguidos().length === 0">
+        <p>No estás siguiendo a nadie.</p>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+</ion-content>

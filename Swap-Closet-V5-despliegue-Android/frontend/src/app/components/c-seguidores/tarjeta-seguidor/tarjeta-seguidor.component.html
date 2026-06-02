@@ -1,0 +1,49 @@
+<ion-card class="card margen-lateral">
+  <ion-row class="sin-margen">
+
+    <ion-col class="col-avatar" size="3">
+      <img [src]="usuario?.urlImg" class="avatar" alt="Foto user"/>
+    </ion-col> <ion-col class="sin-margen">
+
+    <ion-row class="col-texto sin-margen">
+      <p class="texto sin-margen margen-top">{{usuario?.nombre}} {{usuario?.apellidos}}</p>
+    </ion-row>
+
+    <ion-row class="sin-margen">
+
+      <ion-col size="3" class="izquierda sin-margen">
+        <ion-icon class="margen-left estrella-color" name="star"></ion-icon>
+        <p class="margen-left">{{media | async}}</p>
+      </ion-col>
+
+      <ion-col class="izquierda sin-margen">
+        <ion-icon class="margen-icono" size="small" name="location-outline"></ion-icon>
+        <p class="margen-left">{{usuario?.direccion}}</p>
+      </ion-col>
+
+    </ion-row>
+
+  </ion-col>
+
+
+    <ion-col class="col-boton sin-margen" size="3">
+      <ion-button
+        fill="clear"
+        class="boton"
+
+        [ngClass]="seguido ? 'boton-seguido' : 'boton-rosa'"
+
+        (click)="toggleSeguir()"
+
+        [disabled]="isOwnProfile || !usuario?.id">
+
+        <ion-icon slot="end" [name]="seguido ? 'person-remove-outline' : 'person-add-outline'"/>
+
+        {{ seguido ? 'Seguido' : 'Seguir' }}
+      </ion-button>
+    </ion-col>
+
+
+  </ion-row>
+
+</ion-card>

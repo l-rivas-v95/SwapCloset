@@ -1,0 +1,59 @@
+<ion-card class="carta-redonda">
+  <ion-grid>
+    <ion-row>
+
+      <div class="circulo-inter">
+        <ion-img src="assets/img/icono-intercambio.png" alt="icono intercambio"></ion-img>
+      </div>
+
+      <div class="cuadrado-inter">
+        <img src="https://ionicframework.com/docs/img/demos/thumbnail.svg" class="icono-cuadrado"/>
+      </div>
+
+      <ion-col class="centro" size="3.5">
+        <img [src]="getPrimeraImagen()" class="img_prod" alt="Silhouette of mountains" />
+      </ion-col>
+
+      <ion-col>
+
+        <ion-col class="titulo sin-margen">
+          <ion-card-title class="letra">{{producto()?.titulo}}</ion-card-title>
+        </ion-col>
+
+        <ion-row style="margin-top:3px;">
+
+          <ion-col class="izquierda sin-margen">
+            <p class="sin-margen">por {{(usuario$ | async)?.nombre}} {{(usuario$ | async)?.apellidos}}</p>
+          </ion-col>
+
+
+
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="izquierda">
+            <p class="sin-margen">Talla {{producto()?.talla}} •</p>
+            <p class="margen estado-color">{{producto()?.estado}}</p>
+          </ion-col>
+          <ion-col class="derecha">
+            <ion-icon class=" margen para-iconos" name="calendar-number-outline"></ion-icon>
+            <p class="margen">{{producto()?.fechaDevolucion}}</p>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="izquierda">
+            <ion-icon size="small" name="location-outline"></ion-icon>
+            <p class="margen">{{(usuario$ | async)?.direccion}}</p>
+          </ion-col>
+
+          <ion-col class="centro sin-margen">
+            <ion-chip style="margin-bottom: 0; margin-top: 0;"><b>Intercambiado</b></ion-chip>
+          </ion-col>
+        </ion-row>
+
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+</ion-card>

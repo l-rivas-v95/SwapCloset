@@ -1,0 +1,48 @@
+.info-card {
+  border-radius: 16px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  margin: 10px 5px 0px;
+}
+
+.izquierda{
+  display: flex;
+  justify-content: left;
+  align-items: start;
+  justify-items: start;
+}
+.section {
+  margin-bottom: 20px;
+}
+.section-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #444;
+}
+
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip-rosa {
+  background-color: #FFE2E3;
+  color: #FF3FBF;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(96, 95, 95, 0.5);
+}
+
+.icon-close {
+  font-size: 18px;
+  margin-left: 6px;
+  cursor: pointer;
+}
+
+.chip-add {
+  background-color: #f1f1f1;
+  color: #555;
+  cursor: pointer;
+}
+

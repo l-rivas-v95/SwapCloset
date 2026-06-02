@@ -1,0 +1,52 @@
+.map-container {
+  padding: 16px;
+
+  .map-placeholder {
+    height: 200px;
+    background: #f0f0f0;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 16px;
+
+    ion-icon {
+      color: #666;
+      margin-bottom: 8px;
+    }
+
+    p {
+      color: #666;
+      margin: 0;
+    }
+  }
+
+  ion-input {
+    --background: white;
+    --border-radius: 8px;
+    margin-bottom: 16px;
+  }
+
+  .suggested-locations {
+    ion-list {
+      background: transparent;
+
+      ion-item {
+        --background: white;
+        --border-radius: 8px;
+        margin-bottom: 8px;
+
+        h3 {
+          font-size: 14px;
+          font-weight: 500;
+        }
+
+        p {
+          font-size: 12px;
+          color: #666;
+        }
+      }
+    }
+  }
+}

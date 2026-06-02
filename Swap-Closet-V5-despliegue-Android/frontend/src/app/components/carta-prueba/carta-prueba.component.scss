@@ -1,0 +1,87 @@
+.fondo {
+  --background: #fff;
+  padding: 1rem;
+}
+
+.filtros {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.card-item {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  position: relative;
+}
+
+.card-item img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.etiqueta {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 0.2rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  color: #fff;
+  z-index: 1;
+}
+
+.prestamo {
+  background: #f45097;
+}
+
+.intercambio {
+  background: #6b9cff;
+}
+
+ion-card-content {
+  padding: 0.7rem 0.9rem;
+}
+
+.titulo {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #000;
+  margin-bottom: 0.3rem;
+}
+
+.detalle {
+  font-size: 0.85rem;
+  color: #444;
+}
+
+.excelente {
+  color: #15b66d;
+  font-weight: 500;
+}
+
+.bueno {
+  color: #ff9800;
+  font-weight: 500;
+}
+
+.precio {
+  color: #f45097;
+  font-weight: 600;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 0.4rem;
+}
+
+ion-icon {
+  font-size: 0.9rem;
+  margin-right: 4px;
+}

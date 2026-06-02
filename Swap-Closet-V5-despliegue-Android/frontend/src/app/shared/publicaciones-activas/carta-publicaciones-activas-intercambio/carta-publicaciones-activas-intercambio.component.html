@@ -1,0 +1,4 @@
+<div class="centro">
+  <img [src]="getPrimeraImagen()" class="imagen-producto" alt="Foto de perfil"/>
+  <ion-chip [ngClass]="producto?.tipo === 'Intercambio' ? 'chip-rosa' : 'chip-azul'">{{producto?.tipo}}</ion-chip>
+</div>

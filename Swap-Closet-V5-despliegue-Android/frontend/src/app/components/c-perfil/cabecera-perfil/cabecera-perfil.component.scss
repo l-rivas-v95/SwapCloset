@@ -1,0 +1,140 @@
+.info-card {
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  margin: 0px 0px 0px 0px;
+  padding-top: 20px;
+}
+.fondo{
+  background-color: #ffffff;
+  --background: #ffffff;
+  box-shadow: 0 2px 8px rgba(131, 131, 131, 0.4);
+  overflow: hidden; /* 🔥 Esto oculta los bordes rectos internos */
+}
+.perfil-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0px;
+}
+
+.perfil-foto-container {
+  position: relative;
+  width: 33%;
+  height: 33%;
+}
+
+.perfil-foto {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.chip-camara {
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  align-content: center;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  --background: #F45097;
+  --color: #fff;
+  font-size: 18px;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.camera{
+  color:white;
+}
+ion-icon{
+  margin:0px;
+  padding:0px;
+  margin-left:1px;
+}
+.perfil-nombre {
+  margin-top: 10px;
+  font-weight: 600;
+  font-size: 25px;
+}
+
+.perfil-descripcion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  margin: 10px;
+  margin-top: 0px;
+}
+
+.perfil-ubicacion {
+  font-size: 13px;
+  color: #777;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin:2px;
+}
+
+.perfil-estrellas {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 3px;
+}
+
+.perfil-estrellas ion-icon {
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.perfil-estrellas ion-icon:hover {
+  transform: scale(1.2);
+}
+
+.perfil-stats {
+  margin-top: 15px;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+}
+
+.perfil-stats ion-col {
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.perfil-stats ion-col:hover {
+  transform: scale(1.05);
+}
+
+.perfil-stats ion-icon {
+  font-size: 22px;
+}
+
+.numero {
+  font-weight: bold;
+  color: #333;
+  margin: 4px 0 0 0;
+}
+
+.label {
+  font-size: 13px;
+  color: #777;
+}
+
+.toolbar-container{
+  padding-inline:0px;
+}

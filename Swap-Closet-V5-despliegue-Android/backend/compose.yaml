@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: swapcloset-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: swap_closet
+      POSTGRES_USER: swap_closet_user
+      POSTGRES_PASSWORD: AVk80ATZkkkvXGsEZqHu2CSUtEyVEMh0
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

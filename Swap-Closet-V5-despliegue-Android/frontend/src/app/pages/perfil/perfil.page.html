@@ -1,0 +1,33 @@
+<ion-header class="fondo">
+  <ion-toolbar class="menu-superior fondo">
+    <ion-grid>
+
+      <ion-row class="caja-menu-sup">
+        <ion-col>
+          <h1 class="izquierda"><b>Mi Perfil</b></h1>
+        </ion-col>
+
+        <ion-col class="derecha">
+          <ion-icon style="font-size: 45px;" name="settings-outline"></ion-icon>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <app-cabecera-perfil [usuario]="usuarioEstadisticas"></app-cabecera-perfil>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <app-estilos [usuario]="usuario"/>
+            <app-tallas *ngIf="usuario()"
+                        [usuario]="usuario"
+                        (usuarioChange)="usuario.set($event)"/>
+            <app-publicaciones-activas [usuario]="usuario"/>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+  <app-opciones-prefil [usuario]="usuario"/>
+</ion-content>

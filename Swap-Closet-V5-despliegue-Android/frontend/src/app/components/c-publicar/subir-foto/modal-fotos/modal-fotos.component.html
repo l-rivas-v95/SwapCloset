@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Seleccionar imagen</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="4" *ngFor="let img of imagenesDisponibles">
+        <img [src]="img" class="foto-galeria" (click)="seleccionar(img)">
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

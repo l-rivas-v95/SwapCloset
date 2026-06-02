@@ -1,0 +1,39 @@
+<ion-header class="fondo">
+  <ion-toolbar class="menu-superior fondo">
+    <ion-grid>
+      <ion-row>
+
+        <ion-col size="1" class="centro">
+          <ion-button fill="clear" routerLink="/perfil">
+            <ion-icon size="large" name="arrow-back-outline" class="flecha"></ion-icon>
+          </ion-button>
+        </ion-col>
+
+        <ion-col size="2.5" class="izquierda">
+          <img src="https://ionicframework.com/docs/img/demos/avatar.svg" class="avatar">
+        </ion-col>
+
+        <ion-col>
+          <ion-row>
+            <h2>Ana Martínez</h2>
+          </ion-row>
+
+          <div class="usuario-datos">
+            <div class="usuario-rating">
+              <p class="rating">4.8</p>
+              <ion-icon class="rating-star" name="star"></ion-icon>
+              <p class="separador">·</p>
+              <p class="intercambios">12 intercambios</p>
+            </div>
+          </div>
+
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-mensajes-component></app-mensajes-component>
+</ion-content>

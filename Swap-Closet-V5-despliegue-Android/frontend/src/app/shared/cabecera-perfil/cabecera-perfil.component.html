@@ -1,0 +1,77 @@
+<div class="info-card fondo">
+  <div class="perfil-header">
+    <div class="perfil-foto-container">
+      <img [src]="usuario()?.urlImg" alt="Foto de perfil" class="perfil-foto" />
+    </div>
+
+    <h2>{{ usuarioEstadisticas()?.nombre }} {{ usuarioEstadisticas()?.apellidos }}</h2>
+    <p class="perfil-descripcion">
+      {{usuarioEstadisticas()?.descripcion}}
+    </p>
+    <p class="perfil-ubicacion">
+      <ion-icon name="location-outline"></ion-icon>
+      {{ usuarioEstadisticas()?.direccion }}
+    </p>
+  </div>
+
+
+  <div class="perfil-estrellas">
+    <ion-icon
+      *ngFor="let star of [].constructor(maxStars); let i = index"
+      [name]="(i + 1) <= Math.floor(ratingVisual()) ? 'star' :
+              (i < ratingVisual() && ratingVisual() % 1 !== 0 && i + 1 === Math.ceil(ratingVisual()) ? 'star-half' : 'star-outline')"
+      color="warning"
+      (click)="setRating(i + 1)">
+    </ion-icon>
+  </div>
+
+  <ion-grid class="perfil-stats">
+    <ion-row>
+      <ion-col>
+        <ion-icon name="cube-outline" color="tertiary"></ion-icon>
+        <p class="numero">{{usuarioEstadisticas()?.intercambios}}</p>
+        <p class="label">Intercambios</p>
+      </ion-col>
+
+      <ion-col>
+        <ion-icon name="star-outline" color="warning"></ion-icon>
+        <p class="numero">{{usuarioEstadisticas()?.raiting}}</p>
+        <p class="label">Valoración</p>
+      </ion-col>
+
+      <ion-col [routerLink]="['/favoritos', usuario()?.id]">
+        <ion-icon name="heart-outline" color="danger"></ion-icon>
+        <p class="numero">{{ usuarioEstadisticas()?.favoritos }}</p>
+        <p class="label">Favoritos</p>
+      </ion-col>
+
+      <ion-col [routerLink]="['/seguidores', usuario()?.id]">
+        <ion-icon name="people-outline" color="medium"></ion-icon>
+        <p class="numero">{{ usuarioEstadisticas()?.seguidores }}</p>
+        <p class="label">Seguidores</p>
+      </ion-col>
+    </ion-row>
+
+    <div class="caja-boton">
+      <ion-button
+        fill="clear"
+        expand="block"
+        class="btn-publicar"
+        (click)="toggleFollow()"
+
+        [className]="isFollowing() ? 'btn-seguido' : 'btn-publicar'"
+
+        [disabled]="isOwnProfile()"
+      >
+        <b>{{ isFollowing() ? 'Dejar de seguir' : 'Seguir' }}</b>
+
+        <ion-icon
+          class="margen-left"
+          slot="end"
+          [name]="isFollowing() ? 'person-remove-outline' : 'person-add-outline'"
+        />
+      </ion-button>
+    </div>
+
+  </ion-grid>
+</div>

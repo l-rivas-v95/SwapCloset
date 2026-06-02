@@ -1,0 +1,16 @@
+.fila{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+ion-icon{
+  font-size: 1.5rem;
+  color: #838383;
+}
+ion-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}

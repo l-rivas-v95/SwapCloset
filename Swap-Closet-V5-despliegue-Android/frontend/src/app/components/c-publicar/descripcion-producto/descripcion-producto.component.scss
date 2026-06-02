@@ -1,0 +1,64 @@
+.publicar-content {
+  --background: #fff;
+  padding: 16px;
+}
+
+.info-card {
+  border-radius: 16px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  margin: 10px 5px 0px;
+}
+
+ion-card-title {;
+  color: #222;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+ion-label {
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.input-text,
+.input-area {
+  --border-radius: 10px;
+  --background: #f8f8f8;
+  --padding-start: 10px;
+  --padding-end: 10px;
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Borde azul al enfocar */
+ion-input.input-text:focus,
+ion-textarea.input-area:focus-within {
+  border: 1.5px solid #007aff;
+  background: #fff;
+}
+
+ion-input,
+ion-textarea {
+  width: 100%;
+}
+
+
+.text-area{
+  --background: #f0f0f0;
+  --background-radius: 30px;
+  border: 2px solid;
+  border-radius: 30px;
+  color: grey;
+  font-weight: bold;
+  width: 95%;
+}
+
+.margeny{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

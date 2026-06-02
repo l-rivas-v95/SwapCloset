@@ -1,0 +1,51 @@
+<ion-card class="info-card fondo">
+
+  <ion-card-header>
+    <ion-card-title>Opciones</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-grid>
+      <ion-col class="separacion">
+        <ion-row>
+          <ion-button fill="clear" class="sin-margen">
+            <ion-icon size="large" name="settings-outline"></ion-icon>
+            <ion-card-title class="margen"><b>Editar perfil</b></ion-card-title>
+          </ion-button>
+        </ion-row>
+        <ion-row>
+          <ion-button fill="clear" class="sin-margen">
+            <ion-icon size="large" name="cube-outline"></ion-icon>
+            <ion-card-title class="margen"
+                            [routerLink]="['/publicaciones-pasadas', usuario()?.id]">
+              <b>Publicaciones pasadas</b>
+            </ion-card-title>
+          </ion-button>
+        </ion-row>
+        <ion-row>
+          <ion-router-link routerLink="/favoritos">
+            <ion-button fill="clear" class="sin-margen">
+              <ion-icon size="large" name="heart-outline" ></ion-icon>
+              <ion-card-title class="margen"><b>Favoritos</b></ion-card-title>
+            </ion-button>
+          </ion-router-link>
+        </ion-row>
+        <ion-row>
+          <ion-button fill="clear" class="sin-margen">
+            <ion-icon size="large" name="star-outline"></ion-icon>
+            <ion-card-title class="margen"><b>Mis reseñas</b></ion-card-title>
+          </ion-button>
+        </ion-row>
+        <ion-row>
+          <ion-router-link routerLink="/login">
+            <ion-button fill="clear" class="sin-margen">
+              <ion-icon class="rojo" size="large" name="exit-outline"></ion-icon>
+              <ion-card-title class="margen rojo"><b>Cerrar sesión</b></ion-card-title>
+            </ion-button>
+          </ion-router-link>
+        </ion-row>
+      </ion-col>
+    </ion-grid>
+  </ion-card-content>
+
+</ion-card>

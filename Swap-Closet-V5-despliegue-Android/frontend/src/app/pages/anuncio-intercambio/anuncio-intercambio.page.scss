@@ -1,0 +1,31 @@
+/* Estilos para el encabezado de la página */
+.centro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.izquierda {
+  display: flex;
+  align-items: center;
+}
+
+.icono {
+  color: #000;
+}
+.centro-opciones {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Alinea el botón a la derecha */
+  padding-right: 10px; /* Pequeño padding */
+}
+
+.flecha{
+  color: #000000;
+}
+
+.icono-puntos{
+  color: #F45097;
+}

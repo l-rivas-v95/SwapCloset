@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar class="menu-superior fondo borde">
+    <ion-grid>
+
+      <ion-row class="caja-menu-sup">
+        <ion-col>
+          <h1 class="izquierda"><b>Publicar prenda</b></h1>
+        </ion-col>
+
+        <ion-col size="3" class="derecha">
+          <ion-icon style="font-size: 45px;" name="shirt-outline"></ion-icon>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row><!-- TIPO DE OFERTA -->
+    <ion-col>
+      <app-tipo-oferta></app-tipo-oferta>
+    </ion-col>
+  </ion-row>
+
+  <ion-row><!-- AGREGAR FOTOS -->
+    <ion-col>
+      <app-subir-foto></app-subir-foto>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col>
+      <app-descripcion-producto></app-descripcion-producto>
+    </ion-col>
+
+  </ion-row>
+
+
+  <ion-row> <!-- DETALLES ADICIONALES -->
+    <ion-col>
+      <app-datos-adicionales-chip></app-datos-adicionales-chip>
+    </ion-col>
+  </ion-row>
+
+    <ion-row> <!-- BOTON PUBLICAR -->
+        <ion-col>
+            <app-boton-publicar></app-boton-publicar>
+        </ion-col>
+    </ion-row>
+</ion-content>

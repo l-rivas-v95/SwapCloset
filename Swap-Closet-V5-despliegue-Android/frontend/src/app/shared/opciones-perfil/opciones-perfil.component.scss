@@ -1,0 +1,36 @@
+.info-card {
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  margin: 10px 0px 0px;
+  padding-left:0px;
+}
+.fondo{
+  background-color: #ffffff;
+  --background: #ffffff;
+  box-shadow: 0 2px 8px rgba(131, 131, 131, 0.4);
+  overflow: hidden; /* 🔥 Esto oculta los bordes rectos internos */
+}
+
+.separacion{
+  display:flex;
+  flex-direction:column;
+  gap:0px;
+}
+
+.margen {
+  margin-left: 15px;
+  margin-bottom: 0px;
+  font-size: 100%;
+  color: #616161;
+}
+
+.sin-margen{
+  margin: 0px;
+  padding: 0px;
+  color: #616161;
+}
+
+.rojo{
+  color: red;
+}

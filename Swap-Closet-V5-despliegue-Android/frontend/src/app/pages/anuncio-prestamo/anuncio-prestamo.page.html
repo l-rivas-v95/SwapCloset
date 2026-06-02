@@ -1,0 +1,132 @@
+<ion-header></ion-header>
+
+<ion-content>
+    <ion-row>
+      <ion-col class="centro" size="2">
+        <ion-button fill="clear" routerLink="/home">
+          <ion-icon class="icono" size="large" name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+
+      <ion-col class="izquierda" >
+        <h2><b>Detalle del anuncio</b></h2>
+      </ion-col>
+
+    </ion-row>
+    <div class="producto-card">
+      <ion-grid>
+        <ion-row>
+          <!-- Columna de imagen -->
+          <ion-row>
+            <div class="imagen-container">
+              <ion-chip class="chip-prestamo"><b>Préstamo</b></ion-chip>
+              <ion-img [src]="getPrimeraImagen()" salt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" class="producto-imagen"/>
+            </div>
+          </ion-row>
+
+          <!-- Columna de información -->
+          <ion-row>
+            <div class="info-container">
+              <!-- Título y marca -->
+              <h2 class="producto-titulo">Vestido verde Versace</h2>
+              <p class="producto-descripcion">
+                Hermoso vestido Versace. Perfecto para ocasiones especiales o citas románticas. Solo usado 2 veces, en excelente estado. La tela es muy suave y cómoda.
+              </p>
+
+              <div class="chip-group">
+                <ion-chip
+                  class="chip-rosa"
+                  *ngFor="let est of estilos">
+                  {{ est }}
+                </ion-chip>
+              </div>
+
+              <!-- Detalles -->
+              <div class="detalles-section">
+                <ion-row>
+                  <ion-col>
+                    <div class="detalle-item">
+                      <span class="detalle-label">Talla</span>
+                      <span class="detalle-valor">S</span>
+                    </div>
+                  </ion-col>
+                  <ion-col>
+                    <div class="detalle-item">
+                      <span class="detalle-label">Estado</span>
+                      <span class="detalle-valor">Excelente</span>
+                    </div>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col>
+                    <div class="detalle-item">
+                      <span class="detalle-label">Marca</span>
+                      <span class="detalle-valor">Versace</span>
+                    </div>
+                  </ion-col>
+                  <ion-col>
+                    <div class="detalle-item">
+                      <span class="detalle-label">Color</span>
+                      <span class="detalle-valor">Verde</span>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </div>
+
+              <!-- Tipo ubicación-->
+              <div class="fecha-section">
+                <ion-icon class="icon" name="location-sharp"></ion-icon>
+                <p class="fecha-texto">Ubicación</p>
+              </div>
+
+              <!-- Tipo precio-->
+              <div class="fecha-section">
+                <ion-icon class="icon" name="cash-sharp"></ion-icon>
+                <p class="fecha-texto">Precio por día: </p>
+                <p class="separador"></p>
+                <p class="fecha-date"><strong>0</strong></p>
+                <p class="separador"></p>
+                <p class="fecha-date"><strong>€</strong></p>
+              </div>
+
+              <!-- Fecha límite -->
+              <div class="fecha-section">
+                <ion-icon name="calendar-sharp" class="icon"></ion-icon>
+                <p class="fecha-texto">Disponible hasta el </p>
+                <p class="separador"></p>
+                <p class="fecha-date"><strong> 15 Dic 2025</strong></p>
+              </div>
+
+              <!-- Usuario -->
+              <ion-row class="usuario-section">
+                <ion-col class="usuario-info">
+                  <img src="https://ionicframework.com/docs/img/demos/avatar.svg" class="avatar">
+                  <h2 class="usuario-nombre">Ana Martinez</h2>
+                </ion-col>
+
+                <div class="usuario-datos">
+                  <div class="usuario-rating">
+                    <p class="rating">{{ media | async }}</p>
+                    <ion-icon class="rating-star" name="star"></ion-icon>
+                    <p class="separador">·</p>
+                    <p class="intercambios">12 intercambios</p>
+                  </div>
+                </div>
+
+                <div>
+                  <ion-button fill="clear" class="btn-perfil">
+                    Ver perfil
+                  </ion-button>
+                </div>
+              </ion-row>
+
+            </div>
+          </ion-row>
+        </ion-row>
+      </ion-grid>
+    </div>
+</ion-content>
+
+<ion-footer>
+  <app-btn-contactar/>
+</ion-footer>

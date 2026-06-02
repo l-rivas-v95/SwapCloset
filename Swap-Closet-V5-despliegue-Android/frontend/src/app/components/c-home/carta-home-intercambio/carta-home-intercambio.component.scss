@@ -1,0 +1,103 @@
+/* NUEVO: contenedor relativo para colocar los fabs dentro */
+.contenedor-imagen {
+  position: relative;
+  width: 100%;
+}
+
+/* Imagen dentro del contenedor */
+.contenedor-imagen ion-img {
+  width: 100%;
+  height: auto;
+  border-radius: 30px 30px 0 0;
+  display: block;
+}
+
+/* FAB arriba derecha dentro de la imagen */
+.fab-derecha {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+/* FAB abajo izquierda dentro de la imagen */
+.fab-izquierda {
+  position: absolute;
+  bottom: -25px;
+  left: 10px;
+}
+
+/* Tus estilos */
+.centro{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.izquierda{
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+.derecha{
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+.margen{
+  margin-left: 2vw;
+  margin-bottom:0;
+  margin-top:0;
+}
+.sin-margen{
+  margin: 0;
+  padding: 0;
+}
+.espaciado{
+  display: flex;
+  justify-content: space-around;
+}
+.espacio{
+  gap: 10vw;
+}
+.para-iconos{
+  font-size: 1.3rem;
+}
+.estado-color{
+  color: #22a116;
+}
+.desborde{
+  display: inline;
+  white-space: nowrap; /* evita saltos de línea */
+}
+.color-nombre{
+  color: #404040;
+}
+.carta-redonda{
+  border-radius: 30px;
+}
+
+/* Chip */
+.chip-rosa{
+  animation: none;
+  background-color: #ffe2e3;
+  margin-bottom: 4vh;
+  color: #FF3FBF;
+}
+
+.chip-azul{
+  animation: none;
+  background-color: #c6dfff;
+  margin-bottom: 4vh;
+  color: #5056FF
+}
+
+/* Precio y estrella */
+.precio-color{
+  color: #FF3FBF;
+}
+.estrella-color{
+  color: #D7BF3B;
+}
+
+.puntuacion{
+  font-size: 1rem;
+}

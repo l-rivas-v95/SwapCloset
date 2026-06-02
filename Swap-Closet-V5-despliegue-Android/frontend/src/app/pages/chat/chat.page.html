@@ -1,0 +1,62 @@
+<ion-header class="fondo bordes-redondeados">
+  <ion-toolbar class="menu-superior fondo">
+    <ion-grid>
+
+      <ion-row class="caja-menu-sup">
+        <ion-col>
+          <h1 class="izquierda"><b>Mensajes</b></h1>
+        </ion-col>
+
+        <ion-col class="derecha">
+          <ion-icon style="font-size: 45px;" name="chatbubble-outline"></ion-icon>
+        </ion-col>
+
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+
+    <ion-toolbar class="fondo">
+        <ion-grid>
+            <ion-row>
+                <ion-col>
+                    <ion-segment class="botones-seleccion" value="todos">
+
+                        <ion-segment-button value="todos">
+                            <ion-label><p class="fuente"><b>Todos</b></p></ion-label>
+                        </ion-segment-button>
+
+                        <ion-segment-button value="Activos">
+                            <ion-label><p class="fuente"><b>Activos</b></p></ion-label>
+                        </ion-segment-button>
+
+                        <ion-segment-button value="Completados">
+                            <ion-label><p class="fuente"><b>Listos</b></p></ion-label>
+                        </ion-segment-button>
+
+                    </ion-segment>
+                </ion-col>
+            </ion-row>
+
+              <ion-row class="centro">
+                <ion-col>
+                  <ion-searchbar class="barra" placeholder="Buscar mensaje"></ion-searchbar>
+                </ion-col>
+              </ion-row>
+
+        </ion-grid>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-router-link routerLink="/mensajes">
+          <div fill="clear">
+            <app-carta-chat></app-carta-chat>
+          </div>
+        </ion-router-link>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">Cancelar</ion-button>
+    </ion-buttons>
+    <ion-title>Seleccionar Ubicación</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirm()" [strong]="true">Confirmar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="map-container">
+    <div class="map-placeholder">
+      <ion-icon name="map" size="large"></ion-icon>
+      <p>Mapa de ubicación</p>
+    </div>
+    <ion-input placeholder="Buscar ubicación..." [(ngModel)]="searchQuery"></ion-input>
+
+    <div class="suggested-locations">
+      <ion-list>
+        <ion-item>
+          <ion-button (click)="selectLocation('Calle Jurado 23')"></ion-button>
+          <ion-label>
+            <h3>Calle Jurado 23</h3>
+            <p>9 huilas</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-button (click)="selectLocation('Plaza Central')"></ion-button>
+          <ion-label>
+            <h3>Plaza Central</h3>
+            <p>12 huilas</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+        <ion-button (click)="selectLocation('Centro Comercial Norte')"></ion-button>
+          <ion-label>
+            <h3>Centro Comercial Norte</h3>
+            <p>15 huilas</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,172 @@
+/* IMPORTANTE:
+   - ion-content NO debe ser flex.
+   - El centrado se hace en .contenedor-central.
+*/
+
+ion-content.fondo {
+  --background: linear-gradient(125deg, #b0d2ff 0%, #f45097 100%);
+}
+
+/* Wrapper central */
+.contenedor-central {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 24px 16px;
+  box-sizing: border-box;
+}
+
+/* Logo */
+.contenedor-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2vh;
+}
+
+.logo {
+  width: 10rem;
+  height: 10rem;
+  display: block;
+}
+
+.subtitulo {
+  color: #fff;
+  margin-top: 1rem;
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* Card */
+.card-login {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(131, 131, 131, 0.4);
+  width: 90%;
+  max-width: 400px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+/* Título */
+.titulo {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.tab {
+  border: none;
+  background: #f0f0f0;
+  color: #777;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  margin: 0 0.3rem;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.tab.activo {
+  background: #fff;
+  color: #f45097;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Lista del formulario (evita estilos raros por defecto) */
+.lista-form {
+  background: transparent;
+  padding: 0;
+  margin: 0 0 12px 0;
+}
+
+/* Inputs */
+ion-item.input-item {
+  --background: #f9f9f9;
+  --border-radius: 10px;
+  --min-height: 48px;
+  --padding-start: 12px;
+  --inner-padding-end: 12px;
+
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+/* Asegura que el input nativo se vea */
+ion-input::part(native) {
+  color: #111;
+}
+
+/* Acciones */
+.acciones {
+  text-align: left;
+  font-size: 0.8rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  color: #444;
+}
+
+.olvide {
+  color: #f45097;
+  text-decoration: none;
+  margin-right: auto;
+}
+
+/* Recordar */
+.recordar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.checkbox {
+  --size: 18px;
+}
+
+/* Botón iniciar */
+.btn-iniciar {
+  --background: linear-gradient(90deg, #f45097, #b0d2ff);
+  --border-radius: 12px;
+  height: 45px;
+  font-weight: 600;
+  color: white;
+}
+
+/* Google */
+.google-box {
+  margin-top: 1.2rem;
+}
+
+.o {
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 0.8rem;
+}
+
+.btn-google {
+  --border-color: #ccc;
+  --border-radius: 12px;
+
+  color: #444;
+  font-weight: 500;
+  border: #717171 1px solid;
+  border-radius: 15px;
+}
+
+.google-icon {
+  font-size: 18px;
+  margin-right: 8px;
+}

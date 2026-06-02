@@ -1,0 +1,8 @@
+{
+  "/api": {
+    "target": "https://proyecto-swapcloset-luis-rivas-villa.onrender.com/api",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

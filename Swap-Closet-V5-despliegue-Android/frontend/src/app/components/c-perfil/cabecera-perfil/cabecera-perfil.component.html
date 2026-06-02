@@ -1,0 +1,62 @@
+<div class="info-card fondo">
+  <div class="perfil-header">
+    <div class="perfil-foto-container">
+      <img [src]="usuario()?.urlImg" alt="Foto de perfil" class="perfil-foto" />
+      <ion-chip class="chip-camara" (click)="cambiarFoto()">
+        <ion-icon color="white" name="camera-outline"></ion-icon>
+      </ion-chip>
+    </div>
+
+    <h2 class="perfil-nombre">{{usuario()?.nombre}} {{usuario()?.apellidos}}</h2>
+    <p class="perfil-descripcion">
+      {{usuario()?.descripcion}}
+    </p>
+    <p class="perfil-ubicacion">
+      <ion-icon name="location-outline"></ion-icon>
+      {{usuario()?.direccion}}
+    </p>
+  </div>
+
+  @if (usuario()) {
+    <div class="perfil-estrellas">
+      <ion-icon
+        *ngFor="let star of [].constructor(maxStars); let i = index"
+        [name]="
+        (i + 1) <= (usuario()!.raiting ?? 0)
+          ? 'star'
+          : (i + 0.5) <= (usuario()!.raiting ?? 0)
+              ? 'star-half'
+              : 'star-outline'
+      "
+        color="warning">
+      </ion-icon>
+    </div>
+
+    <ion-grid class="perfil-stats">
+      <ion-row>
+        <ion-col>
+          <ion-icon name="cube-outline" color="tertiary"></ion-icon>
+          <p class="numero">{{usuario()!.intercambios}}</p>
+          <p class="label">Intercambios</p>
+        </ion-col>
+        <ion-col>
+          <ion-icon name="star-outline" color="warning"></ion-icon>
+          <p class="numero">{{usuario()!.raiting}}</p>
+          <p class="label">Valoración</p>
+        </ion-col>
+        <ion-col [routerLink]="['/favoritos', usuario()!.id]">
+          <ion-icon name="heart-outline" color="danger"></ion-icon>
+          <p class="numero">{{usuario()!.favoritos}}</p>
+          <p class="label">Favoritos</p>
+        </ion-col>
+        <ion-col [routerLink]="['/seguidores', usuario()!.id]">
+          <ion-icon name="people-outline" color="medium"></ion-icon>
+          <p class="numero">{{usuario()!.seguidores}}</p>
+          <p class="label">Seguidores</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  } @else {
+    <div class="perfil-estrellas skeleton"></div>
+  }
+</div>

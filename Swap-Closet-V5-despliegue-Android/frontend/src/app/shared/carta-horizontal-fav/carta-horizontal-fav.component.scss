@@ -1,0 +1,89 @@
+.centro{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.izquierda{
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-left:0;
+  padding-left:0;
+}
+.derecha{
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+.margen{
+  margin-left: 2vw;
+  margin-bottom:0;
+  margin-top:0;
+}
+.sin-margen{
+  margin: 0;
+  padding: 0;
+}
+.espaciado{
+  display: flex;
+  justify-content: space-around;
+}
+.espacio{
+  gap: 10vw;
+}
+.para-iconos{
+  font-size: 1.3rem;
+}
+.estado-color{
+  color: #22a116;
+}
+
+.color-nombre{
+  color: #404040;
+}
+.letra{
+  font-size: 1.2rem;
+}
+
+.carta-redonda{
+  border-radius: 20px;
+}
+ion-chip{
+  animation: none;
+  background-color: #c6dfff;
+  margin-bottom: 4vh;
+  color: #5056FF
+}
+
+.chip-rosa{
+  animation: none;
+  background-color: #ffe2e3;
+  margin-bottom: 4vh;
+  color: #FF3FBF;
+}
+
+.chip-azul{
+  animation: none;
+  background-color: #c6dfff;
+  margin-bottom: 4vh;
+  color: #5056FF
+}
+.desborde{
+  display: inline;
+  white-space: nowrap; /* evita saltos de línea */
+}
+.estrella-color{
+  color: #D7BF3B;
+}
+.img_prod{
+  width: 90px;
+  height:90px;
+  border-radius: 10%;
+  --border-radius: 10%;
+  object-fit: cover;
+}
+
+
+.precio-color{
+  color: #FF3FBF;
+}

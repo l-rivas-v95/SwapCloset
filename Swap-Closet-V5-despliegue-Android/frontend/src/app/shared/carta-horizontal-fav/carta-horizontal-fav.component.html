@@ -1,0 +1,59 @@
+<ion-card class="carta-redonda">
+  <ion-grid>
+    <ion-row>
+
+      <ion-col class="centro" size="3.5">
+        <div class="img-prod">
+
+        </div>
+      </ion-col>
+
+      <ion-col>
+        <ion-card-title class="letra">---</ion-card-title>
+
+        <ion-row style="margin-top:3px;">
+
+          <ion-col class="izquierda sin-margen">
+            <p class="sin-margen">por -</p>
+          </ion-col>
+
+          <ion-col size="3" class="derecha">
+            <ion-icon class="para-iconos estrella-color" name="star"></ion-icon>
+            <p class="centro margen">0</p>
+          </ion-col>
+
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="izquierda">
+            <p class="sin-margen desborde">Talla -</p>
+            <p class="margen desborde">•</p>
+            <p class="margen estado-color desborde">-</p>
+            <ng-container *ngIf="producto?.tipo !== 'Intercambio'">
+              <p class="margen precio-color desborde">•</p>
+              <p class="margen precio-color desborde">-€</p>
+            </ng-container>
+          </ion-col>
+          <ion-col class="izquierda">
+            <ion-icon class=" margen para-iconos izquierda" name="calendar-number-outline"></ion-icon>
+            <p class="margen">-</p>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="izquierda">
+            <ion-icon size="small" name="location-outline"></ion-icon>
+            <p class="margen">-</p>
+          </ion-col>
+
+          <ion-col>
+            <ion-chip style="margin-bottom: 0; margin-top: 0;" [ngClass]="producto?.tipo === 'Intercambio' ? 'chip-rosa' : 'chip-azul'">
+              <b>-</b></ion-chip>
+          </ion-col>
+        </ion-row>
+
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+</ion-card>

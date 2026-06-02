@@ -1,0 +1,12 @@
+.foto-galeria {
+  width: 100%;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  transition: 0.2s ease;
+}
+
+.foto-galeria:hover {
+  border-color: var(--ion-color-primary);
+  transform: scale(1.05);
+  cursor: pointer;
+}

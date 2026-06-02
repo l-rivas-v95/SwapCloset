@@ -1,0 +1,98 @@
+.info-card {
+  border-radius: 16px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  margin: 10px 5px 0px;
+}
+
+.centro{
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+}
+.izquierda{
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+.derecha{
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+.altura-subarra{
+  height: 66px;
+}
+.margen{
+  margin-left: 2vw;
+}
+
+.margeny{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+ion-segment-button {
+  height: 100%;
+  --background: #f0f0f0;   /* gris por defecto */
+  --color: #888888;
+  --border-radius: 15px;
+  border-radius: 15px;
+  margin: 0 5px;
+  --indicator-color: transparent;  /* ocultar indicator */
+}
+
+/* Intercambio seleccionado */
+ion-segment-button[value="intercambio"] {
+  --color-checked: #ff3f84;
+  --background-checked: #ffd6e0;
+}
+
+/* Préstamo seleccionado */
+ion-segment-button[value="prestamo"] {
+  --color-checked: #3f6bff;
+  --background-checked: #d6e8ff;
+}
+
+.btn-fecha{
+  --background: #ffd6e0;
+  border-radius: 10px;
+  color: #ff3f84;
+  font-weight: bold;
+  width: 100%;
+  height: 70px;
+  --border-radius: 10px;
+}
+
+.btn-precio{
+  font-weight: bold;
+  width: 100%;
+  height: 70px;
+  --border-radius: 10px;
+  --background: #3f6bff;
+}
+
+.interior-precio{
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  --background: #ffffff;
+  border-radius: 50px;
+  color: #3f6bff;
+  font-weight: bold;
+  width: 100%;
+  --border-radius: 10px;
+}
+
+.botones-seleccion{
+  height: 7vh;
+  border-radius:15px;
+  --border-radius:15px;
+}
+
+.fuente{
+  font-size: 1.2em;
+}
+
+

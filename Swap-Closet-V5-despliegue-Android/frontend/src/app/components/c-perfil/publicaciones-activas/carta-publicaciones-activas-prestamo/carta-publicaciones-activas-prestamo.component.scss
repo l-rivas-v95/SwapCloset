@@ -1,0 +1,23 @@
+.centro{
+  display: grid;
+  grid-columns: auto;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+
+}
+.chip-rosa {
+  background-color: #FFE2E3;
+  color: #FF3FBF;
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom:0px;
+  box-shadow: 0 2px 8px rgba(96, 95, 95, 0.5);
+}
+
+.imagen-producto{
+  display: flex;
+  border-radius: 15px;
+}
+

@@ -1,0 +1,274 @@
+/* ----------- CONTENEDOR PRINCIPAL ----------- */
+
+.chat-container {
+  padding-top: 2px;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-bottom: 12px;
+  background-color: #efefef;
+  --background: #ffffff;
+  box-shadow: 0 2px 8px rgba(131, 131, 131, 0.4);
+}
+
+.divider {
+  height: 1px;
+  background: #e0e0e0;
+  margin: 12px 0;
+}
+
+/* ----------- MENSAJES ----------- */
+
+.message {
+  margin-bottom: 16px;
+  display: flex;
+}
+
+.message.user {
+  justify-content: flex-end;
+}
+
+.message.user .message-content {
+  background: #ff3f84;
+  color: white;
+  border-bottom-right-radius: 0;
+  box-shadow: 0 2px 8px rgba(131, 131, 131, 0.4);
+}
+
+.message.ana {
+  justify-content: flex-start;
+}
+
+.message.ana .message-content {
+  background: #ffffff;
+  color: #2c2c2c;
+  border-bottom-left-radius: 0;
+  box-shadow: 0 2px 8px rgba(131, 131, 131, 0.4);
+}
+
+.message-content {
+  max-width: 80%;
+  padding: 8px 12px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(131, 131, 131, 0.4);
+}
+
+.message-text {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.message-time {
+  font-size: 11px;
+  opacity: 0.7;
+  text-align: right;
+  margin-top: 4px;
+}
+
+.message-time-small {
+  text-align: center;
+  font-size: 11px;
+  color: #6c757d;
+  margin: 8px 0;
+}
+
+/* ----------- NOTIFICACIONES ----------- */
+
+.system-notification {
+  text-align: center;
+  font-size: 12px;
+  color: #6c757d;
+  margin: 12px 0;
+  font-style: italic;
+}
+
+/* ----------- OPCIONES ----------- */
+
+.options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.option-item {
+  background: #C6DFFF;
+  box-shadow: 0 2px 8px rgba(96, 95, 95, 0.5);
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 5px;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* ----------- PROPUESTAS ----------- */
+
+.proposal-item {
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 12px;
+  margin: 8px 0;
+}
+
+.proposal-label {
+  font-size: 12px;
+  color: #6c757d;
+  margin-bottom: 4px;
+}
+
+.proposal-value {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.location-distance {
+  font-size: 12px;
+  color: #6c757d;
+  margin-top: 4px;
+}
+
+/* ----------- CONFIRMACIÓN ----------- */
+
+.confirmation-section {
+  margin: 16px 0;
+}
+
+.confirmation-message {
+  background: #d4edda;
+  border: 1px solid #c3e6cb;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  color: #155724;
+  font-size: 14px;
+  margin: 12px 0;
+}
+
+/* ----------- FOOTER ----------- */
+
+ion-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+}
+
+ion-content {
+  --padding-bottom: 120px; /* ✅ espacio real para el footer completo */
+  padding-bottom: 120px;
+}
+
+/* ----------- BOTONES ----------- */
+
+.action-buttons {
+  background: #ffffff;
+  display: flex;
+  gap: 1px;
+}
+
+.action-buttons ion-button {
+  flex: 1;
+  --border-radius: 8px;
+}
+
+/* ----------- CHIPS ----------- */
+
+.chip-rosa {
+  --background: #FFE2E3;
+  --color: #FF3FBF;
+  border-radius: 10px;
+  --border-radius: 10px;
+  height: 10px;
+  box-shadow: 0 2px 8px rgba(96, 95, 95, 0.5);
+}
+
+.chip-intercambio {
+  --background: #C6DFFF;
+  --color: #3F42FF;
+  height: 10px;
+  box-shadow: 0 2px 8px rgba(96, 95, 95, 0.5);
+}
+
+.chip-confirmar {
+  --background: #83C27D;
+  --color: #ffffff;
+  height: 10px;
+  box-shadow: 0 2px 8px rgba(96, 95, 95, 0.5);
+}
+
+/* ----------- UTILIDADES ----------- */
+
+.centro {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sin-margen {
+  margin-bottom: 0;
+  padding: 0;
+}
+
+.margen-izq {
+  margin-top: 0.4rem;
+  margin-left: 0.8rem;
+}
+
+.icono {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.img_prod {
+  width: 90%;
+  height: 90%;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.color-nombre {
+  color: #404040;
+}
+
+/* ----------- TOOLBAR SUPERIOR ----------- */
+
+.fondo {
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(131, 131, 131, 0.4);
+}
+
+.bordes-redondeados {
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  overflow: hidden;
+}
+
+.sin-padding-lateral {
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* ----------- BOTÓN PUBLICAR ----------- */
+
+.btn-publicar {
+  font-size: 2vh;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+  height: 7vh;
+  width: 90%;
+  --background: linear-gradient(360deg, #f45097, #b0d2ff);
+  --color: #fff;
+  box-shadow: 0 2px 8px rgba(131, 131, 131, 0.4);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* ----------- CLASE EXTRA USADA ----------- */
+
+.padding {
+  padding: 10px;
+}

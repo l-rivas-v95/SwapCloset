@@ -1,0 +1,60 @@
+<ion-card class="info-card">
+
+    <ion-grid>
+      <ion-card-title class="margen margeny">Tipo de oferta</ion-card-title>
+
+      <ion-row>
+        <ion-col>
+          <ion-segment class="botones-seleccion" value="intercambio" (ionChange)="onTipoOfertaChange($event)">
+
+            <ion-segment-button value="intercambio">
+              <ion-label class="fuente"><h2><b>Intercambio</b></h2></ion-label>
+            </ion-segment-button>
+
+            <ion-segment-button value="prestamo">
+              <ion-label class="fuente"><h2><b>Préstamo</b></h2></ion-label>
+            </ion-segment-button>
+
+          </ion-segment>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="centro">
+
+        <ion-col>
+          <!-- Botón de calendario -->
+          <ion-button (click)="toggleCalendario()" fill="clear" class="btn-fecha">
+            <ion-icon size="large" name="calendar-number"></ion-icon>
+            <p class="margen">Devolución</p>
+          </ion-button>
+        </ion-col>
+
+        <!-- Input de precio, solo visible si es préstamo -->
+        <ion-col *ngIf="tipoOferta === 'prestamo'" class="centro precio-box">
+          <ion-button class="btn-precio">
+            <ion-input
+              class="interior-precio"
+              placeholder="€/día"
+              fill="outline"
+              type="number"
+              [(ngModel)]="precio"
+              (ionInput)="onPrecioChange($event)"
+            ></ion-input>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+      <!-- Calendario: solo se muestra al pulsar el botón -->
+      <ion-row class="centro" *ngIf="mostrarCalendario">
+        <ion-col class="centro">
+          <ion-datetime
+            presentation="date-time"
+            [(ngModel)]="fechaDevolucion"
+            (ionChange)="onFechaChange($event)"
+          ></ion-datetime>
+        </ion-col>
+
+      </ion-row>
+
+    </ion-grid>
+</ion-card>

@@ -1,0 +1,72 @@
+<ion-header class="fondo bordes-redondeados">
+  <ion-toolbar class="menu-superior fondo">
+    <ion-grid>
+      <ion-row class="caja-menu-sup">
+        <!-- Botón volver -->
+        <ion-col size="2">
+          <ion-button fill="clear" (click)="volver()">
+            <ion-icon size="large" name="arrow-back-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+
+        <!-- Título -->
+        <ion-col>
+          <h2 class="titulo"><b>Publicaciones pasadas</b></h2>
+        </ion-col>
+
+        <!-- Icono derecho -->
+        <ion-col size="2" class="derecha">
+          <ion-icon size="large" name="cube-outline"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+
+  <!-- Segmento para filtrar por tipo -->
+  <ion-toolbar class="fondo">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-segment [(ngModel)]="segmentoSeleccionado"
+                       (ionChange)="segmentChanged()"
+                       class="botones-seleccion">
+            <ion-segment-button value="prestamos">
+              <ion-label><b>Intercambiado</b></ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="intercambios">
+              <ion-label><b>Prestado</b></ion-label>
+            </ion-segment-button>
+          </ion-segment>
+        </ion-col>
+      </ion-row>
+
+      <!-- Barra de búsqueda -->
+      <ion-row class="centro">
+        <ion-col>
+          <ion-searchbar class="barra" placeholder="Buscar producto"></ion-searchbar>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<!-- Contenido: productos filtrados según segmento -->
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        @for(prod of productosFiltrados(); track prod.id){
+          @if(prod.tipo === 'Préstamo') {
+            <app-carta-publicaciones-pasadas-prestado
+              [producto]="prod"
+              class="contenedor-cartas"/>
+          } @else {
+            <app-carta-publicaciones-pasadas-intercambiado
+              [producto]="prod"
+              class="contenedor-cartas"/>
+          }
+        }
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

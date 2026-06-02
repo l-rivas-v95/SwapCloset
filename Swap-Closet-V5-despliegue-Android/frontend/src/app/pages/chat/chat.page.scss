@@ -1,0 +1,117 @@
+.menu-superior{
+  height: 10vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #f6f7f9;
+  border-bottom: 1px solid grey;
+}
+.sub-menu-superior{
+  height: 8vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #f6f7f9;
+}
+
+.caja-menu-sup{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  justify-content: center;
+  padding: 0px;
+}
+
+ion-icon{
+  text-align: center;
+}
+.centro{
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+}
+.izquierda{
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+.derecha{
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+.altura-subarra{
+  height: 66px;
+}
+.margen{
+  margin-left: 2vw;
+  margin-bottom:0;
+}
+.bordes-redondeados {
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  overflow: hidden; /* 🔥 Esto oculta los bordes rectos internos */
+}
+
+.fondo{
+  background-color: #ffffff;
+  --background: #ffffff;
+  box-shadow: 0 2px 8px rgba(131, 131, 131, 0.4);
+}
+.barra{
+  --border-radius: 30px;
+  margin-top:0.5rem;
+}
+.fuente{
+  color: #a1a1a1;
+  font-size: 15px;
+  font-style: normal;
+
+}
+.botones-seleccion {
+  --background: #ffffff;
+  border-radius: 30px;
+  height: 5vh;
+}
+
+/* Fuerza el estilo del botón activo */
+ion-segment-button.segment-button-checked {
+  --background: #ffd6e0;
+  --color:  #ff3f84; /* texto blanco */
+  --indicator-color: transparent;
+  border-radius: 30px;
+}
+
+/* Estilo específico para la parte interna */
+ion-segment-button.segment-button-checked::part(native) {
+  background: #ffd6e0 !important;
+  --color:  #ff3f84 !important;
+  color: white !important;
+  border-radius: 30px !important;
+  overflow: hidden;
+}
+
+/* Botones no activos */
+ion-segment-button {
+  --background: #ffffff;
+  --color: #888888;
+  border-radius: 30px;
+  --border-width: 0;
+  --border-style: none;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+ion-segment-button.segment-button-checked {
+  background: #ffd6e0 !important;
+  color: white !important;
+  border-radius: 30px !important;
+  overflow: hidden;
+}
+
+/* Aplica también al ion-label dentro */
+ion-segment-button.segment-button-checked ion-label,
+ion-segment-button.segment-button-checked p {
+  color: #ff3f84 !important;
+}

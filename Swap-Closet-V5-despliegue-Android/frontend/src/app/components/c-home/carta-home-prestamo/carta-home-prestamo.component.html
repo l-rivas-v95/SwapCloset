@@ -1,0 +1,56 @@
+<ion-card class="carta-redonda">
+
+  <ion-fab horizontal="end">
+    <ion-fab-button class="boton-fab" size="small" color="transparent">
+      <ion-icon color="light" size="large" name="heart-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-fab vertical="center" horizontal="start">
+      <ion-chip><b>Préstamo</b></ion-chip>
+  </ion-fab>
+
+  <ion-img [src]="getPrimeraImagen() || 'assets/icon/card-media.png'" alt="Silhouette of mountains"/>
+  <ion-card-header>
+
+    <ion-card-title>{{producto().titulo}}</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-grid class="sin-margen">
+      <ion-row>
+        <ion-col class="izquierda">
+          <p class="sin-margen desborde">Talla {{producto().talla}}</p>
+          <p class="margen desborde">•</p>
+          <p class="margen estado-color desborde">{{producto().estado}}</p>
+          <p class="margen precio-color desborde">•</p>
+          <p class="margen precio-color desborde">{{producto().precio}} €/día</p>
+
+        </ion-col>
+        <ion-col class="derecha">
+          <ion-icon class="para-iconos" name="calendar-number-outline"></ion-icon>
+          <p class="margen">{{producto().fechaDevolucion}}</p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <p class="sin-margen color-nombre">{{(usuario$ | async)?.nombre}} {{(usuario$ | async)?.apellidos}}</p>
+        </ion-col>
+        <ion-col class="derecha">
+          <ion-icon class="para-iconos estrella-color" name="star"></ion-icon>
+          <p class="margen">0</p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="izquierda">
+          <ion-icon size="small" name="location-outline"></ion-icon>
+          <p class="margen">{{(usuario$ | async)?.direccion}}</p>
+        </ion-col>
+        <ion-col class="derecha">
+          <p class="sin-margen">Publicado {{producto().fechaCreacion}}</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </ion-card-content>
+</ion-card>

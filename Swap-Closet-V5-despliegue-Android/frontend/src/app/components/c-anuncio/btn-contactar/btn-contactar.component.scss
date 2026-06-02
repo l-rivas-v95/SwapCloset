@@ -1,0 +1,36 @@
+ion-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  --border-top-left-radius: 16px;
+  --border-top-right-radius: 16px;
+  background-color: white;
+  --backgroud-color: white;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  margin: 0px;
+  overflow: hidden;
+}
+
+.btn-publicar {
+  display:flex;
+  flex-direction: row;
+  font-size: 2vh;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+  height: 2rem;
+  width: 90%;
+  --background: #f45097;
+  --color: #fff;
+  box-shadow: 0 2px 8px rgba(131, 131, 131, 0.4);
+  --border-radius: 16px;
+  border-radius: 16px;
+  overflow: hidden;
+  gap:2rem;
+}
+
+.texto{
+  margin-left:1rem;
+}

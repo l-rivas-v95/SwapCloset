@@ -1,0 +1,36 @@
+.animacion-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  transition: opacity 0.5s ease;
+}
+
+.contenedor-logo{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.fade-out {
+  opacity: 0;
+}
+.logo {
+  width: 10rem;
+  height: 10rem;
+}
+
+ion-content{
+  --background: linear-gradient(125deg, #b0d2ff 0%, #f45097 100%);
+}
+
+.subtitulo{
+  color: white;
+}
+
+.spinner{
+  color: white;
+}
+

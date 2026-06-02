@@ -1,0 +1,107 @@
+.tarjeta {
+  border-radius: 20px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  margin: 10px 0px 0px 0px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(131, 131, 131, 0.4);
+}
+
+.nombre {
+  font-weight: 600;
+  color: #222;
+}
+
+.img_perfil{
+  margin-left:0px;
+  width: 4rem;
+  height: 4rem;
+
+}
+.puntuacion {
+  display: flex;
+  align-items: center;
+  color: #ffb800;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.estrella {
+  color: #ffb800;
+  margin-right: 4px;
+  font-size: 1.1rem;
+}
+
+.contenedor-producto {
+  display: flex;
+  align-items: center;
+  background: #f6f6f6;
+  border-radius: 15px;
+  padding: 8px;
+  margin-top: 5px;
+}
+
+.imagen-producto {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.info-producto {
+  flex: 1;
+}
+
+.titulo-producto {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #333;
+  margin-top: 0px;
+}
+
+.detalle-producto {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.etiqueta {
+  border-radius: 8px;
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.etiqueta.intercambio {
+  background: #e4eaff;
+  color: #2a52be;
+}
+
+.etiqueta.excelente {
+  background: #e3ffe7;
+  color: #2eb872;
+}
+
+.talla {
+  color: #777;
+}
+
+.icono-fecha {
+  margin-left: auto;
+  color: #939393;
+}
+
+.fecha {
+  color: #808080;
+  font-size: 0.8rem;
+}
+
+.mensaje {
+  margin-left:10px;
+  margin-top: 10px;
+  color: #666;
+  font-size: 0.9rem;
+}

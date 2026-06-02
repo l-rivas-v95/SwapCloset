@@ -1,0 +1,70 @@
+.info-card {
+  border-radius: 16px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  margin: 10px 5px 0px;
+}
+
+.centro{
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+}
+.izquierda{
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+.derecha{
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+.altura-subarra{
+  height: 66px;
+}
+.margen{
+  margin-left: 2vh;
+}
+.margeny{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.btn-agregar-foto{
+  --background: #f0f0f0;
+  --border-radius: 15px;
+  border-radius: 15px;
+  color: grey;
+  font-weight: bold;
+  width: 100%;
+  height: 10vh;
+  border: 2px dashed grey;
+}
+.btn-agregar-galeria{
+  --background: #f0f0f0;
+  --border-radius: 15px;
+  border-radius: 15px;
+  color: grey;
+  font-weight: bold;
+  width: 100%;
+  height: 10vh;
+  border: 2px dashed grey;
+}
+
+.centro-separador{
+  gap: 1vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 1vh;
+}
+.foto-galeria {
+  width: 100%;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  transition: 0.2s;
+}
+
+.foto-galeria:hover {
+  border: 2px solid #3880ff; /* color ionic primary */
+}

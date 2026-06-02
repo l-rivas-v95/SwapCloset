@@ -1,0 +1,175 @@
+.menu-superior{
+  height: 10vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #f6f7f9;
+  border-bottom: 1px solid grey;
+}
+.sub-menu-superior{
+  height: 8vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #f6f7f9;
+}
+
+.caja-menu-sup{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  justify-content: center;
+  padding: 0px;
+}
+.titulo{
+  margin-bottom:1rem;
+}
+ion-icon{
+  text-align: center;
+  color:black;
+}
+.centro{
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+}
+.izquierda{
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+.derecha{
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+.altura-subarra{
+  height: 66px;
+}
+.margen{
+  margin-left: 2vw;
+  margin-bottom:0;
+}
+.bordes-redondeados {
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  overflow: hidden; /* 🔥 Esto oculta los bordes rectos internos */
+}
+
+.fondo{
+  background-color: #ffffff;
+  --background: #ffffff;
+  box-shadow: 0 2px 8px rgba(131, 131, 131, 0.4);
+}
+.barra{
+  --border-radius: 30px;
+  margin-top:0.5rem;
+}
+.fuente{
+  color: #303030;
+}
+
+/* ---------------------------
+   Estilos base del segmento
+   --------------------------- */
+.botones-seleccion {
+  --background: #ffffff;
+  border-radius: 30px;
+  height: 5vh;
+}
+
+/* ---------------------------
+   Estilos base para botones activos
+   --------------------------- */
+ion-segment-button.segment-button-checked,
+ion-segment-button.segment-button-checked::part(native) {
+  border-radius: 30px !important;
+  overflow: hidden !important;
+  --indicator-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* ---------------------------
+   Colores por cada botón seleccionado
+   --------------------------- */
+
+/* "Mis anuncios" -> violeta */
+ion-segment-button[value="todos"].segment-button-checked::part(native),
+ion-segment-button[value="todos"].segment-button-checked {
+  background: #DEC5FF !important;
+  --background: #DEC5FF !important;
+  --color: #7B25B7 !important;
+  color: #7B25B7 !important;
+}
+
+/* "Préstamos" -> rosa */
+ion-segment-button[value="prestamos"].segment-button-checked::part(native),
+ion-segment-button[value="prestamos"].segment-button-checked {
+  background: #FFE2E3 !important;
+  --background: #FFE2E3 !important;
+  --color: #FF3FBF !important;
+  color: #FF3FBF !important;
+}
+
+/* "Intercambios" -> azul */
+ion-segment-button[value="intercambios"].segment-button-checked::part(native),
+ion-segment-button[value="intercambios"].segment-button-checked {
+  background: #C6DFFF !important;
+  --background: #C6DFFF !important;
+  --color: #3F42FF !important;
+  color: #3F42FF !important;
+}
+
+/* ---------------------------
+   Colores de texto dentro del botón activo
+   --------------------------- */
+ion-segment-button.segment-button-checked ion-label,
+ion-segment-button.segment-button-checked ion-label p {
+  color: inherit !important;
+  --color: inherit !important;
+}
+
+/* ---------------------------
+   Botones no activos
+   --------------------------- */
+ion-segment-button {
+  --background: #ffffff;
+  --color: #7a7a7a;
+  border-radius: 30px;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* ---------------------------
+   Quitar líneas o separadores entre botones
+   --------------------------- */
+ion-segment {
+  --indicator-color: transparent !important;
+  box-shadow: none !important;
+}
+
+ion-segment-button::part(native),
+ion-segment-button::part(indicator),
+ion-segment-button + ion-segment-button::part(native),
+ion-segment-button:not(.segment-button-checked)::part(native) {
+  border: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+
+/* neutraliza posibles bordes o pseudo-elementos en modo iOS */
+ion-segment-button::after,
+ion-segment-button::before,
+ion-segment-button::part(native)::after,
+ion-segment-button::part(native)::before {
+  display: none !important;
+  content: none !important;
+  border: none !important;
+}
+
+

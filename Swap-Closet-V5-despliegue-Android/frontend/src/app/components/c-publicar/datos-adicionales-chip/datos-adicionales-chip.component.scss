@@ -1,0 +1,100 @@
+.info-card {
+  border-radius: 16px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  margin: 10px 5px 0px;
+}
+
+.publicar-content {
+  --background: #fff;
+  padding: 16px;
+}
+
+.publicar-card {
+  border-radius: 16px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+.section-title {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #444;
+}
+
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Colores base (igual para todos) */
+ion-chip {
+  --border-radius: 20px;
+  --background: #f4f4f4;
+  --color: #333;
+  border: 1px solid transparent;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 8px rgba(122, 122, 122, 0.5);
+}
+
+/* Colores al seleccionar */
+.chip-categoria.selected {
+  --background: linear-gradient(135deg, #ff7bdf, #8e73ff);
+  --color: #fff;
+  box-shadow: 0 2px 8px rgba(255, 123, 223, 0.5);
+}
+
+.chip-azul.selected {
+  --background: #C6DFFF;
+  --color: #3F42FF;
+  box-shadow: 0 2px 8px rgba(81, 81, 81, 0.42);
+}
+
+.chip-estado.selected {
+  --background: linear-gradient(135deg, #00e676, #00b248);
+  --color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 230, 118, 0.4);
+}
+
+.chip-color.selected {
+  --background: linear-gradient(135deg, #ffc107, #ff9800);
+  --color: #fff;
+  box-shadow: 0 2px 8px rgba(255, 193, 7, 0.4);
+}
+
+.chip-rosa.selected {
+  --background: #FFE2E3;
+  --color: #FF3FBF;
+  box-shadow: 0 2px 8px rgba(96, 95, 95, 0.5);
+}
+
+.chip-add-rosa{
+  display: flex;
+  padding: 0px;
+  margin: 0px;
+  width: 2.5rem;
+  --background: #FFE2E3;;
+}
+
+.icono-rosa{
+  font-size: 1.4rem;
+  color: #FF3FBF;
+}
+
+.chip-add-azul{
+  display: flex;
+  padding: 0px;
+  margin: 0px;
+  width: 2.5rem;
+  --background: #C6DFFF;
+}
+
+.icono-azul{
+  font-size: 1.4rem;
+  color: #3F42FF;
+}

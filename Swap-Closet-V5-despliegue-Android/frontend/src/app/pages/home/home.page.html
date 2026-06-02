@@ -1,0 +1,48 @@
+<ion-header class="bordes-redondeados fondo">
+  <ion-toolbar class="menu-superior fondo">
+    <ion-grid>
+      <ion-row class="caja-menu-sup">
+        <h1 class="margen izquierda"><b>Tendencias</b></h1>
+        <ion-col size="2">
+          <ion-button size="small" class="btn-deplegable" shape="round" (click)="toggleMenu()">
+            <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+
+  <div class="menu-desplegable">
+    @if(mostrarMenu){
+      <app-datos-adicionales-chip/>
+    }</div>
+
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col><ion-chip color="primary">Casual</ion-chip></ion-col>
+        <ion-col><ion-chip color="secondary">Formal</ion-chip></ion-col>
+        <ion-col><ion-chip color="tertiary">Accesorios</ion-chip></ion-col>
+
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col class="sin-margen">
+        @for(pro of productos(); track pro.productoId){
+          @if(pro.productoId !== undefined && pro.productoId !== null){
+            <app-carta-home-intercambio
+              [producto]="pro"
+              [routerLink]="['/anuncio-intercambio', pro.productoId]"
+              class="contenedor-cartas"/>
+          }
+        }
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+

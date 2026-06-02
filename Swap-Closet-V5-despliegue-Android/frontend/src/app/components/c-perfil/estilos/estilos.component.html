@@ -1,0 +1,31 @@
+<ion-card class="info-card fondo">
+  <ion-card-header>
+    <ion-card-title>Mi estilo</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <div class="section">
+      <div class="chip-group">
+
+        <!-- Estilos del usuario -->
+        <ion-chip
+          class="chip-rosa"
+          *ngFor="let est of estilosSeleccionados"
+        >
+          {{ est }}
+          <ion-icon
+            name="close-circle"
+            class="icon-close"
+            (click)="eliminarEstilo(est)">
+          </ion-icon>
+        </ion-chip>
+
+        <!-- Botón añadir -->
+        <ion-chip class="chip-add" (click)="agregarEstilo()">
+          <ion-icon name="add-outline"></ion-icon>
+        </ion-chip>
+
+      </div>
+    </div>
+  </ion-card-content>
+</ion-card>
