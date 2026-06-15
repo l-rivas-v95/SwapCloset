@@ -30,7 +30,7 @@
       </ion-chip>
     </ion-fab>
 
-    <img [src]="producto()?.urlImgProducto || 'assets/icon/card-media.png'"/>
+    <img [src]="getImagenProducto()" (error)="onImgError($event)"/>
   </div>
 
   <ion-card-header>
