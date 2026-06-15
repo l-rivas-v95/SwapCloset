@@ -47,11 +47,10 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <!-- Mostrar productos filtrados según segmento -->
         @for(pro of productosFiltrados(); track pro.id){
           <app-carta-horizontal-intercambio
             [producto]="pro"
-            [routerLink]="['/anuncio-intercambio', pro.id]"
+            [routerLink]="['/anuncio', pro.id]"
             class="contenedor-cartas">
           </app-carta-horizontal-intercambio>
         }
@@ -59,4 +58,3 @@
     </ion-row>
   </ion-grid>
 </ion-content>
-
