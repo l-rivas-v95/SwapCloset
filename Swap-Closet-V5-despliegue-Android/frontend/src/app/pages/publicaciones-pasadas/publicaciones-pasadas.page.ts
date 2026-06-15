@@ -2,9 +2,6 @@ import {Component, inject, OnInit, signal} from '@angular/core';
 import {ActivatedRoute, RouterModule} from "@angular/router";
 import {IonicModule} from "@ionic/angular";
 import {
-  CartaPublicacionesPasadasPrestadoComponent
-} from "../../components/c-publicaciones-pasadas/carta-publicaciones-pasadas-prestado/carta-publicaciones-pasadas-prestado.component";
-import {
   CartaPublicacionesPasadasIntercambiadoComponent
 } from "../../components/c-publicaciones-pasadas/carta-publicaciones-pasadas-intercambiado/carta-publicaciones-pasadas-intercambiado.component";
 import {FormsModule} from "@angular/forms";
@@ -19,7 +16,7 @@ import { Location } from '@angular/common';
   templateUrl: './publicaciones-pasadas.page.html',
   styleUrls: ['./publicaciones-pasadas.page.scss'],
   standalone: true,
-  imports: [IonicModule, RouterModule, CartaPublicacionesPasadasPrestadoComponent, CartaPublicacionesPasadasIntercambiadoComponent, FormsModule, NgIf]
+  imports: [IonicModule, RouterModule, CartaPublicacionesPasadasIntercambiadoComponent, FormsModule, NgIf]
 })
 export class PublicacionesPasadasPage implements OnInit {
 
@@ -57,8 +54,8 @@ export class PublicacionesPasadasPage implements OnInit {
         this.todosProductos.set(inactivos);
 
         // Separar según tipo
-        this.productosPrestamos.set(inactivos.filter(p => p.tipo == 'Intercambio'));
-        this.productosIntercambios.set(inactivos.filter(p => p.tipo === 'Préstamo'));
+        this.productosPrestamos.set(inactivos.filter(p => p.tipo === 'Préstamo'));
+        this.productosIntercambios.set(inactivos.filter(p => p.tipo === 'Intercambio'));
 
         // Inicializar productosFiltrados según segmento
         this.actualizarProductosFiltrados();
