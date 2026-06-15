@@ -1,6 +1,5 @@
-import {Component, inject, Input, OnInit, signal} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
-import {ProductoService} from "../../../../service/productoService/producto.service";
 import {ProductoDTO} from "../../../../modelos/ProductoDTO";
 import {RouterLink} from "@angular/router";
 import {NgClass} from "@angular/common";
@@ -16,20 +15,9 @@ import {NgClass} from "@angular/common";
     NgClass
   ]
 })
-export class CartaPublicacionesActivasIntercambioComponent implements OnInit {
+export class CartaPublicacionesActivasIntercambioComponent {
 
   @Input() producto!: ProductoDTO;
-
-  productos = signal<ProductoDTO[]>([]);
-  private productoService = inject(ProductoService);
-
-  private cargarProductos() {
-    const id = this.producto.idUsuario!;
-    this.productoService.getProductosByUsuario(id).subscribe({
-      next: (prods) => this.productos.set(prods),
-      error: (err) => console.error('Error al cargar productos:', err)
-    });
-  }
 
   getPrimeraImagen(): string {
     const listImagenes = this.producto?.imagenes;
@@ -39,7 +27,8 @@ export class CartaPublicacionesActivasIntercambioComponent implements OnInit {
     return listImagenes[0]?.urlImg || "assets/icon/card-media.png";
   }
 
-  ngOnInit(): void {
-    this.cargarProductos();
+  onImgError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    img.src = 'assets/icon/card-media.png';
   }
 }
