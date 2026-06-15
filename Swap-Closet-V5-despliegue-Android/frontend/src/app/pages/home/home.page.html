@@ -37,7 +37,7 @@
           @if(pro.productoId !== undefined && pro.productoId !== null){
             <app-carta-home-intercambio
               [producto]="pro"
-              [routerLink]="['/anuncio-intercambio', pro.productoId]"
+              [routerLink]="['/anuncio', pro.productoId]"
               class="contenedor-cartas"/>
           }
         }
@@ -45,4 +45,3 @@
     </ion-row>
   </ion-grid>
 </ion-content>
-
