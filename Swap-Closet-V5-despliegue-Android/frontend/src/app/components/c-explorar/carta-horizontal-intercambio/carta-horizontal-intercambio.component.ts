@@ -32,9 +32,14 @@ export class CartaHorizontalIntercambioComponent  implements OnInit {
   getPrimeraImagen(): string {
     const listImagenes = this.producto()?.imagenes;
     if (!listImagenes || listImagenes.length === 0) {
-      return "";
+      return "assets/icon/card-media.png";
     }
-    return listImagenes[0]?.urlImg || "";
+    return listImagenes[0]?.urlImg || "assets/icon/card-media.png";
+  }
+
+  onImgError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    img.src = 'assets/icon/card-media.png';
   }
 
   cargarUsuarioProducto(): Observable<UsuarioDTO> {
