@@ -76,6 +76,15 @@ export class CartaHomeIntercambioComponent {
     this.checkInitialFavoriteState();
   }
 
+  getImagenProducto(): string {
+    return this.producto()?.urlImgProducto || 'assets/icon/card-media.png';
+  }
+
+  onImgError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    img.src = 'assets/icon/card-media.png';
+  }
+
   /**
    * Comprueba si el producto ya está en la lista de favoritos del usuario logeado.
    */
