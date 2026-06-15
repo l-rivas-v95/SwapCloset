@@ -1,11 +1,15 @@
-import {Component, effect, inject, Input, input, OnInit, signal} from '@angular/core';
+import {Component, computed, effect, inject, Input, signal} from '@angular/core';
 import {IonicModule, ModalController, ToastController} from '@ionic/angular';
-import { CommonModule } from '@angular/common';
-import{RouterLink} from "@angular/router";
+import {CommonModule} from '@angular/common';
+import {RouterLink} from "@angular/router";
 import {UsuarioEstadisticasDTO} from "../../../modelos/UsuarioEstadisticasDTO";
 import {ModalFotosPerfilComponent} from "../modal-fotos-perfil/modal-fotos-perfil.component";
 import {AuthService} from "../../../service/authService/auth.service";
 import {UsuarioService} from "../../../service/usuarioService/usuario.service";
+import {RaitingService} from "../../../service/raitingService/raiting.service";
+import {SeguidoresService} from "../../../service/seguidoresService/seguidores.service";
+import {RaitingDTO} from "../../../modelos/RaitingDTO";
+import {SeguidorDTO} from "../../../modelos/SeguidorDTO";
 
 @Component({
   selector: 'app-cabecera-perfil',
@@ -14,25 +18,41 @@ import {UsuarioService} from "../../../service/usuarioService/usuario.service";
   standalone: true,
   imports: [IonicModule, CommonModule, RouterLink]
 })
-export class CabeceraPerfilComponent{
+export class CabeceraPerfilComponent {
 
   maxStars = 5;
+
   @Input() usuario = signal<UsuarioEstadisticasDTO | null>(null);
+  @Input() esMiPerfil = true;
 
   private modalCtrl = inject(ModalController);
   private usuarioService = inject(UsuarioService);
   private authService = inject(AuthService);
+  private raitingService = inject(RaitingService);
+  private seguidoresService = inject(SeguidoresService);
+  private toastCtrl = inject(ToastController);
 
-  constructor(private toastCtrl: ToastController) {
+  ratingSeleccionado = signal<number>(0);
+  haPuntuado = signal<boolean>(false);
+  isFollowing = signal<boolean>(false);
+
+  ratingVisual = computed(() => {
+    const ratingBase = this.usuario()?.raiting ?? 0;
+    return this.ratingSeleccionado() === 0 ? ratingBase : this.ratingSeleccionado();
+  });
+
+  constructor() {
     effect(() => {
-        const currentUsuario = this.usuario();
-        if (currentUsuario) {
-            console.log("Usuario data received:", currentUsuario.raiting);
-        }
+      const usuarioPerfil = this.usuario();
+      if (usuarioPerfil && !this.esMiPerfil) {
+        this.checkInitialFollowState();
+      }
     });
   }
 
   async cambiarFoto() {
+    if (!this.esMiPerfil) return;
+
     const modal = await this.modalCtrl.create({
       component: ModalFotosPerfilComponent,
       cssClass: 'modal-galeria'
@@ -40,46 +60,127 @@ export class CabeceraPerfilComponent{
 
     await modal.present();
 
-    const { data } = await modal.onDidDismiss();
+    const {data} = await modal.onDidDismiss();
     if (!data?.ruta) return;
 
     const usuarioActual = this.usuario();
     if (!usuarioActual?.id) {
-      const toast = await this.toastCtrl.create({
-        message: 'Usuario no válido',
-        duration: 2000,
-        color: 'danger'
-      });
-      await toast.present();
+      await this.mostrarToast('Usuario no válido');
       return;
     }
 
-    // 1️⃣ Actualización local
     usuarioActual.urlImg = data.ruta;
 
-    // 2️⃣ Guardar usuario completo
-    this.usuarioService.updateUsuario(usuarioActual.id, usuarioActual)
-      .subscribe({
-        next: async (usuarioGuardado) => {
-          this.usuario.set(usuarioGuardado); // sincroniza signal
-
-          const toast = await this.toastCtrl.create({
-            message: 'Foto de perfil actualizada',
-            duration: 2000,
-          });
-          await toast.present();
-        },
-        error: async () => {
-          const toast = await this.toastCtrl.create({
-            message: 'Error al guardar la foto',
-            duration: 2000,
-            color: 'danger'
-          });
-          await toast.present();
-        }
-      });
+    this.usuarioService.updateUsuario(usuarioActual.id, usuarioActual).subscribe({
+      next: async (usuarioGuardado) => {
+        this.usuario.set(usuarioGuardado);
+        await this.mostrarToast('Foto de perfil actualizada');
+      },
+      error: async () => await this.mostrarToast('Error al guardar la foto')
+    });
   }
 
+  setRating(valor: number) {
+    if (this.esMiPerfil) return;
 
+    if (this.haPuntuado()) {
+      this.mostrarToast('Ya has valorado a este usuario anteriormente.');
+      return;
+    }
+
+    this.ratingSeleccionado.set(valor);
+    this.confirmarYGuardarRaiting(valor);
+  }
+
+  private confirmarYGuardarRaiting(rating: number) {
+    const usuarioPuntuador = this.authService.getUsuario();
+    const idPuntuado = this.usuario()?.id;
+
+    if (!usuarioPuntuador?.id || !idPuntuado) {
+      this.mostrarToast('Error de autenticación o ID de usuario faltante.');
+      this.ratingSeleccionado.set(0);
+      return;
+    }
+
+    const raitingParaGuardar: RaitingDTO = {
+      idPuntuado,
+      idPuntuador: usuarioPuntuador.id,
+      puntuacion: rating
+    };
+
+    this.raitingService.guardarRaiting(raitingParaGuardar).subscribe({
+      next: async () => {
+        this.haPuntuado.set(true);
+        await this.mostrarToast(`Has valorado con ${rating} estrellas.`);
+      },
+      error: async (error) => {
+        const mensaje = error.status === 400 && error.error
+          ? error.error
+          : 'Error al guardar la valoración.';
+        this.ratingSeleccionado.set(0);
+        await this.mostrarToast(mensaje);
+      }
+    });
+  }
+
+  private checkInitialFollowState() {
+    const followedId = this.usuario()?.id;
+    const follower = this.authService.getUsuario();
+
+    if (!followedId || !follower?.id || followedId === follower.id) {
+      this.isFollowing.set(false);
+      return;
+    }
+
+    this.seguidoresService.isFollowing(follower.id, followedId).subscribe({
+      next: (isFollowing) => this.isFollowing.set(isFollowing),
+      error: () => this.isFollowing.set(false)
+    });
+  }
+
+  toggleFollow() {
+    if (this.esMiPerfil) return;
+
+    const followedId = this.usuario()?.id;
+    const follower = this.authService.getUsuario();
+
+    if (!follower?.id || !followedId) {
+      this.mostrarToast('Debes iniciar sesión para seguir a un usuario.');
+      return;
+    }
+
+    if (this.isFollowing()) {
+      this.seguidoresService.deleteSeguidor(follower.id, followedId).subscribe({
+        next: async () => {
+          this.isFollowing.set(false);
+          await this.mostrarToast('Has dejado de seguir a este usuario.');
+        },
+        error: async () => await this.mostrarToast('Error al dejar de seguir.')
+      });
+    } else {
+      const followDto: SeguidorDTO = {
+        idSeguidor: follower.id,
+        idSeguido: followedId
+      };
+
+      this.seguidoresService.saveSeguidor(followDto).subscribe({
+        next: async () => {
+          this.isFollowing.set(true);
+          await this.mostrarToast('Ahora sigues a este usuario.');
+        },
+        error: async () => await this.mostrarToast('Error al seguir al usuario.')
+      });
+    }
+  }
+
+  private async mostrarToast(message: string) {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 2000,
+      position: 'top'
+    });
+    await toast.present();
+  }
+
+  protected readonly Math = Math;
 }
-
