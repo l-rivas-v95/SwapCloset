@@ -1,32 +1,39 @@
 <ion-card class="info-card">
   <ion-card-header>
-    <ion-card-title>Mis tallas</ion-card-title>
+    <ion-card-title>{{ esMiPerfil ? 'Mis tallas' : 'Tallas' }}</ion-card-title>
   </ion-card-header>
 
   <ion-card-content>
     <div class="tallas-container">
-
       <div class="talla-item">
         <p>Camiseta</p>
-        <ion-chip class="talla-chip" (click)="elegirTalla('tCamiseta')">
+        <ion-chip
+          class="talla-chip"
+          [class.talla-chip-editable]="esMiPerfil"
+          (click)="elegirTalla('tCamiseta')">
           {{ usuario()?.tCamiseta }}
         </ion-chip>
       </div>
 
       <div class="talla-item">
         <p>Pantalón</p>
-        <ion-chip class="talla-chip" (click)="elegirTalla('tPantalon')">
-          {{ usuario()?.tPantalon}}
+        <ion-chip
+          class="talla-chip"
+          [class.talla-chip-editable]="esMiPerfil"
+          (click)="elegirTalla('tPantalon')">
+          {{ usuario()?.tPantalon }}
         </ion-chip>
       </div>
 
       <div class="talla-item">
         <p>Calzado</p>
-        <ion-chip class="talla-chip" (click)="elegirTalla('tCalzado')">
-          {{ usuario()?.tCalzado}}
+        <ion-chip
+          class="talla-chip"
+          [class.talla-chip-editable]="esMiPerfil"
+          (click)="elegirTalla('tCalzado')">
+          {{ usuario()?.tCalzado }}
         </ion-chip>
       </div>
-
     </div>
   </ion-card-content>
 </ion-card>
