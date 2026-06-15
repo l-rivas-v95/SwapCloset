@@ -13,8 +13,6 @@ import {LoginPage} from "./pages/login/login.page";
 import {RegistroPage} from "./pages/registro/registro.page";
 import {AnimacionInicioPage} from "./pages/animacion-inicio/animacion-inicio.page";
 import {MensajesPage} from "./pages/mensajes/mensajes.page";
-import {AnuncioPrestamoPage} from "./pages/anuncio-prestamo/anuncio-prestamo.page";
-import {AnuncioIntercambioPage} from "./pages/anuncio-intercambio/anuncio-intercambio.page";
 
 export const routes: Routes = [
   {path: '', redirectTo: 'animacion-inicio', pathMatch: 'full'},
@@ -24,7 +22,8 @@ export const routes: Routes = [
   {path: 'chat', component: ChatPage},
   {path: 'perfil', component: PerfilPage},
   {path: 'perfil/:id', component: PerfilPage},
-  {path: 'anuncio', component: AnuncioPage},
+  {path: 'anuncio/:id', component: AnuncioPage},
+  {path: 'anuncio', redirectTo: 'home', pathMatch: 'full'},
   {path: 'publicaciones-pasadas/:id', component: PublicacionesPasadasPage},
   {path: 'favoritos/:id', component: FavoritosPage},
   {path: 'seguidores/:id', component: SeguidoresPage},
@@ -33,7 +32,7 @@ export const routes: Routes = [
   {path: 'registro', component: RegistroPage},
   {path: 'animacion-inicio', component: AnimacionInicioPage},
   {path: 'mensajes', component: MensajesPage},
-  {path: 'anuncio-prestamo/:id', component: AnuncioPrestamoPage},
-  {path: 'anuncio-intercambio/:id', component: AnuncioIntercambioPage},
+  {path: 'anuncio-prestamo/:id', redirectTo: 'anuncio/:id', pathMatch: 'full'},
+  {path: 'anuncio-intercambio/:id', redirectTo: 'anuncio/:id', pathMatch: 'full'},
   {path: 'perfil-otro/:id', redirectTo: 'perfil/:id', pathMatch: 'full'}
 ];
