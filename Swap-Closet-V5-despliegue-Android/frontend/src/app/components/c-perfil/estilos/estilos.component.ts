@@ -1,6 +1,6 @@
 import {Component, effect, Input, OnInit, signal} from '@angular/core';
-import {IonicModule, ActionSheetController, ToastController} from '@ionic/angular';
-import { NgForOf, NgClass } from '@angular/common';
+import {IonicModule, ActionSheetController} from '@ionic/angular';
+import {NgForOf, NgClass} from '@angular/common';
 import {UsuarioDTO} from "../../../modelos/UsuarioDTO";
 
 @Component({
@@ -12,22 +12,20 @@ import {UsuarioDTO} from "../../../modelos/UsuarioDTO";
 })
 export class EstilosComponent implements OnInit {
 
-  // Lista inicial (vacía) que se llena con el usuario
   estilosSeleccionados: string[] = [];
-
-  // Opciones extra para añadir
   estilosExtra = ['Vintage', 'Boho', 'Elegante', 'Minimal', 'Sport'];
 
   @Input() usuario = signal<UsuarioDTO | null>(null);
+  @Input() esMiPerfil = true;
 
   constructor(private actionSheetCtrl: ActionSheetController) {
-
-    // EFFECT: Se ejecuta cada vez que cambia usuario()
     effect(() => {
       const u = this.usuario();
-      if (!u?.estilo) return;
+      if (!u?.estilo) {
+        this.estilosSeleccionados = [];
+        return;
+      }
 
-      // Convertir "Bohemio, Urbano" → ["Bohemio", "Urbano"]
       this.estilosSeleccionados = u.estilo
         .split(',')
         .map(e => e.trim())
@@ -38,6 +36,8 @@ export class EstilosComponent implements OnInit {
   ngOnInit(): void {}
 
   async agregarEstilo() {
+    if (!this.esMiPerfil) return;
+
     const botones = this.estilosExtra.map(est => ({
       text: est,
       handler: () => {
@@ -49,14 +49,14 @@ export class EstilosComponent implements OnInit {
 
     const actionSheet = await this.actionSheetCtrl.create({
       header: 'Añadir estilo',
-      buttons: [...botones, { text: 'Cancelar', role: 'cancel' }] as any[]
+      buttons: [...botones, {text: 'Cancelar', role: 'cancel'}] as any[]
     });
 
     await actionSheet.present();
   }
 
   eliminarEstilo(est: string) {
+    if (!this.esMiPerfil) return;
     this.estilosSeleccionados = this.estilosSeleccionados.filter(e => e !== est);
   }
-
 }
