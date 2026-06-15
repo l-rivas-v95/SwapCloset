@@ -8,6 +8,7 @@ import {CabeceraPerfilComponent} from "../../components/c-perfil/cabecera-perfil
 import {EstilosComponent} from "../../components/c-perfil/estilos/estilos.component";
 import {TallasComponent} from "../../components/c-perfil/tallas/tallas.component";
 import {PublicacionesActivasComponent} from "../../components/c-perfil/publicaciones-activas/publicaciones-activas.component";
+import {PublicacionesPasadasComponent} from "../../components/c-perfil/publicaciones-pasadas/publicaciones-pasadas.component";
 import {OpcionesPrefilComponent} from "../../components/c-perfil/opciones-prefil/opciones-prefil.component";
 import {AuthService} from "../../service/authService/auth.service";
 import {UsuarioEstadisticasDTO} from "../../modelos/UsuarioEstadisticasDTO";
@@ -25,6 +26,7 @@ import {UsuarioEstadisticasDTO} from "../../modelos/UsuarioEstadisticasDTO";
     EstilosComponent,
     TallasComponent,
     PublicacionesActivasComponent,
+    PublicacionesPasadasComponent,
     OpcionesPrefilComponent
   ]
 })
