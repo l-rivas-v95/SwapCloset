@@ -9,13 +9,41 @@
   background-color: #ffffff;
   --background: #ffffff;
   box-shadow: 0 2px 8px rgba(131, 131, 131, 0.4);
-  overflow: hidden; /* 🔥 Esto oculta los bordes rectos internos */
+  overflow: hidden;
 }
 .perfil-header {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 0px;
+}
+
+.btn-publicar {
+  font-size: 2.5vh;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+  height: 6vh;
+  width: 90%;
+  --background: linear-gradient(360deg, #f45097, #b0d2ff);
+  --color: #fff;
+  box-shadow: 0 2px 8px rgba(131, 131, 131, 0.4);
+  --border-radius: 16px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.btn-seguido {
+  font-size: 2.5vh;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+  height: 6vh;
+  width: 90%;
+  --background: linear-gradient(360deg, #cacaca, #c8c8c8);
+  --color: #fff;
+  box-shadow: 0 2px 8px rgba(131, 131, 131, 0.4);
+  --border-radius: 16px;
+  border-radius: 16px;
+  overflow: hidden;
 }
 
 .perfil-foto-container {
@@ -137,4 +165,14 @@ ion-icon{
 
 .toolbar-container{
   padding-inline:0px;
+}
+
+.caja-boton{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.margen-left{
+  margin-left: 15px;
 }
