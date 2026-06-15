@@ -1,12 +1,58 @@
 <ion-header></ion-header>
 
 <ion-content>
-  <app-anuncio-intercambio></app-anuncio-intercambio>
 
-  <ion-footer>
-    <app-btn-contactar></app-btn-contactar>
-  </ion-footer>
+  <ion-row>
+    <ion-col size="2" class="centro">
+      @if (!modoEdicion()) {
+        <ion-button fill="clear" (click)="volver()">
+          <ion-icon class="flecha" name="arrow-back-outline" size="large"></ion-icon>
+        </ion-button>
+      } @else {
+        <ion-icon name="pencil" size="large"></ion-icon>
+      }
+    </ion-col>
+
+    <ion-col size="7">
+      @if (!modoEdicion()) {
+        <h2><b>Detalle del anuncio</b></h2>
+      } @else {
+        <h2><b>Editar anuncio</b></h2>
+      }
+    </ion-col>
+
+    <ion-col size="3" class="centro-opciones">
+      @if (usuario()?.id === idUsuarioLogueado && !modoEdicion()) {
+        <ion-button fill="clear" (click)="mostrarOpciones()">
+          <ion-icon class="icono-puntos" name="ellipsis-vertical-outline" size="large"></ion-icon>
+        </ion-button>
+      }
+    </ion-col>
+  </ion-row>
+
+  @if (!modoEdicion()) {
+    <app-componente-anuncio
+      [producto]="producto()"
+      [usuario]="usuario()"
+      [estilos]="estilos()"
+      [primeraImagen]="getPrimeraImagen()"
+      [idUsuarioLogueado]="idUsuarioLogueado">
+    </app-componente-anuncio>
+  } @else {
+    <app-formulario-anuncio
+      [producto]="producto()!"
+      [usuario]="usuario()!"
+      [primeraImagen]="getPrimeraImagen()"
+      [idUsuarioLogueado]="idUsuarioLogueado"
+      (guardar)="onGuardar($event)"
+      (cancelar)="onCancelar()">
+    </app-formulario-anuncio>
+  }
+
+  @if (!modoEdicion()) {
+    <ion-footer>
+      <app-btn-contactar></app-btn-contactar>
+    </ion-footer>
+  }
 
 </ion-content>
-
-
