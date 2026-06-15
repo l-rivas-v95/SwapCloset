@@ -31,6 +31,7 @@
 
         <app-tallas *ngIf="usuario()"
                     [usuario]="usuario"
+                    [esMiPerfil]="esMiPerfil()"
                     (usuarioChange)="usuario.set($event)"/>
 
         <app-publicaciones-activas [usuario]="usuario"/>
