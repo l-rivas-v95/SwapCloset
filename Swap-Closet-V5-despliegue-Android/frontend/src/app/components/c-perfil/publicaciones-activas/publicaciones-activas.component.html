@@ -9,17 +9,17 @@
         <ion-col class="contendor-tarjetas">
           @for(pro of productos().slice(0, 2); track pro.id){
             <app-carta-publicaciones-activas-intercambio
-            [producto]="pro"
-            [routerLink]="['/anuncio-intercambio', pro.id]"/>
+              [producto]="pro"
+              [routerLink]="['/anuncio', pro.id]"/>
           }
         </ion-col>
         <ion-col size="4">
-                  <ion-button
-                    fill="clear"
-                    class="btn-ver-mas"
-                    [routerLink]="['/publicaciones-activas', usuario()?.id]">
-                    <p class="margen">Ver más</p>
-                  </ion-button>
+          <ion-button
+            fill="clear"
+            class="btn-ver-mas"
+            [routerLink]="['/publicaciones-activas', usuario()?.id]">
+            <p class="margen">Ver más</p>
+          </ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>
