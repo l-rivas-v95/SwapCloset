@@ -25,10 +25,14 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <app-estilos [usuario]="usuario"/>
+        <app-estilos
+          [usuario]="usuario"
+          [esMiPerfil]="esMiPerfil()"/>
+
         <app-tallas *ngIf="usuario()"
                     [usuario]="usuario"
                     (usuarioChange)="usuario.set($event)"/>
+
         <app-publicaciones-activas [usuario]="usuario"/>
       </ion-col>
     </ion-row>
