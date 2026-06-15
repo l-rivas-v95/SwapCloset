@@ -1,17 +1,13 @@
-import {Component, inject, input, OnInit, signal} from '@angular/core';
-import { IonicModule } from '@ionic/angular';
-import { RouterModule } from '@angular/router';
-
-// Componentes compartidos standalone
+import {Component, inject, OnInit, signal} from '@angular/core';
+import {IonicModule} from '@ionic/angular';
+import {ActivatedRoute, RouterModule} from '@angular/router';
+import {NgIf} from "@angular/common";
 import {UsuarioService} from "../../service/usuarioService/usuario.service";
 import {UsuarioDTO} from "../../modelos/UsuarioDTO";
-import {NgIf} from "@angular/common";
 import {CabeceraPerfilComponent} from "../../components/c-perfil/cabecera-perfil/cabecera-perfil.component";
 import {EstilosComponent} from "../../components/c-perfil/estilos/estilos.component";
 import {TallasComponent} from "../../components/c-perfil/tallas/tallas.component";
-import {
-  PublicacionesActivasComponent
-} from "../../components/c-perfil/publicaciones-activas/publicaciones-activas.component";
+import {PublicacionesActivasComponent} from "../../components/c-perfil/publicaciones-activas/publicaciones-activas.component";
 import {OpcionesPrefilComponent} from "../../components/c-perfil/opciones-prefil/opciones-prefil.component";
 import {AuthService} from "../../service/authService/auth.service";
 import {UsuarioEstadisticasDTO} from "../../modelos/UsuarioEstadisticasDTO";
@@ -29,10 +25,6 @@ import {UsuarioEstadisticasDTO} from "../../modelos/UsuarioEstadisticasDTO";
     EstilosComponent,
     TallasComponent,
     PublicacionesActivasComponent,
-    CabeceraPerfilComponent,
-    EstilosComponent,
-    TallasComponent,
-    PublicacionesActivasComponent,
     OpcionesPrefilComponent
   ]
 })
@@ -40,33 +32,38 @@ export class PerfilPage implements OnInit {
 
   usuario = signal<UsuarioDTO | null>(null);
   usuarioEstadisticas = signal<UsuarioEstadisticasDTO | null>(null);
-  idUsuario: number | undefined;
+  esMiPerfil = signal<boolean>(true);
 
   private authService = inject(AuthService);
   private usuarioService = inject(UsuarioService);
+  private route = inject(ActivatedRoute);
 
   ngOnInit() {
-    this.authService.usuarioActual$.subscribe(usuario => {
-      if (usuario) {
-        console.log('Usuario cargado:', usuario);
-        this.usuario.set(usuario);
-      } else {
-        console.warn('No hay usuario logueado');
-        // Opcional: redirigir al login
-      }
+    const idRuta = Number(this.route.snapshot.paramMap.get('id'));
+    const usuarioSesion = this.authService.getUsuario();
+    const idUsuario = idRuta || usuarioSesion?.id;
 
-      this.idUsuario = this.authService.getUsuario()?.id
-      this.usuarioService.getUsuarioEstadisticas(this.idUsuario!).subscribe({
-        next: (estadisticas) => {
-          this.usuarioEstadisticas.set(estadisticas);
-          console.log('Estadísticas cargadas:', estadisticas);
-        },
-        error: (err) => {
-          console.error('Error al cargar estadísticas del usuario:', err);
-      }
-    });
+    if (!idUsuario) {
+      console.warn('No hay usuario para cargar el perfil');
+      return;
     }
-    );
+
+    this.esMiPerfil.set(!idRuta || idRuta === usuarioSesion?.id);
+    this.cargarUsuario(idUsuario);
+    this.cargarEstadisticas(idUsuario);
+  }
+
+  private cargarUsuario(idUsuario: number) {
+    this.usuarioService.getUsuario(idUsuario).subscribe({
+      next: (usuario) => this.usuario.set(usuario),
+      error: (err) => console.error('Error al cargar usuario:', err)
+    });
+  }
+
+  private cargarEstadisticas(idUsuario: number) {
+    this.usuarioService.getUsuarioEstadisticas(idUsuario).subscribe({
+      next: (estadisticas) => this.usuarioEstadisticas.set(estadisticas),
+      error: (err) => console.error('Error al cargar estadísticas del usuario:', err)
+    });
   }
 }
-
