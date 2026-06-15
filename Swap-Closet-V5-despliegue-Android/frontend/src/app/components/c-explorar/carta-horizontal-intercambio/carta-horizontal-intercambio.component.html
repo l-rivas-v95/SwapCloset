@@ -4,7 +4,7 @@
 
       <ion-col class="centro" size="3.5">
         <div class="img-prod">
-          <img class="img_prod" [src]="getPrimeraImagen() || 'assets/icon/card-media.png'"/>
+          <img class="img_prod" [src]="getPrimeraImagen()" (error)="onImgError($event)"/>
         </div>
       </ion-col>
 
