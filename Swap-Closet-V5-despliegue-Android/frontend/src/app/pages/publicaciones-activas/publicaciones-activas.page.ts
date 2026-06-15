@@ -1,11 +1,8 @@
-import {Component, inject, Input, OnInit, signal} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import{IonicModule} from "@ionic/angular";
 import {
   CartaHorizontalIntercambioComponent
 } from "../../components/c-explorar/carta-horizontal-intercambio/carta-horizontal-intercambio.component";
-import {
-  CartaHorizontalPrestamoComponent
-} from "../../components/c-explorar/carta-horizontal-prestamo/carta-horizontal-prestamo.component";
 import {ActivatedRoute, RouterLink, RouterModule} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {ProductoService} from "../../service/productoService/producto.service";
@@ -17,7 +14,7 @@ import { Location } from '@angular/common';
   templateUrl: './publicaciones-activas.page.html',
   styleUrls: ['./publicaciones-activas.page.scss'],
   standalone: true,
-  imports: [IonicModule, RouterModule, CartaHorizontalIntercambioComponent, CartaHorizontalPrestamoComponent, RouterLink, FormsModule]
+  imports: [IonicModule, RouterModule, CartaHorizontalIntercambioComponent, RouterLink, FormsModule]
 })
 export class PublicacionesActivasPage implements OnInit {
 
