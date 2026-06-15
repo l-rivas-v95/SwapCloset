@@ -1,4 +1,4 @@
-import {Component, inject, input, Input, OnInit} from '@angular/core';
+import {Component, inject, input, OnInit} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 import {ProductoDTO} from "../../../modelos/ProductoDTO";
 import {UsuarioDTO} from "../../../modelos/UsuarioDTO";
@@ -27,9 +27,14 @@ export class CartaPublicacionesPasadasIntercambiadoComponent  implements OnInit 
   getPrimeraImagen(): string {
     const listImagenes = this.producto()?.imagenes;
     if (!listImagenes || listImagenes.length === 0) {
-      return "";
+      return "assets/icon/card-media.png";
     }
-    return listImagenes[0]?.urlImg || "";
+    return listImagenes[0]?.urlImg || "assets/icon/card-media.png";
+  }
+
+  onImgError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    img.src = 'assets/icon/card-media.png';
   }
 
   cargarUsuarioProducto(): Observable<UsuarioDTO> {
