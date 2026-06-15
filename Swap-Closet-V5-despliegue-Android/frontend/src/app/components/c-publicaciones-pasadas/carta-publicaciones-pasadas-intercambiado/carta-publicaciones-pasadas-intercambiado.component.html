@@ -19,7 +19,7 @@
       </div>
 
       <ion-col class="centro" size="3.5">
-        <img class="img_prod" [src]="getPrimeraImagen() || 'assets/icon/card-media.png'" alt="Imagen del producto" />
+        <img class="img_prod" [src]="getPrimeraImagen()" (error)="onImgError($event)" alt="Imagen del producto" />
       </ion-col>
 
       <ion-col>
