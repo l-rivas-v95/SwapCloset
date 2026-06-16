@@ -9,22 +9,19 @@
 
 .imagen-detalle-wrapper {
   width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px 0 16px;
+  padding: 0;
 }
 
 .imagen-container,
 .detalle-imagen-container {
   position: relative;
-  width: min(80vw, 260px) !important;
-  aspect-ratio: 1 / 1 !important;
+  width: 100% !important;
+  height: 350px !important;
   overflow: hidden !important;
-  margin: 0 auto !important;
+  margin: 0 !important;
   background: #f2f2f2;
   display: block !important;
-  border-radius: 28px !important;
+  border-radius: 0 !important;
 }
 
 .producto-imagen,
@@ -34,7 +31,7 @@
   object-fit: cover !important;
   object-position: center !important;
   display: block !important;
-  border-radius: 28px !important;
+  border-radius: 0 !important;
 }
 
 .info-container {
