@@ -3,19 +3,14 @@ package org.swapcloset.backend.service;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.swapcloset.backend.converter.FavoritoMapper;
-import org.swapcloset.backend.converter.ProductoMapper;
 import org.swapcloset.backend.converter.SeguidorMapper;
 import org.swapcloset.backend.converter.UsuarioMapper;
 import org.swapcloset.backend.dto.SeguidorDTO;
 import org.swapcloset.backend.dto.UsuarioDTO;
 import org.swapcloset.backend.modelos.Seguidor;
 import org.swapcloset.backend.modelos.Usuario;
-import org.swapcloset.backend.repository.FavoritoRepository;
-import org.swapcloset.backend.repository.ProductoRepository;
 import org.swapcloset.backend.repository.SeguidorRepository;
 
 import java.util.List;
@@ -28,6 +23,7 @@ public class SeguidorService {
     private final SeguidorRepository seguidorRepository;
     private final UsuarioMapper usuarioMapper;
     private final SeguidorMapper seguidorMapper;
+    private final RaitingService raitingService;
 
     @PersistenceContext
     private final EntityManager em;
@@ -41,15 +37,25 @@ public class SeguidorService {
     @Transactional(readOnly = true)
     public List<UsuarioDTO> findSeguidoresByUsuarioId(Integer usuarioId) {
         return seguidorRepository.findSeguidoresByUsuarioId(usuarioId).stream()
-                .map(usuarioMapper::toDTO)
+                .map(this::toUsuarioDtoConRaiting)
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<UsuarioDTO> findSeguidosByUsuarioId(Integer usuarioId) {
         return seguidorRepository.findSeguidosByUsuarioId(usuarioId).stream()
-                .map(usuarioMapper::toDTO)
+                .map(this::toUsuarioDtoConRaiting)
                 .collect(Collectors.toList());
+    }
+
+    private UsuarioDTO toUsuarioDtoConRaiting(Usuario usuario) {
+        UsuarioDTO dto = usuarioMapper.toDTO(usuario);
+        Double media = raitingService.obtenerMediaPuntuacionUsuario(usuario.getId());
+        if (media != null) {
+            media = Math.round(media * 2) / 2.0;
+        }
+        dto.setRaiting(media);
+        return dto;
     }
 
     @Transactional
