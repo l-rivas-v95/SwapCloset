@@ -6,7 +6,6 @@ import {SeguidoresService} from "../../../service/seguidoresService/seguidores.s
 import {AuthService} from "../../../service/authService/auth.service";
 import {SeguidorDTO} from "../../../modelos/SeguidorDTO";
 import {RouterLink} from "@angular/router";
-import {RaitingService} from "../../../service/raitingService/raiting.service";
 
 @Component({
   selector: 'app-tarjeta-seguidor',
@@ -26,28 +25,12 @@ export class TarjetaSeguidorComponent implements OnInit{
   private seguidoresService = inject(SeguidoresService);
   private authService = inject(AuthService);
   private toastCtrl = inject(ToastController);
-  private raitingService = inject(RaitingService);
 
   seguido: boolean = false;
   isOwnProfile: boolean = false;
-  mediaRaiting: number = 0;
 
   ngOnInit(): void {
     this.checkInitialFollowState();
-    this.cargarMediaRaiting();
-  }
-
-  cargarMediaRaiting() {
-    const idUsuario = this.usuario?.id;
-    if (!idUsuario) {
-      this.mediaRaiting = 0;
-      return;
-    }
-
-    this.raitingService.getMediaRaitingByUsuario(idUsuario).subscribe({
-      next: (media) => this.mediaRaiting = media ?? 0,
-      error: () => this.mediaRaiting = 0
-    });
   }
 
   checkInitialFollowState() {
