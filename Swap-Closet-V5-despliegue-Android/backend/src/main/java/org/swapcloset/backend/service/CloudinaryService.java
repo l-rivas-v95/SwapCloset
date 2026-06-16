@@ -1,6 +1,7 @@
 package org.swapcloset.backend.service;
 
 import com.cloudinary.Cloudinary;
+import com.cloudinary.Transformation;
 import com.cloudinary.utils.ObjectUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,12 +27,21 @@ public class CloudinaryService {
                 )
         );
 
-        Object secureUrl = resultado.get("secure_url");
-        if (secureUrl == null) {
-            throw new IOException("Cloudinary no devolvió secure_url");
+        Object publicId = resultado.get("public_id");
+        if (publicId == null) {
+            throw new IOException("Cloudinary no devolvió public_id");
         }
 
-        return secureUrl.toString();
+        return cloudinary.url()
+                .secure(true)
+                .transformation(new Transformation<>()
+                        .width(900)
+                        .height(900)
+                        .crop("fill")
+                        .gravity("auto")
+                        .quality("auto")
+                        .fetchFormat("auto"))
+                .generate(publicId.toString());
     }
 
     private void validarImagen(MultipartFile archivo) throws IOException {
