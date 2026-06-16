@@ -69,11 +69,30 @@ export class CabeceraPerfilComponent {
       return;
     }
 
-    usuarioActual.urlImg = data.ruta;
+    const usuarioActualizado: UsuarioEstadisticasDTO = {
+      ...usuarioActual,
+      urlImg: data.ruta
+    };
 
-    this.usuarioService.updateUsuario(usuarioActual.id, usuarioActual).subscribe({
+    this.usuarioService.updateUsuario(usuarioActual.id, usuarioActualizado).subscribe({
       next: async (usuarioGuardado) => {
-        this.usuario.set(usuarioGuardado);
+        const usuarioPerfilActualizado: UsuarioEstadisticasDTO = {
+          ...usuarioActualizado,
+          ...usuarioGuardado,
+          urlImg: usuarioGuardado.urlImg ?? data.ruta
+        };
+
+        this.usuario.set(usuarioPerfilActualizado);
+
+        const usuarioSesion = this.authService.getUsuario();
+        if (usuarioSesion?.id === usuarioPerfilActualizado.id) {
+          this.authService.setUsuario({
+            ...usuarioSesion,
+            ...usuarioGuardado,
+            urlImg: usuarioPerfilActualizado.urlImg
+          });
+        }
+
         await this.mostrarToast('Foto de perfil actualizada');
       },
       error: async () => await this.mostrarToast('Error al guardar la foto')
