@@ -12,14 +12,11 @@ import org.swapcloset.backend.dto.CartaProductoDTO;
 import org.swapcloset.backend.dto.CartaProductoIntercambioDTO;
 import org.swapcloset.backend.dto.ProductoDTO;
 import org.swapcloset.backend.modelos.TipoProducto;
+import org.swapcloset.backend.service.CloudinaryService;
 import org.swapcloset.backend.service.ProductoService;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -31,9 +28,11 @@ import java.util.Map;
 public class ProductoController {
 
     private final ProductoService productoService;
+    private final CloudinaryService cloudinaryService;
 
-    public ProductoController(ProductoService productoService) {
+    public ProductoController(ProductoService productoService, CloudinaryService cloudinaryService) {
         this.productoService = productoService;
+        this.cloudinaryService = cloudinaryService;
     }
 
     @GetMapping
@@ -128,16 +127,16 @@ public class ProductoController {
     @PostMapping("/guardar")
     public ResponseEntity<Map<String, String>> subirFoto(@RequestParam("archivo") MultipartFile archivo) {
         try {
-            String nombreArchivo = archivo.getOriginalFilename();
-            Path ruta = Paths.get("src/main/resources/static/img/" + nombreArchivo);
-            Files.copy(archivo.getInputStream(), ruta, StandardCopyOption.REPLACE_EXISTING);
+            String url = cloudinaryService.subirImagen(archivo, "swapcloset/productos");
 
             Map<String, String> response = new HashMap<>();
-            response.put("url", "/assets/img/" + nombreArchivo);
+            response.put("url", url);
             return ResponseEntity.ok(response);
 
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            Map<String, String> response = new HashMap<>();
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
 
