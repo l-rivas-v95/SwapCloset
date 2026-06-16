@@ -12,3 +12,6 @@
 
 @import "@ionic/angular/css/palettes/dark.system.css";
 
+ion-content {
+  --padding-bottom: calc(90px + env(safe-area-inset-bottom));
+}
