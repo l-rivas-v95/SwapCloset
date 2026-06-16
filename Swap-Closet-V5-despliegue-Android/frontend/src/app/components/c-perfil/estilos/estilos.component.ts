@@ -1,7 +1,8 @@
-import {Component, effect, Input, OnInit, signal} from '@angular/core';
-import {IonicModule, ActionSheetController} from '@ionic/angular';
+import {Component, effect, inject, Input, OnInit, signal} from '@angular/core';
+import {IonicModule, ActionSheetController, ToastController} from '@ionic/angular';
 import {NgForOf, NgClass} from '@angular/common';
 import {UsuarioDTO} from "../../../modelos/UsuarioDTO";
+import {UsuarioService} from "../../../service/usuarioService/usuario.service";
 
 @Component({
   selector: 'app-estilos',
@@ -17,6 +18,9 @@ export class EstilosComponent implements OnInit {
 
   @Input() usuario = signal<UsuarioDTO | null>(null);
   @Input() esMiPerfil = true;
+
+  private usuarioService = inject(UsuarioService);
+  private toastCtrl = inject(ToastController);
 
   constructor(private actionSheetCtrl: ActionSheetController) {
     effect(() => {
@@ -42,7 +46,7 @@ export class EstilosComponent implements OnInit {
       text: est,
       handler: () => {
         if (!this.estilosSeleccionados.includes(est)) {
-          this.estilosSeleccionados.push(est);
+          this.guardarEstilos([...this.estilosSeleccionados, est]);
         }
       }
     }));
@@ -57,6 +61,34 @@ export class EstilosComponent implements OnInit {
 
   eliminarEstilo(est: string) {
     if (!this.esMiPerfil) return;
-    this.estilosSeleccionados = this.estilosSeleccionados.filter(e => e !== est);
+    this.guardarEstilos(this.estilosSeleccionados.filter(e => e !== est));
+  }
+
+  private guardarEstilos(estilos: string[]) {
+    const u = this.usuario();
+    if (!u?.id) return;
+
+    const actualizado: UsuarioDTO = {
+      ...u,
+      estilo: estilos.length > 0 ? estilos.join(', ') : undefined
+    };
+
+    this.usuarioService.updateUsuario(u.id, actualizado).subscribe({
+      next: async (usuarioGuardado) => {
+        this.usuario.set(usuarioGuardado);
+        await this.mostrarToast('Estilos guardados');
+      },
+      error: async () => await this.mostrarToast('Error al guardar estilos')
+    });
+  }
+
+  private async mostrarToast(message: string) {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 1500,
+      position: 'bottom',
+      color: 'dark'
+    });
+    await toast.present();
   }
 }
