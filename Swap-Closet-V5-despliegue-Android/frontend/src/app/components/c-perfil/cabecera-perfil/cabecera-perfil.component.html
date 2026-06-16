@@ -1,7 +1,7 @@
 <div class="info-card fondo">
   <div class="perfil-header">
     <div class="perfil-foto-container">
-      <img [src]="usuario()?.urlImg" alt="Foto de perfil" class="perfil-foto" />
+      <img [src]="usuario()?.urlImg || 'assets/icon/card-media.png'" alt="Foto de perfil" class="perfil-foto" />
 
       @if (esMiPerfil) {
         <ion-chip class="chip-camara" (click)="cambiarFoto()">
@@ -40,22 +40,22 @@
       <ion-row>
         <ion-col>
           <ion-icon name="cube-outline" color="tertiary"></ion-icon>
-          <p class="numero">{{usuario()!.intercambios}}</p>
-          <p class="label">Intercambios</p>
+          <p class="numero">{{usuario()!.publicaciones ?? 0}}</p>
+          <p class="label">Publicaciones</p>
         </ion-col>
         <ion-col>
           <ion-icon name="star-outline" color="warning"></ion-icon>
-          <p class="numero">{{usuario()!.raiting}}</p>
+          <p class="numero">{{usuario()!.raiting ?? 0}}</p>
           <p class="label">Valoración</p>
         </ion-col>
         <ion-col [routerLink]="['/favoritos', usuario()!.id]">
           <ion-icon name="heart-outline" color="danger"></ion-icon>
-          <p class="numero">{{usuario()!.favoritos}}</p>
+          <p class="numero">{{usuario()!.favoritos ?? 0}}</p>
           <p class="label">Favoritos</p>
         </ion-col>
         <ion-col [routerLink]="['/seguidores', usuario()!.id]">
           <ion-icon name="people-outline" color="medium"></ion-icon>
-          <p class="numero">{{usuario()!.seguidores}}</p>
+          <p class="numero">{{usuario()!.seguidores ?? 0}}</p>
           <p class="label">Seguidores</p>
         </ion-col>
       </ion-row>
