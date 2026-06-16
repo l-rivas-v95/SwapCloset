@@ -104,6 +104,11 @@ export class AnuncioPage implements OnInit {
           handler: () => this.modoEdicion.set(true)
         },
         {
+          text: 'Desactivar',
+          icon: 'archive-outline',
+          handler: () => this.confirmarDesactivacion()
+        },
+        {
           text: 'Eliminar',
           role: 'destructive',
           icon: 'trash-outline',
@@ -118,6 +123,38 @@ export class AnuncioPage implements OnInit {
     });
 
     await sheet.present();
+  }
+
+  async confirmarDesactivacion() {
+    const alert = await this.alertCtrl.create({
+      header: 'Desactivar anuncio',
+      message: 'El anuncio dejará de aparecer como activo, pero no se eliminará. ¿Quieres continuar?',
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        { text: 'Desactivar', handler: () => this.desactivarAnuncio() }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  desactivarAnuncio() {
+    const productoActual = this.producto();
+    if (!productoActual?.id) return;
+
+    const productoDesactivado: ProductoDTO = {
+      ...productoActual,
+      activo: false
+    };
+
+    this.productoService.updateProducto(productoActual.id, productoDesactivado).subscribe({
+      next: async (productoActualizado) => {
+        this.producto.set(productoActualizado);
+        await this.mostrarToast('Anuncio desactivado');
+        this.router.navigate(['/perfil']);
+      },
+      error: async () => await this.mostrarToast('Error al desactivar el anuncio')
+    });
   }
 
   async confirmarEliminacion() {
@@ -154,5 +191,15 @@ export class AnuncioPage implements OnInit {
     this.modoEdicion.set(false);
     if (!this.producto()?.id) return;
     this.cargarProducto(String(this.producto()?.id));
+  }
+
+  private async mostrarToast(message: string) {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 2000,
+      position: 'bottom',
+      color: 'dark'
+    });
+    await toast.present();
   }
 }
