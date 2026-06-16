@@ -12,21 +12,22 @@
 <ion-content>
   <div class="subir-imagen">
     <ion-icon name="cloud-upload-outline"></ion-icon>
-    <h3>Subir imagen del producto</h3>
-    <p>Selecciona una imagen desde tu dispositivo.</p>
+    <h3>Subir imágenes del producto</h3>
+    <p>Selecciona una o varias imágenes desde tu dispositivo.</p>
 
     <label class="boton-subir">
-      Elegir imagen
+      Elegir imágenes
       <input
         type="file"
         accept="image/*"
+        multiple
         hidden
         (change)="seleccionarArchivo($event)">
     </label>
 
     @if (subiendo) {
       <ion-spinner name="crescent"></ion-spinner>
-      <p>Subiendo imagen...</p>
+      <p>Subiendo imágenes...</p>
     }
   </div>
 </ion-content>
