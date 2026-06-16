@@ -1,8 +1,9 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 import {NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {ProductoFormService} from "../../../service/productoFormService/producto-form.service";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'app-tipo-oferta',
@@ -15,7 +16,7 @@ import {ProductoFormService} from "../../../service/productoFormService/producto
       FormsModule
     ]
 })
-export class TipoOfertaComponent  implements OnInit {
+export class TipoOfertaComponent implements OnInit, OnDestroy {
 
   tipoOferta: string = 'intercambio';
   precio: number | null = null;
@@ -23,8 +24,14 @@ export class TipoOfertaComponent  implements OnInit {
   fechaDevolucion: string | null = null;
 
   private formService = inject(ProductoFormService);
+  private resetSub?: Subscription;
 
   ngOnInit() {
+    this.resetSub = this.formService.reset$.subscribe(() => this.limpiarCampos());
+  }
+
+  ngOnDestroy() {
+    this.resetSub?.unsubscribe();
   }
 
   onTipoOfertaChange(event: any) {
@@ -35,6 +42,11 @@ export class TipoOfertaComponent  implements OnInit {
 
     if (valor === 'prestamo') {
       this.formService.updateForm({ precio: this.precio });
+    } else {
+      this.precio = null;
+      this.fechaDevolucion = null;
+      this.mostrarCalendario = false;
+      this.formService.updateForm({ precio: null, fechaDevolucion: '' });
     }
   }
 
@@ -51,5 +63,12 @@ export class TipoOfertaComponent  implements OnInit {
   onFechaChange(event: any) {
     this.fechaDevolucion = event.detail.value;
     this.formService.updateForm({fechaDevolucion: this.fechaDevolucion?.toString()});
+  }
+
+  private limpiarCampos() {
+    this.tipoOferta = 'intercambio';
+    this.precio = null;
+    this.mostrarCalendario = false;
+    this.fechaDevolucion = null;
   }
 }
