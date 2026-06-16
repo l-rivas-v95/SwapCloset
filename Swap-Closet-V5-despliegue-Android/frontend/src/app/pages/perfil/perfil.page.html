@@ -19,7 +19,8 @@
 <ion-content>
   <app-cabecera-perfil
     [usuario]="usuarioEstadisticas"
-    [esMiPerfil]="esMiPerfil()">
+    [esMiPerfil]="esMiPerfil()"
+    (usuarioActualizado)="usuario.set($event)">
   </app-cabecera-perfil>
 
   <ion-grid>
