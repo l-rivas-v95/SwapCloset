@@ -1,7 +1,8 @@
-import {Component, EventEmitter, Input, Output, Signal} from '@angular/core';
-import {IonicModule, ActionSheetController} from '@ionic/angular';
+import {Component, EventEmitter, inject, Input, Output, Signal} from '@angular/core';
+import {IonicModule, ActionSheetController, ToastController} from '@ionic/angular';
 import {NgIf} from '@angular/common';
 import {UsuarioDTO} from "../../../modelos/UsuarioDTO";
+import {UsuarioService} from "../../../service/usuarioService/usuario.service";
 
 @Component({
   selector: 'app-tallas',
@@ -16,6 +17,9 @@ export class TallasComponent {
   @Input() esMiPerfil = true;
   @Output() usuarioChange = new EventEmitter<UsuarioDTO>();
 
+  private usuarioService = inject(UsuarioService);
+  private toastCtrl = inject(ToastController);
+
   constructor(private actionSheetCtrl: ActionSheetController) {}
 
   async elegirTalla(tipo: 'tCamiseta' | 'tPantalon' | 'tCalzado') {
@@ -25,17 +29,11 @@ export class TallasComponent {
 
     if (tipo === 'tCamiseta') opciones = ['XS', 'S', 'M', 'L', 'XL'];
     if (tipo === 'tPantalon') opciones = ['38', '40', '42', '44', '46'];
-    if (tipo === 'tCalzado') opciones = ['36', '37', '38', '39', '40', '41', '42', '43'];
+    if (tipo === 'tCalzado') opciones = ['36', '37', '38', '39', '40', '41', '42'];
 
     const botones = opciones.map(talla => ({
       text: talla,
-      handler: () => {
-        const u = this.usuario();
-        if (!u) return;
-
-        const actualizado = {...u, [tipo]: talla};
-        this.usuarioChange.emit(actualizado);
-      }
+      handler: () => this.guardarTalla(tipo, talla)
     }));
 
     const actionSheet = await this.actionSheetCtrl.create({
@@ -44,5 +42,31 @@ export class TallasComponent {
     });
 
     await actionSheet.present();
+  }
+
+  private guardarTalla(tipo: 'tCamiseta' | 'tPantalon' | 'tCalzado', talla: string) {
+    const u = this.usuario();
+    if (!u?.id) return;
+
+    const valor = tipo === 'tCamiseta' ? talla : Number(talla);
+    const actualizado = {...u, [tipo]: valor};
+
+    this.usuarioService.updateUsuario(u.id, actualizado).subscribe({
+      next: async (usuarioGuardado) => {
+        this.usuarioChange.emit(usuarioGuardado);
+        await this.mostrarToast('Talla guardada');
+      },
+      error: async () => await this.mostrarToast('Error al guardar talla')
+    });
+  }
+
+  private async mostrarToast(message: string) {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 1500,
+      position: 'bottom',
+      color: 'dark'
+    });
+    await toast.present();
   }
 }
