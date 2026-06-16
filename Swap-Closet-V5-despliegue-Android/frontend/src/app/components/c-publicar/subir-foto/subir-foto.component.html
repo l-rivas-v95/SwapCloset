@@ -16,4 +16,17 @@
 
   </ion-grid>
 
+  @if (fotos.length > 0) {
+    <div class="preview-grid">
+      @for (foto of fotos; track foto) {
+        <div class="preview-item">
+          <img [src]="foto" alt="Imagen seleccionada">
+          <ion-button fill="clear" size="small" class="btn-eliminar" (click)="eliminarFoto($event, foto)">
+            <ion-icon name="close-circle"></ion-icon>
+          </ion-button>
+        </div>
+      }
+    </div>
+  }
+
 </ion-card>
