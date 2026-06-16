@@ -27,10 +27,10 @@
       <ion-row>
         <ion-col>
           <ion-segment [(ngModel)]="segmentoSeleccionado" class="botones-seleccion">
-            <ion-segment-button value="prestamos">
+            <ion-segment-button value="intercambios">
               <ion-label><b>Intercambios</b></ion-label>
             </ion-segment-button>
-            <ion-segment-button value="intercambios">
+            <ion-segment-button value="prestamos">
               <ion-label><b>Préstamos</b></ion-label>
             </ion-segment-button>
           </ion-segment>
@@ -39,7 +39,11 @@
 
       <ion-row class="centro">
         <ion-col>
-          <ion-searchbar class="barra" placeholder="Buscar producto"></ion-searchbar>
+          <ion-searchbar
+            class="barra"
+            placeholder="Buscar producto"
+            [(ngModel)]="busqueda">
+          </ion-searchbar>
         </ion-col>
       </ion-row>
 
@@ -59,6 +63,12 @@
               class="contenedor-cartas"/>
           }
         }
+
+        <div class="estado-vacio" *ngIf="productosFiltrados.length === 0">
+          <ion-icon name="heart-outline"></ion-icon>
+          <h3>No hay favoritos</h3>
+          <p>No tienes productos favoritos en esta sección.</p>
+        </div>
       </ion-col>
     </ion-row>
   </ion-grid>
