@@ -107,19 +107,15 @@ public class UsuarioController {
         }
     }
 
-    @PostMapping("/guardar-foto")
-    public ResponseEntity<Map<String, String>> subirFotoPerfil(@RequestParam("archivo") MultipartFile archivo) {
+    @PostMapping("/{id}/foto-perfil")
+    public ResponseEntity<UsuarioDTO> actualizarFotoPerfil(@PathVariable Integer id, @RequestParam("archivo") MultipartFile archivo) {
         try {
             String url = cloudinaryService.subirImagenPerfil(archivo);
+            UsuarioDTO usuarioActualizado = usuarioService.actualizarFotoPerfil(id, url);
+            return ResponseEntity.ok(usuarioActualizado);
 
-            Map<String, String> response = new HashMap<>();
-            response.put("url", url);
-            return ResponseEntity.ok(response);
-
-        } catch (IOException e) {
-            Map<String, String> response = new HashMap<>();
-            response.put("error", e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } catch (IOException | IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
