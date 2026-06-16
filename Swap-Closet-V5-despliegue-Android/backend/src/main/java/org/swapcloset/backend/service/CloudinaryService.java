@@ -63,7 +63,7 @@ public class CloudinaryService {
     private String aplicarTransformacionPerfil(String urlOriginal) {
         return urlOriginal.replace(
                 "/image/upload/",
-                "/image/upload/c_fill,g_auto,h_500,w_500,q_auto,f_auto/"
+                "/image/upload/c_fill,g_center,h_500,w_500,b_white,q_auto,f_auto/"
         );
     }
 
