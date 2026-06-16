@@ -1,7 +1,8 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import { IonicModule, ActionSheetController } from '@ionic/angular';
 import { NgForOf} from '@angular/common';
 import {ProductoFormService} from "../../../service/productoFormService/producto-form.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-datos-adicionales-chip',
@@ -10,15 +11,14 @@ import {ProductoFormService} from "../../../service/productoFormService/producto
   standalone: true,
   imports: [IonicModule, NgForOf]
 })
-export class DatosAdicionalesChipComponent implements OnInit {
+export class DatosAdicionalesChipComponent implements OnInit, OnDestroy {
 
-  // --- Opciones base ---
   categorias = ['Vestido', 'Top', 'Pantalón', 'Chaqueta', 'Calzado', 'Accesorios'];
   categoriasExtra = ['Abrigo', 'Falda', 'Sudadera', 'Camisa', 'Jersey'];
 
   tallasLetra = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
   tallasNumero = ['36', '37', '38', '39', '40', '41', '42', '43', '44'];
-  tallas: string[] = [...this.tallasLetra]; // cambia dinámicamente
+  tallas: string[] = [...this.tallasLetra];
 
   estados = ['Como nuevo', 'Excelente', 'Bueno', 'Muy bueno', 'Regular'];
 
@@ -28,7 +28,6 @@ export class DatosAdicionalesChipComponent implements OnInit {
   estilos = ['Casual', 'Informal', 'Ocasional', 'Metal', 'Urbano', 'Fiesta'];
   estilosExtra = ['Vintage', 'Boho', 'Elegante', 'Minimal', 'Sport'];
 
-  // --- Selecciones ---
   categoriaSeleccionada: string | null = this.categorias[0];
   tallaSeleccionada: string | null = this.tallas[0];
   estadoSeleccionado: string | null = this.estados[0];
@@ -36,21 +35,19 @@ export class DatosAdicionalesChipComponent implements OnInit {
   estilosSeleccionados: string[] = [this.estilos[0]];
 
   private productoFormService = inject(ProductoFormService);
+  private resetSub?: Subscription;
 
   constructor(private actionSheetCtrl: ActionSheetController) {}
 
   ngOnInit() {
-    // Inicializar formulario con los valores por defecto
-    this.productoFormService.updateForm({
-      categoria: this.categoriaSeleccionada ?? undefined,
-      talla: this.tallaSeleccionada ?? undefined,
-      estado: this.estadoSeleccionado ?? undefined,
-      color: this.coloresSeleccionados.join(', '),
-      estilo: this.estilosSeleccionados.join(', ')
-    });
+    this.inicializarValores();
+    this.resetSub = this.productoFormService.reset$.subscribe(() => this.inicializarValores());
   }
 
-  // CATEGORÍA, TALLA y ESTADO
+  ngOnDestroy() {
+    this.resetSub?.unsubscribe();
+  }
+
   seleccionarUnico(tipo: 'categoria' | 'talla' | 'estado', valor: string) {
     if (tipo === 'categoria') {
       this.categoriaSeleccionada = this.categoriaSeleccionada === valor ? null : valor;
@@ -63,21 +60,16 @@ export class DatosAdicionalesChipComponent implements OnInit {
       this.estadoSeleccionado = this.estadoSeleccionado === valor ? null : valor;
       this.productoFormService.updateForm({ estado: this.estadoSeleccionado ?? undefined });
     }
-    console.log(`${tipo} seleccionada: ${this.categoriaSeleccionada || this.tallaSeleccionada || this.estadoSeleccionado}`);
   }
 
-  // COLOR y ESTILO (múltiple)
   toggleSeleccion(lista: string[], valor: string, tipo: 'color' | 'estilo') {
     const index = lista.indexOf(valor);
     if (index > -1) {
       lista.splice(index, 1);
-      console.log(`Se quitó: ${valor}`);
     } else {
       lista.push(valor);
-      console.log(`Se añadió: ${valor}`);
     }
 
-    // Actualizar el formulario con string
     if (tipo === 'color') {
       this.productoFormService.updateForm({ color: this.coloresSeleccionados.join(', ') });
     } else if (tipo === 'estilo') {
@@ -85,7 +77,6 @@ export class DatosAdicionalesChipComponent implements OnInit {
     }
   }
 
-  //  Menú de añadir nuevas opciones
   async abrirMenuExtra(tipo: 'categoria' | 'color' | 'estilo') {
     let opciones: string[] = [];
     if (tipo === 'categoria') opciones = this.categoriasExtra;
@@ -122,13 +113,29 @@ export class DatosAdicionalesChipComponent implements OnInit {
     await actionSheet.present();
   }
 
-  // Actualiza tallas según categoría
   actualizarTallas() {
     if (this.categoriaSeleccionada === 'Pantalón' || this.categoriaSeleccionada === 'Calzado') {
       this.tallas = [...this.tallasNumero];
     } else {
       this.tallas = [...this.tallasLetra];
     }
-    this.tallaSeleccionada = null; // Reiniciar selección de talla
+    this.tallaSeleccionada = null;
+  }
+
+  private inicializarValores() {
+    this.tallas = [...this.tallasLetra];
+    this.categoriaSeleccionada = this.categorias[0];
+    this.tallaSeleccionada = this.tallas[0];
+    this.estadoSeleccionado = this.estados[0];
+    this.coloresSeleccionados = [this.colores[0]];
+    this.estilosSeleccionados = [this.estilos[0]];
+
+    this.productoFormService.updateForm({
+      categoria: this.categoriaSeleccionada ?? undefined,
+      talla: this.tallaSeleccionada ?? undefined,
+      estado: this.estadoSeleccionado ?? undefined,
+      color: this.coloresSeleccionados.join(', '),
+      estilo: this.estilosSeleccionados.join(', ')
+    });
   }
 }
