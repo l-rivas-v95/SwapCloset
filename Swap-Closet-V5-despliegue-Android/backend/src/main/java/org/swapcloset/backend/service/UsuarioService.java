@@ -16,7 +16,6 @@ import org.swapcloset.backend.modelos.Usuario;
 import org.swapcloset.backend.repository.ProductoRepository;
 import org.swapcloset.backend.repository.UsuarioRepository;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -53,7 +52,6 @@ public class UsuarioService {
 
         UsuarioEstadisticaDTO dto = new UsuarioEstadisticaDTO();
 
-        // Datos básicos
         dto.setId(usuario.getId());
         dto.setNombre(usuario.getNombre());
         dto.setApellidos(usuario.getApellidos());
@@ -66,7 +64,6 @@ public class UsuarioService {
         dto.setTPantalon(usuario.getTPantalon());
         dto.setTCalzado(usuario.getTCalzado());
 
-        // Campos calculados
         Double media = raitingService.obtenerMediaPuntuacionUsuario(usuario.getId());
         if (media != null) {
             media = Math.round(media * 2) / 2.0;
@@ -91,7 +88,6 @@ public class UsuarioService {
 
         UsuarioEstadisticaProductosDTO dto = new UsuarioEstadisticaProductosDTO();
 
-        // Datos básicos
         dto.setId(usuario.getId());
         dto.setNombre(usuario.getNombre());
         dto.setApellidos(usuario.getApellidos());
@@ -104,7 +100,6 @@ public class UsuarioService {
         dto.setTPantalon(usuario.getTPantalon());
         dto.setTCalzado(usuario.getTCalzado());
 
-        // Campos calculados
         Double media = raitingService.obtenerMediaPuntuacionUsuario(usuario.getId());
         if (media != null) {
             media = Math.round(media * 2) / 2.0;
@@ -112,17 +107,14 @@ public class UsuarioService {
         dto.setRaiting(media);
         dto.setPublicaciones(productoRepository.countByUsuarioId(usuario.getId()));
         dto.setIntercambios(chatService.getCantidadTotalIntercambios(usuario.getId()));
-        dto.setSeguidores(seguidorService.getTotalSeguidores(usuario.getId()));// Productos publicados
-
+        dto.setSeguidores(seguidorService.getTotalSeguidores(usuario.getId()));
         dto.setProductosPublicados(productoService.getProductosPorUsuarioId(usuario.getId()));
 
         return dto;
     }
 
-
     @Transactional(readOnly = true)
     public List<UsuarioEstadisticaDTO> obtenerTodosUsuariosEstadisticas() {
-
         return usuarioRepository.findAll()
                 .stream()
                 .map(usuario -> obtenerUsuarioEstadisticas(usuario.getId()))
@@ -131,7 +123,6 @@ public class UsuarioService {
 
     @Transactional(readOnly = true)
     public Optional<UsuarioEstadisticaDTO> obtenerUsuarioConMasIntercambios() {
-
         List<Integer> ids = usuarioRepository.findTopUsuarioIdConMasIntercambios(PageRequest.of(0, 1));
 
         if (ids.isEmpty()) {
@@ -139,8 +130,6 @@ public class UsuarioService {
         }
 
         Integer idTop = ids.get(0);
-
-        // Reutilizas el método que ya arma todo el DTO completo
         return Optional.of(obtenerUsuarioEstadisticas(idTop));
     }
 
@@ -223,7 +212,6 @@ public class UsuarioService {
         } catch (DataIntegrityViolationException e) {
             throw new IllegalArgumentException("Faltan campos obligatorios o datos inválidos");
         }
-
     }
 
     @Transactional
@@ -248,6 +236,23 @@ public class UsuarioService {
     }
 
     @Transactional
+    public UsuarioDTO actualizarFotoPerfil(Integer idUsuario, String urlImg) {
+        if (idUsuario == null) {
+            throw new IllegalArgumentException("El id del usuario no puede ser null");
+        }
+        if (urlImg == null || urlImg.isBlank()) {
+            throw new IllegalArgumentException("La URL de la imagen no puede estar vacía");
+        }
+
+        Usuario entidad = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado: " + idUsuario));
+
+        entidad.setUrlImg(urlImg);
+        Usuario updated = usuarioRepository.save(entidad);
+        return usuarioMapper.toDTO(updated);
+    }
+
+    @Transactional
     public void deleteById(Integer id) {
         if (id == null) return;
         usuarioRepository.deleteById(id);
@@ -257,6 +262,4 @@ public class UsuarioService {
     public boolean existsById(Integer id) {
         return id != null && usuarioRepository.existsById(id);
     }
-
-
 }
