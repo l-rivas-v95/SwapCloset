@@ -80,6 +80,15 @@ export class FormularioAnuncioComponent {
     });
   }
 
+  getImagenEdicion(): string {
+    return this.primeraImagen || 'assets/icon/card-media.png';
+  }
+
+  onImgError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    img.src = 'assets/icon/card-media.png';
+  }
+
   async cambiarFoto() {
     const modal = await this.modalCtrl.create({
       component: ModalFotosComponent,
@@ -201,7 +210,7 @@ export class FormularioAnuncioComponent {
       }
 
       await this.mostrarToast('Producto guardado correctamente');
-      this.cancelar.emit();
+      this.guardar.emit(this.producto);
 
     } catch (error) {
       console.error('Error al guardar cambios del producto:', error);
