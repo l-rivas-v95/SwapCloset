@@ -70,6 +70,29 @@ ion-icon{
   color: #303030;
 }
 
+.estado-vacio {
+  margin: 2rem 1rem;
+  padding: 2rem 1rem;
+  border-radius: 20px;
+  background: #f6f7f9;
+  text-align: center;
+  color: #666;
+}
+
+.estado-vacio ion-icon {
+  font-size: 3rem;
+  color: #FF3FBF;
+}
+
+.estado-vacio h3 {
+  margin-bottom: 0.25rem;
+  color: #333;
+}
+
+.estado-vacio p {
+  margin: 0;
+}
+
 /* ---------------------------
    Estilos base del segmento
    --------------------------- */
@@ -171,5 +194,3 @@ ion-segment-button::part(native)::before {
   content: none !important;
   border: none !important;
 }
-
-
