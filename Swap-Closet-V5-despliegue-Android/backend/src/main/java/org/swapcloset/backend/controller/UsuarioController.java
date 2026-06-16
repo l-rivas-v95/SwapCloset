@@ -19,7 +19,10 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/usuarios")
-@CrossOrigin(origins = "http://localhost:8100")
+@CrossOrigin(origins = {
+        "http://localhost:8100",
+        "http://localhost:8101"
+})
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
@@ -107,7 +110,7 @@ public class UsuarioController {
     @PostMapping("/guardar-foto")
     public ResponseEntity<Map<String, String>> subirFotoPerfil(@RequestParam("archivo") MultipartFile archivo) {
         try {
-            String url = cloudinaryService.subirImagen(archivo, "swapcloset/perfiles");
+            String url = cloudinaryService.subirImagenPerfil(archivo);
 
             Map<String, String> response = new HashMap<>();
             response.put("url", url);
