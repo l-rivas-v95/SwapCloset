@@ -1,6 +1,4 @@
-import {RaitingDTO} from "./RaitingDTO";
 import {ProductoDTO} from "./ProductoDTO";
-import {ChatDTO} from "./ChatDTO";
 
 export interface UsuarioDTO {
 
@@ -16,6 +14,7 @@ export interface UsuarioDTO {
   tCamiseta?: string
   tPantalon?: number
   tCalzado?: number
+  raiting?: number
 
   productos?: ProductoDTO[];
 }
