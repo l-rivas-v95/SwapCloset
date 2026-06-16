@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import {BehaviorSubject} from "rxjs";
 import {ProductoForm} from "../../modelos/ProductoForm";
 import {ProductoDTO} from "../../modelos/ProductoDTO";
 
@@ -20,7 +21,7 @@ export class ProductoFormService {
     'assets/img/usuarios/img-perfil-10.png',
   ]
 
-  private form: ProductoForm = {
+  private readonly formInicial: ProductoForm = {
     tipoOferta: 'intercambio',
     precio: null,
     fechaDevolucion: "",
@@ -34,6 +35,10 @@ export class ProductoFormService {
     estilo: ''
   };
 
+  private form: ProductoForm = {...this.formInicial};
+  private resetSubject = new BehaviorSubject<number>(0);
+  reset$ = this.resetSubject.asObservable();
+
   getForm(): ProductoForm {
     return this.form;
   }
@@ -44,19 +49,8 @@ export class ProductoFormService {
   }
 
   resetForm() {
-    this.form = {
-      tipoOferta: 'intercambio',
-      precio: null,
-      fechaDevolucion: "",
-      titulo: '',
-      marca: '',
-      descripcion: '',
-      categoria: '',
-      estado: '',
-      talla: '',
-      color: '',
-      estilo: ''
-    };
+    this.form = {...this.formInicial};
+    this.resetSubject.next(this.resetSubject.value + 1);
     console.log('Formulario reseteado.');
   }
 
@@ -67,7 +61,7 @@ export class ProductoFormService {
       tipo: this.form.tipoOferta ?? '',
       precio: this.form.tipoOferta === 'prestamo'
         ? this.form.precio?.toString() ?? ''
-        : undefined,   // <-- undefined para intercambios
+        : undefined,
       titulo: this.form.titulo ?? '',
       estilo: this.form.estilo ?? '',
       descripcion: this.form.descripcion ?? '',
@@ -101,7 +95,6 @@ export class ProductoFormService {
 
     const pad = (num: number) => String(num).padStart(2, '0');
 
-    // Usamos métodos locales para respetar la hora seleccionada por el usuario.
     const year = dateObj.getFullYear();
     const month = pad(dateObj.getMonth() + 1);
     const day = pad(dateObj.getDate());
@@ -110,8 +103,6 @@ export class ProductoFormService {
     const minutes = pad(dateObj.getMinutes());
     const seconds = pad(dateObj.getSeconds());
 
-    // Formato final deseado: YYYY-MM-DDT HH:MM:SS
-    // Usamos 'T' como separador de fecha y hora.
     return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
   }
 }
