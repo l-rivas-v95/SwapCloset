@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, Input} from '@angular/core';
 import {IonicModule, ModalController, ToastController} from "@ionic/angular";
 import {NgIf} from "@angular/common";
 import {UsuarioService} from "../../../service/usuarioService/usuario.service";
@@ -14,6 +14,8 @@ import {UsuarioService} from "../../../service/usuarioService/usuario.service";
     ]
 })
 export class ModalFotosPerfilComponent {
+
+  @Input() idUsuario!: number;
 
   private modalCtrl = inject(ModalController);
   private usuarioService = inject(UsuarioService);
@@ -34,6 +36,12 @@ export class ModalFotosPerfilComponent {
       return;
     }
 
+    if (!this.idUsuario) {
+      input.value = '';
+      this.mostrarToast('Usuario no válido');
+      return;
+    }
+
     if (!archivo.type.startsWith('image/')) {
       input.value = '';
       this.mostrarToast('Selecciona una imagen válida');
@@ -44,11 +52,11 @@ export class ModalFotosPerfilComponent {
     formData.append('archivo', archivo);
 
     this.subiendo = true;
-    this.usuarioService.subirFotoPerfil(formData).subscribe({
-      next: (respuesta) => {
+    this.usuarioService.subirFotoPerfil(this.idUsuario, formData).subscribe({
+      next: (usuarioActualizado) => {
         input.value = '';
         this.subiendo = false;
-        this.modalCtrl.dismiss({ ruta: respuesta.url });
+        this.modalCtrl.dismiss({ usuario: usuarioActualizado });
       },
       error: async () => {
         input.value = '';
