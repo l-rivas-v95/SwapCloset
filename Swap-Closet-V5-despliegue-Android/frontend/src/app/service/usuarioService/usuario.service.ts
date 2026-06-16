@@ -26,8 +26,8 @@ export class UsuarioService {
     return this.http.put<UsuarioDTO>(`${this.apiUrl}/${id}`, usuario);
   }
 
-  subirFotoPerfil(formData: FormData): Observable<{ url: string }> {
-    return this.http.post<{ url: string }>(`${this.apiUrl}/guardar-foto`, formData);
+  subirFotoPerfil(idUsuario: number, formData: FormData): Observable<UsuarioDTO> {
+    return this.http.post<UsuarioDTO>(`${this.apiUrl}/${idUsuario}/foto-perfil`, formData);
   }
 
   verificarEmail(email: string): Observable<boolean> {
