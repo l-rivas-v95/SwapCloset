@@ -10,13 +10,23 @@
 </ion-header>
 
 <ion-content>
+  <div class="subir-imagen">
+    <ion-icon name="cloud-upload-outline"></ion-icon>
+    <h3>Subir imagen del producto</h3>
+    <p>Selecciona una imagen desde tu dispositivo.</p>
 
-  <ion-grid>
-    <ion-row>
-      <ion-col size="4" *ngFor="let img of imagenesDisponibles">
-        <img [src]="img" class="foto-galeria" (click)="seleccionar(img)">
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+    <label class="boton-subir">
+      Elegir imagen
+      <input
+        type="file"
+        accept="image/*"
+        hidden
+        (change)="seleccionarArchivo($event)">
+    </label>
 
+    @if (subiendo) {
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Subiendo imagen...</p>
+    }
+  </div>
 </ion-content>
