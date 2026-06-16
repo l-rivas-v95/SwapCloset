@@ -1,7 +1,7 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {IonicModule, ModalController} from "@ionic/angular";
-import {NgForOf} from "@angular/common";
-import {ProductoFormService} from "../../../service/productoFormService/producto-form.service";
+import {Component, inject} from '@angular/core';
+import {IonicModule, ModalController, ToastController} from "@ionic/angular";
+import {NgIf} from "@angular/common";
+import {UsuarioService} from "../../../service/usuarioService/usuario.service";
 
 @Component({
     selector: 'app-modal-fotos-perfil',
@@ -10,26 +10,54 @@ import {ProductoFormService} from "../../../service/productoFormService/producto
     standalone: true,
     imports: [
         IonicModule,
-        NgForOf
+        NgIf
     ]
 })
-export class ModalFotosPerfilComponent  implements OnInit {
+export class ModalFotosPerfilComponent {
 
   private modalCtrl = inject(ModalController);
-  private formService = inject(ProductoFormService); // para acceder a imagenesPerfil
+  private usuarioService = inject(UsuarioService);
+  private toastCtrl = inject(ToastController);
 
-  imagenesDisponibles: string[] = this.formService.imagenesPerfil
+  subiendo = false;
 
   cerrar() {
     this.modalCtrl.dismiss();
   }
 
-  seleccionar(ruta: string) {
-    this.modalCtrl.dismiss({ ruta });
+  seleccionarArchivo(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const archivo = input.files?.[0];
+    if (!archivo) return;
+
+    if (!archivo.type.startsWith('image/')) {
+      this.mostrarToast('Selecciona una imagen válida');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('archivo', archivo);
+
+    this.subiendo = true;
+    this.usuarioService.subirFotoPerfil(formData).subscribe({
+      next: (respuesta) => {
+        this.subiendo = false;
+        this.modalCtrl.dismiss({ ruta: respuesta.url });
+      },
+      error: async () => {
+        this.subiendo = false;
+        await this.mostrarToast('Error al subir la foto');
+      }
+    });
   }
-  constructor() { }
 
-  ngOnInit() {}
-
+  private async mostrarToast(message: string) {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 1800,
+      position: 'bottom',
+      color: 'dark'
+    });
+    await toast.present();
+  }
 }
-
