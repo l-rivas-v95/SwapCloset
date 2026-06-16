@@ -1,12 +1,12 @@
 import {Component, Input, OnInit, inject} from '@angular/core';
 import {IonicModule, ToastController} from "@ionic/angular";
-import {AsyncPipe, NgClass} from "@angular/common";
+import {NgClass} from "@angular/common";
 import {UsuarioDTO} from "../../../modelos/UsuarioDTO";
-import {Observable} from "rxjs";
 import {SeguidoresService} from "../../../service/seguidoresService/seguidores.service";
 import {AuthService} from "../../../service/authService/auth.service";
 import {SeguidorDTO} from "../../../modelos/SeguidorDTO";
 import {RouterLink} from "@angular/router";
+import {RaitingService} from "../../../service/raitingService/raiting.service";
 
 @Component({
   selector: 'app-tarjeta-seguidor',
@@ -16,49 +16,55 @@ import {RouterLink} from "@angular/router";
   imports: [
     IonicModule,
     NgClass,
-    AsyncPipe,
     RouterLink
   ]
 })
 export class TarjetaSeguidorComponent implements OnInit{
 
-  // --- Inputs ---
-  @Input() usuario: UsuarioDTO | null = null; // Usuario a mostrar y seguir/dejar de seguir
-  @Input() media!: Observable<number>; // La media de valoración (solo se usa en el template)
+  @Input() usuario: UsuarioDTO | null = null;
 
-  // --- Servicios ---
   private seguidoresService = inject(SeguidoresService);
   private authService = inject(AuthService);
   private toastCtrl = inject(ToastController);
+  private raitingService = inject(RaitingService);
 
-  // --- Estado ---
   seguido: boolean = false;
   isOwnProfile: boolean = false;
+  mediaRaiting: number = 0;
 
   ngOnInit(): void {
     this.checkInitialFollowState();
+    this.cargarMediaRaiting();
   }
 
-  /**
-   * Comprueba si el usuario logeado está viendo su propio perfil o si ya lo sigue.
-   */
+  cargarMediaRaiting() {
+    const idUsuario = this.usuario?.id;
+    if (!idUsuario) {
+      this.mediaRaiting = 0;
+      return;
+    }
+
+    this.raitingService.getMediaRaitingByUsuario(idUsuario).subscribe({
+      next: (media) => this.mediaRaiting = media ?? 0,
+      error: () => this.mediaRaiting = 0
+    });
+  }
+
   checkInitialFollowState() {
-    const followedId = this.usuario?.id; // ID del usuario en la tarjeta
-    const follower = this.authService.getUsuario(); // ID del usuario logeado
+    const followedId = this.usuario?.id;
+    const follower = this.authService.getUsuario();
 
     if (!followedId || !follower?.id) {
       this.seguido = false;
       return;
     }
 
-    // 1. Verificar si es el propio perfil
     if (follower.id === followedId) {
       this.isOwnProfile = true;
-      this.seguido = false; // No tiene sentido seguirse a sí mismo
+      this.seguido = false;
       return;
     }
 
-    // 2. Si no es el propio perfil, verificar el estado de seguimiento
     this.seguidoresService.isFollowing(follower.id, followedId).subscribe({
       next: (isFollowing) => {
         this.seguido = isFollowing;
@@ -70,13 +76,11 @@ export class TarjetaSeguidorComponent implements OnInit{
     });
   }
 
-
   toggleSeguir(event?: Event) {
     event?.stopPropagation();
     const followedId = this.usuario?.id;
     const follower = this.authService.getUsuario();
 
-    //  Validaciones
     if (!follower || !follower.id) {
       this.mostrarToast('Debes iniciar sesión para realizar esta acción.', 'danger');
       return;
@@ -88,21 +92,16 @@ export class TarjetaSeguidorComponent implements OnInit{
     const followerId = follower.id;
 
     if (this.seguido) {
-      // DEJAR DE SEGUIR (DELETE)
       this.seguidoresService.deleteSeguidor(followerId, followedId).subscribe({
         next: () => {
           this.seguido = false;
           this.mostrarToast(`Dejaste de seguir a ${this.usuario?.nombre}`, 'success');
-          // Nota: Si necesitas actualizar el contador de seguidores global,
-          // tendrías que emitir un evento desde aquí.
         },
         error: () => {
           this.mostrarToast('Error al dejar de seguir.', 'danger');
         }
       });
     } else {
-
-      //SEGUIR (POST)
       const followDto: SeguidorDTO = {
         idSeguidor: followerId,
         idSeguido: followedId
