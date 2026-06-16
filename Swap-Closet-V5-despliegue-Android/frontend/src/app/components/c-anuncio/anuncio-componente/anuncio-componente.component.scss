@@ -10,8 +10,8 @@
 .detalle-imagen-container {
   position: relative;
   width: 100% !important;
-  height: 350px !important;
-  min-height: 350px !important;
+  aspect-ratio: 1 / 1 !important;
+  max-height: 420px !important;
   overflow: hidden !important;
   margin: 0 !important;
   background: #f2f2f2;
