@@ -1,7 +1,8 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 import {FormsModule} from "@angular/forms";
 import {ProductoFormService} from "../../../service/productoFormService/producto-form.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-descripcion-producto',
@@ -13,15 +14,22 @@ import {ProductoFormService} from "../../../service/productoFormService/producto
     FormsModule
   ]
 })
-export class DescripcionProductoComponent  implements OnInit {
+export class DescripcionProductoComponent implements OnInit, OnDestroy {
 
   titulo: string = '';
   marca: string = '';
   descripcion: string = '';
 
   private formService = inject(ProductoFormService);
+  private resetSub?: Subscription;
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.resetSub = this.formService.reset$.subscribe(() => this.limpiarCampos());
+  }
+
+  ngOnDestroy() {
+    this.resetSub?.unsubscribe();
+  }
 
   onTituloChange(value: string) {
     this.titulo = value;
@@ -38,4 +46,9 @@ export class DescripcionProductoComponent  implements OnInit {
     this.formService.updateForm({ descripcion: value });
   }
 
+  private limpiarCampos() {
+    this.titulo = '';
+    this.marca = '';
+    this.descripcion = '';
+  }
 }
