@@ -9,25 +9,23 @@
 .imagen-container,
 .detalle-imagen-container {
   position: relative;
-  width: 100% !important;
+  width: min(80vw, 260px) !important;
   aspect-ratio: 1 / 1 !important;
-  max-height: 420px !important;
   overflow: hidden !important;
-  margin: 0 !important;
+  margin: 40px auto 16px !important;
   background: #f2f2f2;
   display: block !important;
+  border-radius: 28px !important;
 }
 
 .producto-imagen,
 .detalle-producto-imagen {
   width: 100% !important;
   height: 100% !important;
-  min-width: 100% !important;
-  min-height: 100% !important;
   object-fit: cover !important;
   object-position: center !important;
   display: block !important;
-  border-radius: 0 !important;
+  border-radius: 28px !important;
 }
 
 .info-container {
