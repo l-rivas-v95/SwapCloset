@@ -76,10 +76,5 @@ public class CloudinaryService {
         if (contentType == null || !contentType.startsWith("image/")) {
             throw new IOException("El archivo debe ser una imagen");
         }
-
-        long maxBytes = 15L * 1024L * 1024L;
-        if (archivo.getSize() > maxBytes) {
-            throw new IOException("La imagen no puede superar 15 MB");
-        }
     }
 }
