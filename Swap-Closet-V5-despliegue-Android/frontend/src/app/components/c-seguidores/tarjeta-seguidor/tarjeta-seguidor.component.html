@@ -1,8 +1,8 @@
-<ion-card class="card margen-lateral">
+<ion-card class="card margen-lateral" [routerLink]="['/perfil', usuario?.id]">
   <ion-row class="sin-margen">
 
     <ion-col class="col-avatar" size="3">
-      <img [src]="usuario?.urlImg" class="avatar" alt="Foto user"/>
+      <img [src]="usuario?.urlImg || 'assets/icon/card-media.png'" class="avatar" alt="Foto user"/>
     </ion-col> <ion-col class="sin-margen">
 
     <ion-row class="col-texto sin-margen">
@@ -33,7 +33,7 @@
 
         [ngClass]="seguido ? 'boton-seguido' : 'boton-rosa'"
 
-        (click)="toggleSeguir()"
+        (click)="toggleSeguir($event)"
 
         [disabled]="isOwnProfile || !usuario?.id">
 
