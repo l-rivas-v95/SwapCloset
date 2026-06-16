@@ -2,7 +2,6 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Observable} from "rxjs";
 import {UsuarioDTO} from "../../modelos/UsuarioDTO";
-import {ProductoDTO} from "../../modelos/ProductoDTO";
 import {LoginDTO} from "../../modelos/LoginDTO";
 import {UsuarioEstadisticasDTO} from "../../modelos/UsuarioEstadisticasDTO";
 import {CartaUsuarioDTO} from "../../modelos/CartaUsuarioDTO";
@@ -25,6 +24,10 @@ export class UsuarioService {
 
   updateUsuario(id: number, usuario: UsuarioDTO): Observable<UsuarioDTO> {
     return this.http.put<UsuarioDTO>(`${this.apiUrl}/${id}`, usuario);
+  }
+
+  subirFotoPerfil(formData: FormData): Observable<{ url: string }> {
+    return this.http.post<{ url: string }>(`${this.apiUrl}/guardar-foto`, formData);
   }
 
   verificarEmail(email: string): Observable<boolean> {
