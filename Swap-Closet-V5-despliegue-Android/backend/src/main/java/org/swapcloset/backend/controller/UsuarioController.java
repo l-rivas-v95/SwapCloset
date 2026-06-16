@@ -4,12 +4,17 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.swapcloset.backend.dto.*;
+import org.swapcloset.backend.service.CloudinaryService;
 import org.swapcloset.backend.service.FavoritoService;
 import org.swapcloset.backend.service.ProductoService;
 import org.swapcloset.backend.service.UsuarioService;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -18,11 +23,13 @@ import java.util.Optional;
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
-    private ProductoService productoService;
+    private final ProductoService productoService;
+    private final CloudinaryService cloudinaryService;
 
-    public UsuarioController(UsuarioService usuarioService, FavoritoService favoritoService, ProductoService productoService) {
+    public UsuarioController(UsuarioService usuarioService, FavoritoService favoritoService, ProductoService productoService, CloudinaryService cloudinaryService) {
         this.usuarioService = usuarioService;
         this.productoService = productoService;
+        this.cloudinaryService = cloudinaryService;
     }
 
     @GetMapping
@@ -97,6 +104,21 @@ public class UsuarioController {
         }
     }
 
+    @PostMapping("/guardar-foto")
+    public ResponseEntity<Map<String, String>> subirFotoPerfil(@RequestParam("archivo") MultipartFile archivo) {
+        try {
+            String url = cloudinaryService.subirImagen(archivo, "swapcloset/perfiles");
+
+            Map<String, String> response = new HashMap<>();
+            response.put("url", url);
+            return ResponseEntity.ok(response);
+
+        } catch (IOException e) {
+            Map<String, String> response = new HashMap<>();
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+    }
 
     @GetMapping("/{id}/with-relations")
     public ResponseEntity<UsuarioDTO> getWithRelations(@PathVariable Integer id) {
