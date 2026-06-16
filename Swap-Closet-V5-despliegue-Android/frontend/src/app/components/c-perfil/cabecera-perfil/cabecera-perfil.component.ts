@@ -5,7 +5,6 @@ import {RouterLink} from "@angular/router";
 import {UsuarioEstadisticasDTO} from "../../../modelos/UsuarioEstadisticasDTO";
 import {ModalFotosPerfilComponent} from "../modal-fotos-perfil/modal-fotos-perfil.component";
 import {AuthService} from "../../../service/authService/auth.service";
-import {UsuarioService} from "../../../service/usuarioService/usuario.service";
 import {RaitingService} from "../../../service/raitingService/raiting.service";
 import {SeguidoresService} from "../../../service/seguidoresService/seguidores.service";
 import {RaitingDTO} from "../../../modelos/RaitingDTO";
@@ -28,7 +27,6 @@ export class CabeceraPerfilComponent {
   @Output() usuarioActualizado = new EventEmitter<UsuarioDTO>();
 
   private modalCtrl = inject(ModalController);
-  private usuarioService = inject(UsuarioService);
   private authService = inject(AuthService);
   private raitingService = inject(RaitingService);
   private seguidoresService = inject(SeguidoresService);
@@ -55,51 +53,46 @@ export class CabeceraPerfilComponent {
   async cambiarFoto() {
     if (!this.esMiPerfil) return;
 
-    const modal = await this.modalCtrl.create({
-      component: ModalFotosPerfilComponent,
-      cssClass: 'modal-galeria'
-    });
-
-    await modal.present();
-
-    const {data} = await modal.onDidDismiss();
-    if (!data?.ruta) return;
-
     const usuarioActual = this.usuario();
     if (!usuarioActual?.id) {
       await this.mostrarToast('Usuario no válido');
       return;
     }
 
-    const usuarioActualizado: UsuarioEstadisticasDTO = {
-      ...usuarioActual,
-      urlImg: data.ruta
-    };
-
-    this.usuarioService.updateUsuario(usuarioActual.id, usuarioActualizado).subscribe({
-      next: async (usuarioGuardado) => {
-        const usuarioPerfilActualizado: UsuarioEstadisticasDTO = {
-          ...usuarioActualizado,
-          ...usuarioGuardado,
-          urlImg: usuarioGuardado.urlImg ?? data.ruta
-        };
-
-        this.usuario.set(usuarioPerfilActualizado);
-        this.usuarioActualizado.emit(usuarioGuardado);
-
-        const usuarioSesion = this.authService.getUsuario();
-        if (usuarioSesion?.id === usuarioPerfilActualizado.id) {
-          this.authService.setUsuario({
-            ...usuarioSesion,
-            ...usuarioGuardado,
-            urlImg: usuarioPerfilActualizado.urlImg
-          });
-        }
-
-        await this.mostrarToast('Foto de perfil actualizada');
-      },
-      error: async () => await this.mostrarToast('Error al guardar la foto')
+    const modal = await this.modalCtrl.create({
+      component: ModalFotosPerfilComponent,
+      cssClass: 'modal-galeria',
+      componentProps: {
+        idUsuario: usuarioActual.id
+      }
     });
+
+    await modal.present();
+
+    const {data} = await modal.onDidDismiss();
+    if (!data?.usuario) return;
+
+    const usuarioGuardado: UsuarioDTO = data.usuario;
+
+    this.usuario.update((actual) => actual
+      ? {
+        ...actual,
+        urlImg: usuarioGuardado.urlImg
+      }
+      : actual
+    );
+
+    this.usuarioActualizado.emit(usuarioGuardado);
+
+    const usuarioSesion = this.authService.getUsuario();
+    if (usuarioSesion?.id === usuarioGuardado.id) {
+      this.authService.setUsuario({
+        ...usuarioSesion,
+        ...usuarioGuardado
+      });
+    }
+
+    await this.mostrarToast('Foto de perfil actualizada');
   }
 
   setRating(valor: number) {
