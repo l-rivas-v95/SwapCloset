@@ -1,15 +1,12 @@
-import {Component, effect, inject, Input, OnInit, signal} from '@angular/core';
+import {Component, Input, OnInit, inject} from '@angular/core';
 import {IonicModule, ToastController} from "@ionic/angular";
 import {AsyncPipe, NgClass} from "@angular/common";
 import {UsuarioDTO} from "../../../modelos/UsuarioDTO";
-import {FavoritosService} from "../../../service/favoritosService/favoritos.service";
-import {RaitingService} from "../../../service/raitingService/raiting.service";
 import {Observable} from "rxjs";
-import {UsuarioService} from "../../../service/usuarioService/usuario.service";
-import {ActivatedRoute} from "@angular/router";
 import {SeguidoresService} from "../../../service/seguidoresService/seguidores.service";
 import {AuthService} from "../../../service/authService/auth.service";
 import {SeguidorDTO} from "../../../modelos/SeguidorDTO";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-tarjeta-seguidor',
@@ -19,7 +16,8 @@ import {SeguidorDTO} from "../../../modelos/SeguidorDTO";
   imports: [
     IonicModule,
     NgClass,
-    AsyncPipe
+    AsyncPipe,
+    RouterLink
   ]
 })
 export class TarjetaSeguidorComponent implements OnInit{
@@ -73,7 +71,8 @@ export class TarjetaSeguidorComponent implements OnInit{
   }
 
 
-  toggleSeguir() {
+  toggleSeguir(event?: Event) {
+    event?.stopPropagation();
     const followedId = this.usuario?.id;
     const follower = this.authService.getUsuario();
 
@@ -134,4 +133,3 @@ export class TarjetaSeguidorComponent implements OnInit{
     await toast.present();
   }
 }
-
