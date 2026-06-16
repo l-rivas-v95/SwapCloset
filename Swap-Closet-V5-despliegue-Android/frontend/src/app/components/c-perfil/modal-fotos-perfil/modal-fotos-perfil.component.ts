@@ -28,9 +28,14 @@ export class ModalFotosPerfilComponent {
   seleccionarArchivo(event: Event) {
     const input = event.target as HTMLInputElement;
     const archivo = input.files?.[0];
-    if (!archivo) return;
+
+    if (!archivo) {
+      input.value = '';
+      return;
+    }
 
     if (!archivo.type.startsWith('image/')) {
+      input.value = '';
       this.mostrarToast('Selecciona una imagen válida');
       return;
     }
@@ -41,10 +46,12 @@ export class ModalFotosPerfilComponent {
     this.subiendo = true;
     this.usuarioService.subirFotoPerfil(formData).subscribe({
       next: (respuesta) => {
+        input.value = '';
         this.subiendo = false;
         this.modalCtrl.dismiss({ ruta: respuesta.url });
       },
       error: async () => {
+        input.value = '';
         this.subiendo = false;
         await this.mostrarToast('Error al subir la foto');
       }
