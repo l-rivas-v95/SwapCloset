@@ -36,5 +36,6 @@ public class UsuarioDTO {
     @JsonProperty("tCalzado")
     private Integer tCalzado;
 
+    private Double raiting;
     private List<ProductoDTO> productos;
 }
