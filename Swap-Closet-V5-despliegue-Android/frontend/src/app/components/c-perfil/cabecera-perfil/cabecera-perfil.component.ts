@@ -1,4 +1,4 @@
-import {Component, computed, effect, inject, Input, signal} from '@angular/core';
+import {Component, computed, effect, EventEmitter, inject, Input, Output, signal} from '@angular/core';
 import {IonicModule, ModalController, ToastController} from '@ionic/angular';
 import {CommonModule} from '@angular/common';
 import {RouterLink} from "@angular/router";
@@ -10,6 +10,7 @@ import {RaitingService} from "../../../service/raitingService/raiting.service";
 import {SeguidoresService} from "../../../service/seguidoresService/seguidores.service";
 import {RaitingDTO} from "../../../modelos/RaitingDTO";
 import {SeguidorDTO} from "../../../modelos/SeguidorDTO";
+import {UsuarioDTO} from "../../../modelos/UsuarioDTO";
 
 @Component({
   selector: 'app-cabecera-perfil',
@@ -24,6 +25,7 @@ export class CabeceraPerfilComponent {
 
   @Input() usuario = signal<UsuarioEstadisticasDTO | null>(null);
   @Input() esMiPerfil = true;
+  @Output() usuarioActualizado = new EventEmitter<UsuarioDTO>();
 
   private modalCtrl = inject(ModalController);
   private usuarioService = inject(UsuarioService);
@@ -83,6 +85,7 @@ export class CabeceraPerfilComponent {
         };
 
         this.usuario.set(usuarioPerfilActualizado);
+        this.usuarioActualizado.emit(usuarioGuardado);
 
         const usuarioSesion = this.authService.getUsuario();
         if (usuarioSesion?.id === usuarioPerfilActualizado.id) {
