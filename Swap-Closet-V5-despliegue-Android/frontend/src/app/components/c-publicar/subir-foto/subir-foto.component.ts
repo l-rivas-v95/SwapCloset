@@ -1,8 +1,9 @@
-import {Component, ElementRef, inject, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {IonicModule, ModalController} from "@ionic/angular";
-import {CommonModule, NgForOf} from "@angular/common";
+import {CommonModule} from "@angular/common";
 import {ModalFotosComponent} from "./modal-fotos/modal-fotos.component";
-import {ProductoFormService} from "../../../service/productoFormService/producto-form.service";
+import {ImagenFormService} from "../../../service/imagenFormService/imagen-form.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-subir-foto',
@@ -14,9 +15,21 @@ import {ProductoFormService} from "../../../service/productoFormService/producto
     CommonModule
   ]
 })
-export class SubirFotoComponent {
+export class SubirFotoComponent implements OnInit, OnDestroy {
 
   private modalCtrl = inject(ModalController);
+  private imagenesFormService = inject(ImagenFormService);
+
+  fotos: string[] = [];
+  private fotosSub?: Subscription;
+
+  ngOnInit() {
+    this.fotosSub = this.imagenesFormService.fotos$.subscribe(fotos => this.fotos = fotos);
+  }
+
+  ngOnDestroy() {
+    this.fotosSub?.unsubscribe();
+  }
 
   async abrirGaleria() {
     const modal = await this.modalCtrl.create({
@@ -25,11 +38,10 @@ export class SubirFotoComponent {
     });
 
     await modal.present();
+  }
 
-    const { data } = await modal.onDidDismiss();
-
-    if (data?.ruta) {
-      console.log('Imagen seleccionada:', data.ruta);
-    }
+  eliminarFoto(event: Event, foto: string) {
+    event.stopPropagation();
+    this.imagenesFormService.eliminarFoto(foto);
   }
 }
