@@ -45,6 +45,7 @@ public class ProductoService {
     public List<ProductoDTO> findAll() {
         return productoRepository.findAll()
                 .stream()
+                .sorted(Comparator.comparing(Producto::getFechaCreacion, Comparator.nullsLast(Comparator.reverseOrder())))
                 .map(productoMapper::toDTO)
                 .collect(Collectors.toList());
     }
@@ -140,7 +141,7 @@ public class ProductoService {
 
     @Transactional(readOnly = true)
     public List<CartaProductoIntercambioDTO> getTodasCartasProductosIntercambioActivos() {
-        return productoRepository.findByActivoTrue()
+        return productoRepository.findByActivoTrueOrderByFechaCreacionDesc()
                 .stream()
                 .map(producto -> getCartaProductoIntercambioDTOidProducto(producto.getId()))
                 .collect(Collectors.toList());
@@ -202,6 +203,7 @@ public class ProductoService {
         }
 
         return productos.stream()
+                .sorted(Comparator.comparing(Producto::getFechaCreacion, Comparator.nullsLast(Comparator.reverseOrder())))
                 .map(productoMapper::toDTO)
                 .collect(Collectors.toList());
     }
@@ -216,7 +218,7 @@ public class ProductoService {
 
     @Transactional(readOnly = true)
     public List<ProductoDTO> getProductosPorUsuarioId(Integer usuarioId) {
-        return productoMapper.toDTOsList(productoRepository.findByUsuarioId(usuarioId));
+        return productoMapper.toDTOsList(productoRepository.findByUsuarioIdOrderByFechaCreacionDesc(usuarioId));
     }
 
     @Transactional(readOnly = true)
@@ -380,8 +382,7 @@ public class ProductoService {
 
     @Transactional(readOnly = true)
     public List<ProductoDTO> findAvailableProducts() {
-        List<Producto> list = productoRepository.findByActivoTrue();
-            return productoMapper.toDTOsList(list);
+        return productoMapper.toDTOsList(productoRepository.findByActivoTrueOrderByFechaCreacionDesc());
     }
 
     @Transactional(readOnly = true)

@@ -37,14 +37,17 @@ export class PublicacionesActivasPage implements OnInit {
   cargarProductos() {
     this.productoService.getProductosByUsuario(this.usuarioId).subscribe({
       next: (prods) => {
-        // Filtrar solo los activos
+        const porFecha = (a: ProductoDTO, b: ProductoDTO) => {
+          const dateA = a.fechaCreacion ? new Date(a.fechaCreacion).getTime() : 0;
+          const dateB = b.fechaCreacion ? new Date(b.fechaCreacion).getTime() : 0;
+          return dateB - dateA;
+        };
+
         const activos = prods.filter(p => p.activo === true);
 
-        // Separar en préstamos e intercambios
-        this.productosPrestamos.set(activos.filter(p => p.precio !== null));
-        this.productosIntercambios.set(activos.filter(p => p.precio === null));
+        this.productosPrestamos.set(activos.filter(p => p.tipo === 'Préstamo').sort(porFecha));
+        this.productosIntercambios.set(activos.filter(p => p.tipo === 'Intercambio').sort(porFecha));
 
-        // Mostrar según segmento
         this.actualizarProductosFiltrados();
       },
       error: (err) => console.error('Error:', err)

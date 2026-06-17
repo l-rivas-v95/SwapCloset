@@ -44,6 +44,11 @@
           <p class="label">Publicaciones</p>
         </ion-col>
         <ion-col>
+          <ion-icon name="swap-horizontal-outline" color="primary"></ion-icon>
+          <p class="numero">{{usuario()!.intercambios ?? 0}}</p>
+          <p class="label">Intercambios</p>
+        </ion-col>
+        <ion-col>
           <ion-icon name="star-outline" color="warning"></ion-icon>
           <p class="numero">{{usuario()!.raiting ?? 0}}</p>
           <p class="label">Valoración</p>

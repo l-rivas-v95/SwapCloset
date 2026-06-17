@@ -49,10 +49,11 @@
     </app-formulario-anuncio>
   }
 
-  @if (!modoEdicion()) {
-    <ion-footer>
-      <app-btn-contactar></app-btn-contactar>
-    </ion-footer>
-  }
 
 </ion-content>
+
+@if (!modoEdicion()) {
+  <ion-footer>
+    <app-btn-contactar></app-btn-contactar>
+  </ion-footer>
+}

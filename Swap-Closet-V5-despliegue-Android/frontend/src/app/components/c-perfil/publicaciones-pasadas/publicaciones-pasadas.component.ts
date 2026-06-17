@@ -46,7 +46,16 @@ export class PublicacionesPasadasComponent implements OnInit {
 
   private cargarProductos(idUsuarioPerfil: number) {
     this.productoService.getProductosByUsuario(idUsuarioPerfil).subscribe({
-      next: (productos) => this.productos.set(productos.filter(p => p.activo === false)),
+      next: (productos) => {
+        const pasados = productos
+          .filter(p => p.activo === false)
+          .sort((a, b) => {
+            const dateA = a.fechaCreacion ? new Date(a.fechaCreacion).getTime() : 0;
+            const dateB = b.fechaCreacion ? new Date(b.fechaCreacion).getTime() : 0;
+            return dateB - dateA;
+          });
+        this.productos.set(pasados);
+      },
       error: (err) => {
         console.error('Error al cargar publicaciones pasadas del perfil:', err);
         this.productos.set([]);

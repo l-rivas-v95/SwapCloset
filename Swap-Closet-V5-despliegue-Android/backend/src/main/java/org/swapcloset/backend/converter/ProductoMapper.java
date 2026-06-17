@@ -1,7 +1,9 @@
 package org.swapcloset.backend.converter;
 
 import org.mapstruct.*;
+import org.swapcloset.backend.dto.ImagenProductoDTO;
 import org.swapcloset.backend.dto.ProductoDTO;
+import org.swapcloset.backend.modelos.ImagenProducto;
 import org.swapcloset.backend.modelos.Producto;
 import org.swapcloset.backend.modelos.TipoProducto;
 import org.swapcloset.backend.modelos.Usuario;
@@ -32,6 +34,9 @@ public interface ProductoMapper {
 
     List<ProductoDTO> toDTOsList(List<Producto> productos);
     List<Producto> toEntitiesList(List<ProductoDTO> productoDTOS);
+
+    @Mapping(target = "idProducto", source = "producto.id")
+    ImagenProductoDTO toDTO(ImagenProducto imagenProducto);
 
 //    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 //    void updateEntityFromDTO(ProductoDTO dto, @MappingTarget Producto entidad);

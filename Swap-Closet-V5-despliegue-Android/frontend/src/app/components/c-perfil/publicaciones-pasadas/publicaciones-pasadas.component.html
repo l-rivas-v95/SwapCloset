@@ -4,24 +4,30 @@
   </ion-card-header>
 
   <ion-card-content>
-    <ion-grid>
-      <ion-row>
-        <ion-col class="contendor-tarjetas">
-          @for(pro of productos().slice(0, 2); track pro.id){
-            <app-carta-publicaciones-activas-intercambio
-              [producto]="pro"
-              [routerLink]="['/anuncio', pro.id]"/>
+    @if (productos().length === 0) {
+      <p class="sin-publicaciones">Sin publicaciones pasadas</p>
+    } @else {
+      <ion-grid>
+        <ion-row>
+          <ion-col class="contendor-tarjetas">
+            @for(pro of productos().slice(0, 2); track pro.id){
+              <app-carta-publicaciones-activas-intercambio
+                [producto]="pro"
+                [routerLink]="['/anuncio', pro.id]"/>
+            }
+          </ion-col>
+          @if (productos().length > 2) {
+            <ion-col size="4">
+              <ion-button
+                fill="clear"
+                class="btn-ver-mas"
+                [routerLink]="['/publicaciones-pasadas', usuario()?.id]">
+                <p class="margen">Ver más</p>
+              </ion-button>
+            </ion-col>
           }
-        </ion-col>
-        <ion-col size="4">
-          <ion-button
-            fill="clear"
-            class="btn-ver-mas"
-            [routerLink]="['/publicaciones-pasadas', usuario()?.id]">
-            <p class="margen">Ver más</p>
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+        </ion-row>
+      </ion-grid>
+    }
   </ion-card-content>
 </ion-card>

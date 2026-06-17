@@ -44,7 +44,16 @@ export class PublicacionesActivasComponent implements OnInit {
 
   private cargarProductos(idUsuarioPerfil: number) {
     this.productoService.getProductosByUsuario(idUsuarioPerfil).subscribe({
-      next: (productos) => this.productos.set(productos.filter(p => p.activo === true)),
+      next: (productos) => {
+        const activos = productos
+          .filter(p => p.activo === true)
+          .sort((a, b) => {
+            const dateA = a.fechaCreacion ? new Date(a.fechaCreacion).getTime() : 0;
+            const dateB = b.fechaCreacion ? new Date(b.fechaCreacion).getTime() : 0;
+            return dateB - dateA;
+          });
+        this.productos.set(activos);
+      },
       error: (err) => {
         console.error('Error al cargar publicaciones activas del perfil:', err);
         this.productos.set([]);

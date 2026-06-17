@@ -160,10 +160,26 @@ public class UsuarioService {
         return email != null && usuarioRepository.findByEmail(email).isPresent();
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public Optional<UsuarioDTO> login(String email, String password) {
         return usuarioRepository.findByEmail(email)
-                .filter(u -> passwordEncoder.matches(password, u.getPassword()))
+                .filter(u -> {
+                    String stored = u.getPassword();
+                    if (stored == null) return false;
+
+                    // Contraseña ya hasheada con BCrypt
+                    if (stored.startsWith("$2a$") || stored.startsWith("$2b$")) {
+                        return passwordEncoder.matches(password, stored);
+                    }
+
+                    // Contraseña aún en texto plano: migración automática
+                    if (stored.equals(password)) {
+                        u.setPassword(passwordEncoder.encode(password));
+                        usuarioRepository.save(u);
+                        return true;
+                    }
+                    return false;
+                })
                 .map(usuarioMapper::toDTO);
     }
 

@@ -22,12 +22,12 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
     @Query("SELECT p FROM Producto p WHERE p.id = :idProducto")
     Producto getProductoById(Integer idProducto);
 
-    @Query("SELECT p FROM Producto p JOIN Favorito f ON f.producto = p WHERE f.usuario.id = :usuarioId")
+    @Query("SELECT p FROM Producto p JOIN Favorito f ON f.producto = p WHERE f.usuario.id = :usuarioId ORDER BY p.fechaCreacion DESC")
     List<Producto> findProductosFavoritosByUsuarioId(@Param("usuarioId") Integer usuarioId);
 
     List<Producto> findByCategoriaAndTallaAndEstado(String categoria, String talla, String estado);
 
-    @Query("SELECT p FROM Producto p WHERE p.usuario.id = :idUsuario AND p.activo = true")
+    @Query("SELECT p FROM Producto p WHERE p.usuario.id = :idUsuario AND p.activo = true ORDER BY p.fechaCreacion DESC")
     List<Producto> findAllByUsuarioAndActivo(Integer idUsuario);
 
     Integer countByUsuarioId(Integer usuarioId);
@@ -59,6 +59,10 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
     List<Producto> findByColor(String color);
 
     List<Producto> findByActivoTrue();
+
+    List<Producto> findByActivoTrueOrderByFechaCreacionDesc();
+
+    List<Producto> findByUsuarioIdOrderByFechaCreacionDesc(Integer usuarioId);
 
     List<Producto> findByCategoriaAndTallaAndActivoTrue(String categoria, String talla);
 
