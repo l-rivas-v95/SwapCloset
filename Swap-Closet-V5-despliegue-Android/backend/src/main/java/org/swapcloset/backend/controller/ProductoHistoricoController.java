@@ -18,7 +18,6 @@ import java.util.Locale;
 
 @RestController
 @RequestMapping("/api/productos-historico")
-@CrossOrigin(origins = "http://localhost:8100")
 public class ProductoHistoricoController {
 
     private final ProductoHistoricoService productoHistoricoService;

@@ -12,17 +12,11 @@ import org.swapcloset.backend.service.ProductoService;
 import org.swapcloset.backend.service.UsuarioService;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/usuarios")
-@CrossOrigin(origins = {
-        "http://localhost:8100",
-        "http://localhost:8101"
-})
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
@@ -82,13 +76,10 @@ public class UsuarioController {
     }
 
     @GetMapping("/carta-usuario/{id}")
-    public ResponseEntity<Optional<CartaUsuarioDTO>> obtenerCartaUsuario(@PathVariable Integer id) {
-        try {
-            Optional<CartaUsuarioDTO> dto = usuarioService.obtenerCartaUsuarioPorId(id);
-            return ResponseEntity.ok(dto);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<CartaUsuarioDTO> obtenerCartaUsuario(@PathVariable Integer id) {
+        return usuarioService.obtenerCartaUsuarioPorId(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/exists/email")

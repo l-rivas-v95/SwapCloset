@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 
 @RestController
 @RequestMapping("/api/chats")
-@CrossOrigin(origins = "http://localhost:8100")
 public class ChatController {
     private final ChatService chatService;
 

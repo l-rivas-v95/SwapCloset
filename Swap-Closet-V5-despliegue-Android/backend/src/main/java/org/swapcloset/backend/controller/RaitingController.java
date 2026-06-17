@@ -13,7 +13,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/raitings")
-@CrossOrigin(origins = "http://localhost:8100")
 public class RaitingController {
 
     private final RaitingService raitingService;

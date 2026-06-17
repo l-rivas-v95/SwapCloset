@@ -24,7 +24,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/productos")
-@CrossOrigin(origins = "http://localhost:8100")
 public class ProductoController {
 
     private final ProductoService productoService;
@@ -82,7 +81,7 @@ public class ProductoController {
 
     @GetMapping("/carta-producto/intercambios/all")
     public ResponseEntity<List<CartaProductoIntercambioDTO>> getAllCartasProductosIntercambios(){
-        List<CartaProductoIntercambioDTO> cartasProductosIntercambiosDTO = productoService.getTodasCartasProductosIntercambio();
+        List<CartaProductoIntercambioDTO> cartasProductosIntercambiosDTO = productoService.getTodasCartasProductosIntercambioActivos();
         return ResponseEntity.ok(cartasProductosIntercambiosDTO);
     }
 
@@ -161,7 +160,7 @@ public class ProductoController {
 
     @GetMapping("/usuario/{usuarioId}")
     public ResponseEntity<List<ProductoDTO>> getProductosByUsuario(@PathVariable Integer usuarioId) {
-        List<ProductoDTO> productos = productoService.findByUsuarioId(usuarioId);
+        List<ProductoDTO> productos = productoService.getProductosPorUsuarioId(usuarioId);
         return ResponseEntity.ok(productos);
     }
 

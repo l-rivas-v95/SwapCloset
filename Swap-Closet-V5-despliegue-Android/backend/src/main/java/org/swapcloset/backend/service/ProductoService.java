@@ -50,7 +50,7 @@ public class ProductoService {
     }
 
 
-    @Transactional
+    @Transactional(readOnly = true)
     public CartaProductoDTO getCartaProductoDTOidProducto(Integer idProducto){
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -96,7 +96,7 @@ public class ProductoService {
         return dto;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<CartaProductoDTO> getAllCartasProductosDTOActivos() {
         return productoRepository.findByActivoTrueOrderByIdDesc()
                 .stream()
@@ -104,7 +104,7 @@ public class ProductoService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public CartaProductoIntercambioDTO getCartaProductoIntercambioDTOidProducto(Integer idProducto){
 
         // Obtenemos los datos básicos usando el método existente
@@ -139,19 +139,9 @@ public class ProductoService {
     }
 
     @Transactional(readOnly = true)
-    public List<CartaProductoIntercambioDTO> getTodasCartasProductosIntercambio() {
-        List<Producto> productosActivos = productoRepository.findByActivoTrue();
-
-        return productosActivos.stream()
-                .map(producto -> getCartaProductoIntercambioDTOidProducto(producto.getId()))
-                .collect(Collectors.toList());
-    }
-
-    @Transactional(readOnly = true)
     public List<CartaProductoIntercambioDTO> getTodasCartasProductosIntercambioActivos() {
-        List<Producto> productosActivos = productoRepository.findByActivoTrue();
-
-        return productosActivos.stream()
+        return productoRepository.findByActivoTrue()
+                .stream()
                 .map(producto -> getCartaProductoIntercambioDTOidProducto(producto.getId()))
                 .collect(Collectors.toList());
     }
@@ -171,7 +161,7 @@ public class ProductoService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<ProductoDTO> filtrar(String categoria, String talla, String estado) {
 
         boolean hasCategoria = categoria != null && !categoria.isBlank();
@@ -216,29 +206,17 @@ public class ProductoService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
-    public List<CartaProductoDTO> getCartasProductosDTOByUsuarioIdAndActivo(Integer usuarioId) {
-        List<Producto> productos = productoRepository.findAllByUsuarioAndActivo(usuarioId);
-        List<CartaProductoDTO> cartasProductosDTO = new ArrayList<>();
-
-        for (Producto producto : productos) {
-            CartaProductoDTO dto = getCartaProductoDTOidProducto(producto.getId());
-            cartasProductosDTO.add(dto);
-        }
-
-        return cartasProductosDTO;
-    }
-
     @Transactional(readOnly = true)
-    public List<ProductoDTO> findByUsuarioId(Integer usuarioId) {
-        List<Producto> productos = productoRepository.findByUsuarioId(usuarioId);
-        return productoMapper.toDTOsList(productos);
+    public List<CartaProductoDTO> getCartasProductosDTOByUsuarioIdAndActivo(Integer usuarioId) {
+        return productoRepository.findAllByUsuarioAndActivo(usuarioId)
+                .stream()
+                .map(producto -> getCartaProductoDTOidProducto(producto.getId()))
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<ProductoDTO> getProductosPorUsuarioId(Integer usuarioId) {
-        List<Producto> productos = productoRepository.findByUsuarioId(usuarioId);
-        return productoMapper.toDTOsList(productos);
+        return productoMapper.toDTOsList(productoRepository.findByUsuarioId(usuarioId));
     }
 
     @Transactional(readOnly = true)

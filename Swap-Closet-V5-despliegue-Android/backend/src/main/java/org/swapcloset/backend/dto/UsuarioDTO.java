@@ -19,6 +19,7 @@ public class UsuarioDTO {
     private String email;
     @NotNull(message = "La contraseña no puede ser nula")
     @NotBlank(message = "La contraseña no puede estar vacía")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private String descripcion;
     private String estilo;

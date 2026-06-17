@@ -43,13 +43,20 @@ La aplicación está organizada siguiendo una estructura por capas, separando la
 
 ## Tecnologías utilizadas
 
-- Java
-- Spring Boot
+**Backend**
+- Java 21
+- Spring Boot 3
 - Spring Data JPA
-- Spring Security
-- MySQL
+- spring-security-crypto (BCrypt para contraseñas)
+- PostgreSQL
 - Maven
-- API REST
+- Cloudinary (almacenamiento de imágenes)
+- Docker / Docker Compose
+
+**Frontend**
+- Angular 20
+- Ionic 8
+- Capacitor 7 (despliegue Android)
 
 ## Estructura del proyecto
 
@@ -132,7 +139,7 @@ El estado del intercambio se actualiza.
 
 ## Configuración
 
-La aplicación utiliza una base de datos MySQL.
+La aplicación utiliza PostgreSQL. Las credenciales se gestionan mediante variables de entorno para no exponer datos sensibles en el repositorio.
 
 La configuración principal se encuentra en:
 
@@ -140,19 +147,19 @@ La configuración principal se encuentra en:
 src/main/resources/application.properties
 ```
 
-Ejemplo de configuración:
+Las variables que debes definir en tu entorno (o en un archivo `.env` local):
 
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/swapcloset
-spring.datasource.username=root
-spring.datasource.password=
+```env
+SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/swap_closet
+SPRING_DATASOURCE_USERNAME=postgres
+SPRING_DATASOURCE_PASSWORD=tu_password
 
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.format_sql=true
+CLOUDINARY_CLOUD_NAME=tu_cloud_name
+CLOUDINARY_API_KEY=tu_api_key
+CLOUDINARY_API_SECRET=tu_api_secret
 ```
 
-Ajusta el nombre de la base de datos, usuario y contraseña según tu entorno local.
+En desarrollo local, si no defines las variables, la aplicación usa los valores por defecto definidos en `application.properties`.
 
 ## Ejecución del proyecto
 
@@ -188,30 +195,39 @@ http://localhost:8080
 
 ## Endpoints principales
 
-Algunos endpoints representativos del proyecto:
+Todos los endpoints tienen el prefijo `/api`.
 
 ```text
-POST   /auth/register
-POST   /auth/login
+# Usuarios
+POST   /api/usuarios              → registro
+POST   /api/usuarios/login        → login
+GET    /api/usuarios/{id}
+PUT    /api/usuarios/{id}
+DELETE /api/usuarios/{id}
+GET    /api/usuarios/estadisticas/{id}
+POST   /api/usuarios/{id}/foto-perfil
 
-GET    /usuarios
-GET    /usuarios/{id}
+# Productos
+GET    /api/productos
+POST   /api/productos
+GET    /api/productos/{id}
+PUT    /api/productos/{id}
+DELETE /api/productos/{id}
+GET    /api/productos/cartas-activos
+GET    /api/productos/filtrar?categoria=&talla=&estado=
 
-GET    /prendas
-POST   /prendas
-GET    /prendas/{id}
-PUT    /prendas/{id}
-DELETE /prendas/{id}
+# Chats / Intercambios
+GET    /api/chats
+POST   /api/chats
+GET    /api/chats/{id}
 
-POST   /intercambios
-GET    /intercambios
-GET    /intercambios/{id}
-PUT    /intercambios/{id}/aceptar
-PUT    /intercambios/{id}/rechazar
-PUT    /intercambios/{id}/cancelar
+# Favoritos, Seguidores, Ratings, Mensajes
+GET    /api/favoritos/usuario/{id}
+POST   /api/favoritos
+GET    /api/seguidores/seguidos/{id}
+POST   /api/raitings
+GET    /api/mensajes/chat/{id}
 ```
-
-> Los endpoints pueden variar según la implementación final del proyecto.
 
 ## Ejemplo de petición
 

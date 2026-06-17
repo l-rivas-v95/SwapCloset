@@ -14,7 +14,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/imagenes-producto")
-@CrossOrigin(origins = "http://localhost:8100")
 public class ImagenProductoController {
 
     private final ImagenProductoService imagenProductoService;

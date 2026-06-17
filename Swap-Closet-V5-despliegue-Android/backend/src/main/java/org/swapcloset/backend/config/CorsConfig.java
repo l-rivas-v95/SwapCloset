@@ -12,6 +12,8 @@ public class CorsConfig implements WebMvcConfigurer {
         registry.addMapping("/api/**")
                 .allowedOriginPatterns(
                         "https://localhost",
+                        "http://localhost:8100",
+                        "http://localhost:8101",
                         "http://localhost:*",
                         "http://127.0.0.1:*",
                         "capacitor://localhost",

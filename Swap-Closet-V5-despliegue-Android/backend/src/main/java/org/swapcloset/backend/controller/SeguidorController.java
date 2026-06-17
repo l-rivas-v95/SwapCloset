@@ -11,7 +11,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/seguidores")
-@CrossOrigin(origins = "http://localhost:8100")
 public class SeguidorController {
 
     private final SeguidorService seguidorService;

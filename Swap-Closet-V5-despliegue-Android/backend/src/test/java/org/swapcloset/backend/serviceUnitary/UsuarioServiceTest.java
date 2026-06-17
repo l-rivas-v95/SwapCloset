@@ -99,15 +99,15 @@ class UsuarioServiceTest {
         productoIntercambio2.setTipo("Intercambio");
         productoIntercambio2.setDescripcion("Producto de Intercambio 2 descripcion");
         productoIntercambio2.setEstilo("Bohemio");
-        producto1.setMarca("MarcaX");
-        producto1.setEstado("EstadoX");
-        producto1.setCategoria("CategoriaX");
-        producto1.setTalla("M");
-        producto1.setColor("ColorX");
-        producto1.setFechaDevolucion("2025-11-25T07:35:11");
-        producto1.setActivo(true);
+        productoIntercambio2.setMarca("MarcaX");
+        productoIntercambio2.setEstado("EstadoX");
+        productoIntercambio2.setCategoria("CategoriaX");
+        productoIntercambio2.setTalla("M");
+        productoIntercambio2.setColor("ColorX");
+        productoIntercambio2.setFechaDevolucion("2025-11-25T07:35:11");
+        productoIntercambio2.setActivo(true);
 
-        productoService.save(producto1);
+        productoService.save(productoIntercambio2);
 
         ProductoDTO producto4 = new ProductoDTO();
         producto4.setIdUsuario(2);

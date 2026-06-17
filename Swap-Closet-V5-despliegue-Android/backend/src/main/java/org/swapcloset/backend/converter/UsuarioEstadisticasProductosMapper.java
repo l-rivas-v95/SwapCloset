@@ -19,7 +19,7 @@ public interface UsuarioEstadisticasProductosMapper {
     @Mapping(target = "publicaciones", expression = "java(productoRepository.countByUsuarioId(usuario.getId()))")
     @Mapping(target = "intercambios", expression = "java(chatService.getCantidadTotalIntercambios(usuario.getId()))")
     @Mapping(target = "seguidores", expression = "java(seguidorService.getTotalSeguidores(usuario.getId()))")
-    @Mapping(target = "productosPublicados", expression = "java(productoService.findByUsuarioId(usuario.getId()))")
+    @Mapping(target = "productosPublicados", expression = "java(productoService.getProductosPorUsuarioId(usuario.getId()))")
     UsuarioEstadisticaProductosDTO toDTO(Usuario usuario, @Context RaitingService raitingService, @Context ProductoRepository productoRepository, @Context ProductoService productoService, @Context ChatService chatService, @Context SeguidorService seguidorService);
 
 }
