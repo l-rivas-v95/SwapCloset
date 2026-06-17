@@ -1,0 +1,30 @@
+# ===========================
+# Frontend (Angular / Ionic)
+# ===========================
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/.ionic/
+frontend/www/
+frontend/.env
+frontend/.env.local
+
+# ===========================
+# Backend (Spring Boot)
+# ===========================
+backend/target/
+backend/out/
+backend/.idea/
+backend/*.iml
+backend/*.iws
+backend/*.ipr
+backend/.vscode/
+
+# ===========================
+# General
+# ===========================
+.DS_Store
+Thumbs.db
+*.log
+*.env
+.env
