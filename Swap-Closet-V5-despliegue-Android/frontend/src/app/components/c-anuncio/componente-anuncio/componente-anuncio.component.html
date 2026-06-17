@@ -1,11 +1,28 @@
 <div class="producto-card">
   <div class="imagen-detalle-wrapper">
     <div class="imagen-container detalle-imagen-container">
-      <img
-        [src]="primeraImagen"
-        alt="Imagen del producto"
-        class="producto-imagen detalle-producto-imagen"
-      />
+
+      <!-- Carrusel -->
+      <div class="swipe-container" (scroll)="onScroll($event)">
+        @for (img of imagenes; track $index) {
+          <div class="slide">
+            <img
+              [src]="img.urlImg || 'assets/icon/card-media.png'"
+              alt="Imagen del producto"
+              class="producto-imagen detalle-producto-imagen"
+            />
+          </div>
+        }
+      </div>
+
+      <!-- Dots de paginación -->
+      @if (imagenes.length > 1) {
+        <div class="dots-container">
+          @for (img of imagenes; track $index; let i = $index) {
+            <span class="dot" [class.dot-activo]="i === indiceActivo()"></span>
+          }
+        </div>
+      }
 
       <ion-chip
         [ngClass]="(producto?.tipo | lowercase ) === 'intercambio' ? 'chip-rosa' : 'chip-azul'"

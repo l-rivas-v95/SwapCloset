@@ -3,6 +3,7 @@ import {IonicModule, ToastController} from "@ionic/angular";
 import {DatePipe, LowerCasePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {ProductoDTO} from "../../../modelos/ProductoDTO";
 import {CartaUsuarioDTO} from "../../../modelos/CartaUsuarioDTO";
+import {ImagenProductoDTO} from "../../../modelos/ImagenProductoDTO";
 import {RouterLink} from "@angular/router";
 import {FavoritosService} from "../../../service/favoritosService/favoritos.service";
 import {AuthService} from "../../../service/authService/auth.service";
@@ -37,6 +38,18 @@ export class ComponenteAnuncioComponent implements OnInit {
 
   productoEditable!: ProductoDTO;
   isFavorite = signal<boolean>(false);
+  indiceActivo = signal<number>(0);
+
+  get imagenes(): ImagenProductoDTO[] {
+    const imgs = this.producto?.imagenes ?? [];
+    return imgs.length > 0 ? imgs : [{ urlImg: this.primeraImagen } as ImagenProductoDTO];
+  }
+
+  onScroll(event: Event) {
+    const el = event.target as HTMLElement;
+    const index = Math.round(el.scrollLeft / el.offsetWidth);
+    this.indiceActivo.set(index);
+  }
 
   private favoritosService = inject(FavoritosService);
   private authService = inject(AuthService);
