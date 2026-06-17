@@ -1,0 +1,29 @@
+<ion-header></ion-header>
+
+<ion-content class="ion-text-center confirmacion-content">
+  <div class="confirmacion-container">
+    <div class="icono-exito">
+      <ion-icon name="checkmark-circle" color="success"></ion-icon>
+    </div>
+
+    <h1 class="titulo">¡Intercambio completado!</h1>
+    <p class="subtitulo">¿Qué tal ha ido? Valora tu experiencia con</p>
+
+    @if (otroUsuario()) {
+      <div class="usuario-card">
+        <img [src]="otroUsuario()!.urlImg || 'assets/icon/card-media.png'" class="usuario-avatar"/>
+        <h2>{{ otroUsuario()!.nombre }} {{ otroUsuario()!.apellidos }}</h2>
+        <p>{{ otroUsuario()!.raiting ?? 0 }} ★ · {{ otroUsuario()!.intercambios ?? 0 }} intercambios</p>
+      </div>
+    }
+
+    <ion-button expand="block" class="btn-valorar" (click)="irAPerfil()">
+      <ion-icon name="star-outline" slot="start"></ion-icon>
+      Valorar a {{ otroUsuario()?.nombre }}
+    </ion-button>
+
+    <ion-button expand="block" fill="clear" class="btn-omitir" (click)="volver()">
+      Ahora no
+    </ion-button>
+  </div>
+</ion-content>

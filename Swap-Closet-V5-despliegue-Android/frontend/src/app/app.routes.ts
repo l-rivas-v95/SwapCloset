@@ -13,6 +13,7 @@ import {LoginPage} from "./pages/login/login.page";
 import {RegistroPage} from "./pages/registro/registro.page";
 import {AnimacionInicioPage} from "./pages/animacion-inicio/animacion-inicio.page";
 import {MensajesPage} from "./pages/mensajes/mensajes.page";
+import {ConfirmacionIntercambioPage} from "./pages/confirmacion-intercambio/confirmacion-intercambio.page";
 
 export const routes: Routes = [
   {path: '', redirectTo: 'animacion-inicio', pathMatch: 'full'},
@@ -31,7 +32,9 @@ export const routes: Routes = [
   {path: 'login', component: LoginPage},
   {path: 'registro', component: RegistroPage},
   {path: 'animacion-inicio', component: AnimacionInicioPage},
-  {path: 'mensajes', component: MensajesPage},
+  {path: 'mensajes/:id', component: MensajesPage},
+  {path: 'mensajes', redirectTo: 'chat', pathMatch: 'full'},
+  {path: 'confirmacion-intercambio/:id', component: ConfirmacionIntercambioPage},
   {path: 'anuncio-prestamo/:id', redirectTo: 'anuncio/:id', pathMatch: 'full'},
   {path: 'anuncio-intercambio/:id', redirectTo: 'anuncio/:id', pathMatch: 'full'},
   {path: 'perfil-otro/:id', redirectTo: 'perfil/:id', pathMatch: 'full'}

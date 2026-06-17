@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar class="toolbar-rosa">
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()" class="btn-cancelar">Cancelar</ion-button>
+    </ion-buttons>
+    <ion-title class="titulo-modal">👗 Seleccionar prenda</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="fondo-modal">
+  @if (cargando) {
+    <div class="loading-center">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+    </div>
+  }
+
+  @if (!cargando && productos.length === 0) {
+    <div class="empty-state">
+      <ion-icon name="shirt-outline"></ion-icon>
+      <p>El otro usuario no tiene prendas disponibles</p>
+    </div>
+  }
+
+  @if (!cargando && productos.length > 0) {
+    <p class="subtitulo">Elige la prenda que quieres a cambio:</p>
+    <div class="lista-prendas">
+      @for (p of productos; track p.productoId) {
+        <ion-card class="carta-prenda" (click)="verAnuncio(p)">
+          <ion-item lines="none">
+            <img [src]="p.urlImgProducto || 'assets/icon/card-media.png'"
+                 class="img-prenda" slot="start">
+            <ion-label>
+              <h2 class="titulo-prenda">{{ p.titulo }}</h2>
+              <p class="detalle-prenda">{{ p.tipo }} · Talla {{ p.talla }}</p>
+              <p class="detalle-prenda">{{ p.estado }}</p>
+            </ion-label>
+            <ion-button slot="end" fill="solid" size="small" color="primary"
+                        (click)="$event.stopPropagation(); seleccionar(p)">
+              Elegir
+            </ion-button>
+          </ion-item>
+        </ion-card>
+      }
+    </div>
+  }
+</ion-content>

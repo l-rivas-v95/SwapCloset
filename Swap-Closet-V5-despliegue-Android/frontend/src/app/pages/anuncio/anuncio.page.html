@@ -52,8 +52,11 @@
 
 </ion-content>
 
-@if (!modoEdicion()) {
+@if (!modoEdicion() && usuario()?.id !== idUsuarioLogueado) {
   <ion-footer>
-    <app-btn-contactar></app-btn-contactar>
+    <app-btn-contactar
+      [productoId]="producto()?.id!"
+      [propietarioId]="usuario()?.id!">
+    </app-btn-contactar>
   </ion-footer>
 }

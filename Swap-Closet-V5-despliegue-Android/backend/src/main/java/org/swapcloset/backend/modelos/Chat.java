@@ -60,6 +60,12 @@ public class Chat {
     @Column(name = "completado")
     private Boolean completado;
 
+    @Column(name = "confirmado1")
+    private Boolean confirmado1 = false;
+
+    @Column(name = "confirmado2")
+    private Boolean confirmado2 = false;
+
     @Column(name = "estado")
     @Enumerated(EnumType.STRING)
     private TipoEstadoIntercambio estadoIntercambio;

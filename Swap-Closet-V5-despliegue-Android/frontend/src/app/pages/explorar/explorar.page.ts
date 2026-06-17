@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
+import {Component, computed, inject, OnInit, signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {IonicModule} from "@ionic/angular";
 import {CartaHorizontalIntercambioComponent} from "../../components/c-explorar/carta-horizontal-intercambio/carta-horizontal-intercambio.component";
@@ -18,6 +18,20 @@ export class ExplorarPage implements OnInit {
   private productoService = inject(ProductoService);
 
   productos = signal<ProductoDTO[]>([]);
+  busqueda = signal<string>('');
+
+  productosFiltrados = computed(() => {
+    const term = this.busqueda().toLowerCase().trim();
+    if (!term) return this.productos();
+    return this.productos().filter(p =>
+      (p.titulo  ?? '').toLowerCase().includes(term) ||
+      (p.marca   ?? '').toLowerCase().includes(term) ||
+      (p.categoria ?? '').toLowerCase().includes(term) ||
+      (p.tipo    ?? '').toLowerCase().includes(term) ||
+      (p.color   ?? '').toLowerCase().includes(term) ||
+      (p.estilo  ?? '').toLowerCase().includes(term)
+    );
+  });
 
   ngOnInit() {
     this.cargarProductos();
@@ -25,10 +39,7 @@ export class ExplorarPage implements OnInit {
 
   cargarProductos() {
     this.productoService.getAllProductos().subscribe({
-      next: (prods) => {
-        // set de productos y prefetch de imagen principal por producto
-        this.productos.set(prods);
-      },
+      next: (prods) => this.productos.set(prods),
       error: (err) => console.error('Error:', err)
     });
   }

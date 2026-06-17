@@ -8,10 +8,14 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import org.swapcloset.backend.converter.MensajeMapper;
 import org.swapcloset.backend.dto.MensajeDTO;
 import org.swapcloset.backend.modelos.Chat;
 import org.swapcloset.backend.modelos.Mensaje;
+import org.swapcloset.backend.modelos.Producto;
+import org.swapcloset.backend.repository.ChatRepository;
 import org.swapcloset.backend.repository.MensajeRepository;
 
 import java.time.LocalDateTime;
@@ -25,6 +29,7 @@ public class MensajeService {
 
     private final MensajeRepository mensajeRepository;
     private final MensajeMapper mensajeMapper;
+    private final ChatRepository chatRepository;
 
     @PersistenceContext
     private final EntityManager em;
@@ -59,6 +64,12 @@ public class MensajeService {
         if (entity.getLeido() == null) {
             entity.setLeido(false);
         }
+        if (entity.getTipo() == null) {
+            entity.setTipo("TEXTO");
+        }
+        if (entity.getIdRemitente() == null && dto.getIdRemitente() != null) {
+            entity.setIdRemitente(dto.getIdRemitente());
+        }
 
         Mensaje saved = mensajeRepository.save(entity);
         return mensajeMapper.toDTO(saved);
@@ -75,6 +86,7 @@ public class MensajeService {
         if (dto.getContenido() != null) existente.setContenido(dto.getContenido());
         if (dto.getFechaEnvio() != null) existente.setFechaEnvio(LocalDateTime.parse(dto.getFechaEnvio()));
         if (dto.getLeido() != null) existente.setLeido(dto.getLeido());
+        if (dto.getAceptado() != null) existente.setAceptado(dto.getAceptado());
 
         if (dto.getIdChat() != null) {
             existente.setChat(em.getReference(Chat.class, dto.getIdChat()));
@@ -82,6 +94,47 @@ public class MensajeService {
 
         Mensaje updated = mensajeRepository.save(existente);
         return mensajeMapper.toDTO(updated);
+    }
+
+    /**
+     * Acepta o rechaza una propuesta (FECHA, UBICACION, PRODUCTO).
+     * Si se acepta, actualiza el Chat con el valor correspondiente.
+     */
+    @Transactional
+    public MensajeDTO responderPropuesta(Integer mensajeId, boolean aceptado) {
+        Mensaje mensaje = mensajeRepository.findById(mensajeId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Mensaje no encontrado: " + mensajeId));
+
+        mensaje.setAceptado(aceptado);
+
+        if (aceptado) {
+            Chat chat = mensaje.getChat();
+            switch (mensaje.getTipo()) {
+                case "FECHA" -> chat.setFechaQuedada(LocalDateTime.parse(mensaje.getContenido()));
+                case "FECHA_DEVOLUCION" -> chat.setFechaDevolucion(LocalDateTime.parse(mensaje.getContenido()));
+                case "UBICACION" -> chat.setUbicacion(mensaje.getContenido());
+                case "PRODUCTO" -> {
+                    Integer producto2Id = Integer.valueOf(mensaje.getContenido());
+                    chat.setProducto2(em.getReference(Producto.class, producto2Id));
+                }
+            }
+            chatRepository.save(chat);
+        }
+
+        return mensajeMapper.toDTO(mensajeRepository.save(mensaje));
+    }
+
+    /**
+     * Marca como leídos todos los mensajes de un chat que NO fueron enviados por el usuario dado.
+     */
+    @Transactional
+    public void marcarLeidosByChatYUsuario(Integer chatId, Integer usuarioId) {
+        if (chatId == null || usuarioId == null) return;
+        List<Mensaje> mensajes = mensajeRepository.findByChat_IdOrderByFechaEnvioAsc(chatId);
+        mensajes.stream()
+                .filter(m -> !Boolean.TRUE.equals(m.getLeido()) && !usuarioId.equals(m.getIdRemitente()))
+                .forEach(m -> m.setLeido(true));
+        mensajeRepository.saveAll(mensajes);
     }
 
     @Transactional

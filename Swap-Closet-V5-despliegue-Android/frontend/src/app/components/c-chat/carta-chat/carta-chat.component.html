@@ -1,17 +1,40 @@
-<ion-card class="tarjeta">
-  <ion-item>
+@if (esVisible) {
+<ion-card class="tarjeta" (click)="abrirChat()">
+  <ion-item lines="none">
     <ion-avatar class="img_perfil" slot="start">
-      <img src="https://ionicframework.com/docs/img/demos/avatar.svg" alt="Foto perfil">
+      <img [src]="otroUsuario?.urlImg || 'assets/icon/card-media.png'" alt="Foto perfil">
     </ion-avatar>
     <ion-label>
-      <h2 class="nombre">Ana Martinez</h2>
+      <h2 class="nombre">{{ otroUsuario?.nombre }} {{ otroUsuario?.apellidos }}</h2>
       <p class="puntuacion">
-        <ion-icon name="star" class="estrella"></ion-icon> 4.8
+        <ion-icon name="star" class="estrella"></ion-icon> {{ otroUsuario?.raiting ?? 0 }}
+        · {{ otroUsuario?.intercambios ?? 0 }} intercambios
       </p>
     </ion-label>
+    @if ((chat.mensajesNoLeidos ?? 0) > 0) {
+      <ion-badge color="danger" slot="end" class="badge-chat">
+        {{ chat.mensajesNoLeidos }}
+      </ion-badge>
+    }
   </ion-item>
 
-  <app-carta-chat-producto></app-carta-chat-producto>
+  @if (producto) {
+    <div class="contenedor-producto">
+      <img [src]="producto.imagenes?.[0]?.urlImg || 'assets/icon/card-media.png'" class="imagen-producto">
+      <div class="info-producto">
+        <p class="titulo-producto">{{ producto.titulo }}</p>
+        <div class="detalle-producto">
+          <ion-badge [color]="producto.tipo === 'Intercambio' ? 'danger' : 'primary'" class="etiqueta">
+            {{ producto.tipo }}
+          </ion-badge>
+          <span class="talla">Talla {{ producto.talla }}</span>
+        </div>
+      </div>
+    </div>
+  }
 
-  <p class="mensaje">Perfecto, nos vemos mañana.</p>
+  @if (ultimoMensaje) {
+    <p class="mensaje">{{ ultimoMensaje.contenido }}</p>
+  }
 </ion-card>
+}

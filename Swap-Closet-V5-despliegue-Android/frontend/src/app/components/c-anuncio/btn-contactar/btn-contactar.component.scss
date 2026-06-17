@@ -12,6 +12,7 @@ ion-card {
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
   margin: 0px;
   overflow: hidden;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 .btn-publicar {

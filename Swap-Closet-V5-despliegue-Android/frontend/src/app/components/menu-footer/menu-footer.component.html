@@ -22,8 +22,11 @@
           </ion-router-link>
 
           <ion-router-link routerLink="/chat">
-            <ion-button fill="clear">
+            <ion-button fill="clear" class="btn-chat-wrapper">
               <ion-icon size="large" name="chatbox-outline"></ion-icon>
+              @if (noLeidos > 0) {
+                <ion-badge color="danger" class="badge-notif">{{ noLeidos > 99 ? '99+' : noLeidos }}</ion-badge>
+              }
             </ion-button>
           </ion-router-link>
 

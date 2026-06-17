@@ -1,8 +1,35 @@
+.toolbar-rosa {
+  --background: #fff;
+  --border-color: #f0f0f0;
+}
+
+.titulo-modal {
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+}
+
+.btn-cancelar {
+  --color: #888;
+}
+
+.btn-confirmar {
+  --color: #FF3FBF;
+  font-weight: 700;
+}
+
+.fondo-modal {
+  --background: #f8f8f8;
+}
+
 .date-picker {
   padding: 16px;
+}
 
-  ion-datetime {
-    --background: white;
-    --border-radius: 8px;
-  }
+.datetime-rosa {
+  --background: #fff;
+  --border-radius: 16px;
+  --ion-color-primary: #FF3FBF;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  border-radius: 16px;
 }

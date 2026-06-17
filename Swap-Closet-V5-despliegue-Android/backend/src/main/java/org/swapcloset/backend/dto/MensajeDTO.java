@@ -13,4 +13,7 @@ public class MensajeDTO {
     private String contenido;
     private String fechaEnvio;
     private Boolean leido;
+    private Integer idRemitente;
+    private String tipo;
+    private Boolean aceptado;
 }

@@ -1,47 +1,42 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar class="toolbar-rosa">
     <ion-buttons slot="start">
-      <ion-button (click)="dismiss()">Cancelar</ion-button>
+      <ion-button (click)="dismiss()" class="btn-cancelar">Cancelar</ion-button>
     </ion-buttons>
-    <ion-title>Seleccionar Ubicación</ion-title>
+    <ion-title class="titulo-modal">📍 Lugar del intercambio</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="confirm()" [strong]="true">Confirmar</ion-button>
+      <ion-button (click)="confirm()" [strong]="true" [disabled]="!searchQuery.trim()" class="btn-confirmar">
+        Proponer
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <div class="map-container">
-    <div class="map-placeholder">
-      <ion-icon name="map" size="large"></ion-icon>
-      <p>Mapa de ubicación</p>
-    </div>
-    <ion-input placeholder="Buscar ubicación..." [(ngModel)]="searchQuery"></ion-input>
-
-    <div class="suggested-locations">
-      <ion-list>
-        <ion-item>
-          <ion-button (click)="selectLocation('Calle Jurado 23')"></ion-button>
-          <ion-label>
-            <h3>Calle Jurado 23</h3>
-            <p>9 huilas</p>
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-button (click)="selectLocation('Plaza Central')"></ion-button>
-          <ion-label>
-            <h3>Plaza Central</h3>
-            <p>12 huilas</p>
-          </ion-label>
-        </ion-item>
-        <ion-item>
-        <ion-button (click)="selectLocation('Centro Comercial Norte')"></ion-button>
-          <ion-label>
-            <h3>Centro Comercial Norte</h3>
-            <p>15 huilas</p>
-          </ion-label>
-        </ion-item>
-      </ion-list>
-    </div>
+<ion-content class="fondo-modal">
+  <div class="search-row">
+    <ion-input
+      class="input-lugar"
+      placeholder="Ej: Plaza de España, Sevilla"
+      [(ngModel)]="searchQuery"
+      (keyup.enter)="buscar()"
+      clearInput>
+    </ion-input>
+    <ion-button class="btn-buscar" (click)="buscar()">
+      <ion-icon name="search-outline"></ion-icon>
+    </ion-button>
   </div>
+
+  @if (!buscado) {
+    <div class="mapa-placeholder">
+      <ion-icon name="map-outline"></ion-icon>
+      <p>Escribe una dirección y pulsa buscar</p>
+    </div>
+  }
+
+  @if (buscado && mapUrl) {
+    <div class="mapa-wrapper">
+      <iframe [src]="mapUrl" class="mapa-iframe" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <p class="hint-texto">¿Es aquí? Pulsa <b>Proponer</b> para enviarlo.</p>
+  }
 </ion-content>

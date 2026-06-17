@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, inject, Input, OnInit} from '@angular/core';
 import {IonicModule, ModalController} from "@ionic/angular";
 import {FormsModule} from "@angular/forms";
 
@@ -9,23 +9,32 @@ import {FormsModule} from "@angular/forms";
   standalone: true,
   imports: [IonicModule, FormsModule]
 })
-export class DateModalComponentComponent  implements OnInit {
+export class DateModalComponentComponent implements OnInit {
 
   @Input() currentDate: string | undefined;
-  selectedDate: string | undefined;
+  selectedDate: string = new Date().toISOString();
 
-  // eslint-disable-next-line @angular-eslint/prefer-inject
-  constructor(private modalCtrl: ModalController) {}
+  // Mínimo: ahora mismo
+  minDate = new Date().toISOString();
+
+  private modalCtrl = inject(ModalController);
 
   ngOnInit() {
     this.selectedDate = this.currentDate || new Date().toISOString();
   }
 
   dismiss() {
-    this.modalCtrl.dismiss();
+    this.modalCtrl.dismiss(null);
   }
 
   confirm() {
-    this.modalCtrl.dismiss(this.selectedDate);
+    // Devuelve formato yyyy-MM-ddTHH:mm:ss
+    const d = new Date(this.selectedDate);
+    const iso = d.getFullYear() + '-'
+      + String(d.getMonth() + 1).padStart(2, '0') + '-'
+      + String(d.getDate()).padStart(2, '0') + 'T'
+      + String(d.getHours()).padStart(2, '0') + ':'
+      + String(d.getMinutes()).padStart(2, '0') + ':00';
+    this.modalCtrl.dismiss(iso);
   }
 }

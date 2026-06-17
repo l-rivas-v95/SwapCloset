@@ -27,8 +27,14 @@ public class ChatDTO {
     private Boolean activo;
     private String ubicacion;
     private Boolean completado;
+    private Boolean confirmado1;
+    private Boolean confirmado2;
     @Pattern(regexp = "pendiente|aceptado|devuelto", message = "El estado debe ser 'pendiente', 'aceptado' o 'devuelto")
     private String estadoIntercambio;
 
     private List<MensajeDTO> mensajes;
+
+    // Campos calculados (no persistidos)
+    private Integer mensajesNoLeidos;
+    private String fechaUltimoMensaje;
 }

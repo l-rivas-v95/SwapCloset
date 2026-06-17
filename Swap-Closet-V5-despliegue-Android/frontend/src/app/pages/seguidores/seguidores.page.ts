@@ -18,9 +18,18 @@ import { Location } from '@angular/common';
 export class SeguidoresPage {
 
   segmentoSeleccionado: string = 'seguidores';
+  busqueda: string = '';
 
-  seguidores = signal<UsuarioDTO[]>([]);  // Esto almacena los seguidores
-  seguidos = signal<UsuarioDTO[]>([]);    // Esto almacena los seguidos
+  seguidores = signal<UsuarioDTO[]>([]);
+  seguidos = signal<UsuarioDTO[]>([]);
+
+  filtrar(lista: UsuarioDTO[]): UsuarioDTO[] {
+    const term = this.busqueda.toLowerCase().trim();
+    if (!term) return lista;
+    return lista.filter(u =>
+      `${u.nombre ?? ''} ${u.apellidos ?? ''}`.toLowerCase().includes(term)
+    );
+  }
 
   private seguidoresService = inject(SeguidoresService);
   private route = inject(ActivatedRoute);

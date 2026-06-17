@@ -19,7 +19,8 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-          <ion-searchbar style="--border-radius: 30px; margin-top: 6px;" placeholder="Buscar prenda"></ion-searchbar>
+          <ion-searchbar style="--border-radius: 30px; margin-top: 6px;" placeholder="Buscar prenda"
+            (ionInput)="busqueda.set($event.detail.value ?? '')"></ion-searchbar>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -30,7 +31,7 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-          @for(pro of productos(); track pro.id){
+          @for(pro of productosFiltrados(); track pro.id){
             @if(pro.id !== undefined && pro.id !== null){
               <app-carta-horizontal-intercambio
                 [producto]="pro"

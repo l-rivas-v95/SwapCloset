@@ -7,11 +7,15 @@ import org.swapcloset.backend.modelos.Mensaje;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {DateTimeMapper.class})
 public interface MensajeMapper {
-    @Mapping(target = "fechaEnvio", source = "fechaEnvio", dateFormat = "dd/MM/yy")
+
+    @Mapping(source = "chat.id", target = "idChat")
+    @Mapping(source = "fechaEnvio", target = "fechaEnvio", qualifiedByName = "formatDateTime")
     MensajeDTO toDTO(Mensaje entidad);
 
+    @Mapping(target = "chat", ignore = true)
+    @Mapping(source = "fechaEnvio", target = "fechaEnvio", qualifiedByName = "parseDateTime")
     Mensaje toEntity(MensajeDTO dto);
 
     List<MensajeDTO> toDTOList(List<Mensaje> entidades);

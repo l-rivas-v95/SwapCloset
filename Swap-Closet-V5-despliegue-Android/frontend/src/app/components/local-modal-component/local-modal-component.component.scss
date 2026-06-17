@@ -1,52 +1,91 @@
-.map-container {
-  padding: 16px;
+.toolbar-rosa {
+  --background: #fff;
+  --border-color: #f0f0f0;
+}
 
-  .map-placeholder {
-    height: 200px;
-    background: #f0f0f0;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 16px;
+.titulo-modal {
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+}
 
-    ion-icon {
-      color: #666;
-      margin-bottom: 8px;
-    }
+.btn-cancelar {
+  --color: #888;
+}
 
-    p {
-      color: #666;
-      margin: 0;
-    }
+.btn-confirmar {
+  --color: #FF3FBF;
+  font-weight: 700;
+}
+
+.fondo-modal {
+  --background: #f8f8f8;
+}
+
+.search-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 16px 8px;
+}
+
+.input-lugar {
+  flex: 1;
+  --background: #fff;
+  --border-radius: 12px;
+  --padding-start: 14px;
+  --padding-end: 14px;
+  border-radius: 12px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+}
+
+.btn-buscar {
+  --background: #FF3FBF;
+  --border-radius: 12px;
+  --color: #fff;
+  height: 42px;
+  width: 42px;
+}
+
+.mapa-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 280px;
+  color: #aaa;
+  gap: 12px;
+
+  ion-icon {
+    font-size: 52px;
+    color: #FF3FBF;
+    opacity: 0.4;
   }
 
-  ion-input {
-    --background: white;
-    --border-radius: 8px;
-    margin-bottom: 16px;
+  p {
+    font-size: 14px;
+    text-align: center;
+    margin: 0 24px;
   }
+}
 
-  .suggested-locations {
-    ion-list {
-      background: transparent;
+.mapa-wrapper {
+  margin: 8px 16px 0;
+  border-radius: 14px;
+  overflow: hidden;
+  height: 300px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+}
 
-      ion-item {
-        --background: white;
-        --border-radius: 8px;
-        margin-bottom: 8px;
+.mapa-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
 
-        h3 {
-          font-size: 14px;
-          font-weight: 500;
-        }
-
-        p {
-          font-size: 12px;
-          color: #666;
-        }
-      }
-    }
-  }
+.hint-texto {
+  text-align: center;
+  color: #888;
+  font-size: 13px;
+  margin-top: 12px;
 }

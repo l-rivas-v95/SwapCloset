@@ -1,3 +1,9 @@
-ion-footer{
+ion-footer {
   overflow: hidden;
+  bottom: 56px; /* Altura del menu-footer que está fixed encima */
+}
+
+/* Evitar que el contenido quede tapado por CONTACTAR + menú inferior */
+ion-content {
+  --padding-bottom: 120px;
 }

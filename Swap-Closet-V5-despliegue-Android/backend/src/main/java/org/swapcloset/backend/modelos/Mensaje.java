@@ -31,4 +31,13 @@ public class Mensaje {
 
     @Column(name = "leido", nullable = false)
     private Boolean leido = false;
+
+    @Column(name = "id_remitente", nullable = false)
+    private Integer idRemitente;
+
+    @Column(name = "tipo", nullable = false, length = 20)
+    private String tipo; // TEXTO, PRODUCTO, FECHA, UBICACION
+
+    @Column(name = "aceptado")
+    private Boolean aceptado; // null=pendiente, true=aceptado, false=rechazado (solo para propuestas)
 }

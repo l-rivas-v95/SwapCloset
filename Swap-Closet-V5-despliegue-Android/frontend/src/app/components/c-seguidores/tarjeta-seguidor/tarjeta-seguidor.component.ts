@@ -5,7 +5,7 @@ import {UsuarioDTO} from "../../../modelos/UsuarioDTO";
 import {SeguidoresService} from "../../../service/seguidoresService/seguidores.service";
 import {AuthService} from "../../../service/authService/auth.service";
 import {SeguidorDTO} from "../../../modelos/SeguidorDTO";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-tarjeta-seguidor',
@@ -25,6 +25,11 @@ export class TarjetaSeguidorComponent implements OnInit{
   private seguidoresService = inject(SeguidoresService);
   private authService = inject(AuthService);
   private toastCtrl = inject(ToastController);
+  private router = inject(Router);
+
+  irAPerfil() {
+    if (this.usuario?.id) this.router.navigate(['/perfil', this.usuario.id]);
+  }
 
   seguido: boolean = false;
   isOwnProfile: boolean = false;

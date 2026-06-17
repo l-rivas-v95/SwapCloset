@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.swapcloset.backend.converter.ChatMapper;
 import org.swapcloset.backend.dto.ChatDTO;
 import org.swapcloset.backend.modelos.Chat;
+import org.swapcloset.backend.modelos.Mensaje;
 import org.swapcloset.backend.modelos.Producto;
 import org.swapcloset.backend.modelos.TipoEstadoIntercambio;
 import org.swapcloset.backend.modelos.Usuario;
@@ -19,6 +20,7 @@ import org.swapcloset.backend.repository.UsuarioRepository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -228,7 +230,85 @@ public class ChatService {
         if (usuarioId == null) return List.of();
         Usuario uRef = em.getReference(Usuario.class, usuarioId);
         return getAllChatByUsuario(uRef).stream()
-                .map(chatMapper::toDTO)
+                .map(chat -> {
+                    ChatDTO dto = chatMapper.toDTO(chat);
+                    List<Mensaje> msgs = chat.getMensajes();
+                    if (msgs != null && !msgs.isEmpty()) {
+                        // Mensajes no leídos por el usuario actual
+                        long noLeidos = msgs.stream()
+                                .filter(m -> !Boolean.TRUE.equals(m.getLeido())
+                                        && !usuarioId.equals(m.getIdRemitente()))
+                                .count();
+                        dto.setMensajesNoLeidos((int) noLeidos);
+                        // Fecha del último mensaje (para ordenar)
+                        msgs.stream()
+                                .filter(m -> m.getFechaEnvio() != null)
+                                .map(Mensaje::getFechaEnvio)
+                                .max(Comparator.naturalOrder())
+                                .ifPresent(f -> dto.setFechaUltimoMensaje(f.toString()));
+                    }
+                    return dto;
+                })
+                .sorted((a, b) -> {
+                    String da = a.getFechaUltimoMensaje() != null ? a.getFechaUltimoMensaje() : (a.getFechaCreacion() != null ? a.getFechaCreacion() : "");
+                    String db = b.getFechaUltimoMensaje() != null ? b.getFechaUltimoMensaje() : (b.getFechaCreacion() != null ? b.getFechaCreacion() : "");
+                    return db.compareTo(da); // más reciente primero
+                })
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Busca un chat existente entre dos usuarios para un producto.
+     * Si no existe, lo crea con estadoIntercambio=pendiente.
+     */
+    @Transactional
+    public ChatDTO findOrCreate(Integer usuario1Id, Integer usuario2Id, Integer producto1Id) {
+        return chatRepository.findByUsuariosAndProducto1(usuario1Id, usuario2Id, producto1Id)
+                .map(chatMapper::toDTO)
+                .orElseGet(() -> {
+                    ChatDTO dto = new ChatDTO();
+                    dto.setUsuario1Id(usuario1Id);
+                    dto.setUsuario2Id(usuario2Id);
+                    dto.setProducto1Id(producto1Id);
+                    dto.setEstadoIntercambio("pendiente");
+                    dto.setActivo(true);
+                    dto.setCompletado(false);
+                    return save(dto);
+                });
+    }
+
+    /**
+     * Registra la confirmación de un usuario (1 o 2).
+     * Si ambos confirman, marca el chat como completado=true y estado=aceptado.
+     */
+    @Transactional
+    public ChatDTO confirmar(Integer chatId, Integer usuarioId) {
+        Chat chat = chatRepository.findById(chatId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Chat no encontrado: " + chatId));
+
+        if (usuarioId.equals(chat.getUsuario1().getId())) {
+            chat.setConfirmado1(true);
+        } else if (usuarioId.equals(chat.getUsuario2().getId())) {
+            chat.setConfirmado2(true);
+        } else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "El usuario no pertenece a este chat");
+        }
+
+        if (Boolean.TRUE.equals(chat.getConfirmado1()) && Boolean.TRUE.equals(chat.getConfirmado2())) {
+            chat.setCompletado(true);
+            chat.setEstadoIntercambio(TipoEstadoIntercambio.aceptado);
+
+            // Desactivar los productos intercambiados/prestados
+            if (chat.getProducto1() != null) {
+                chat.getProducto1().setActivo(false);
+                productoRepository.save(chat.getProducto1());
+            }
+            if (chat.getProducto2() != null) {
+                chat.getProducto2().setActivo(false);
+                productoRepository.save(chat.getProducto2());
+            }
+        }
+
+        return chatMapper.toDTO(chatRepository.save(chat));
     }
 }

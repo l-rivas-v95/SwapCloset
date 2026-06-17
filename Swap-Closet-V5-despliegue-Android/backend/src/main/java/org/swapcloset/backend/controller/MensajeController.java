@@ -109,6 +109,24 @@ public class MensajeController {
         }
     }
 
+    @PatchMapping("/chat/{chatId}/leer")
+    public ResponseEntity<Void> marcarLeidos(@PathVariable Integer chatId, @RequestParam Integer usuarioId) {
+        if (chatId == null || usuarioId == null) return ResponseEntity.badRequest().build();
+        mensajeService.marcarLeidosByChatYUsuario(chatId, usuarioId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/responder")
+    public ResponseEntity<?> responderPropuesta(@PathVariable Integer id, @RequestParam boolean aceptado) {
+        if (id == null) return ResponseEntity.badRequest().build();
+        try {
+            MensajeDTO updated = mensajeService.responderPropuesta(id, aceptado);
+            return ResponseEntity.ok(updated);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         if (id == null) return ResponseEntity.badRequest().build();

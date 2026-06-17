@@ -2,38 +2,270 @@
   <ion-toolbar class="menu-superior fondo">
     <ion-grid>
       <ion-row>
-
         <ion-col size="1" class="centro">
-          <ion-button fill="clear" routerLink="/perfil">
+          <ion-button fill="clear" (click)="volver()">
             <ion-icon size="large" name="arrow-back-outline" class="flecha"></ion-icon>
           </ion-button>
         </ion-col>
-
         <ion-col size="2.5" class="izquierda">
-          <img src="https://ionicframework.com/docs/img/demos/avatar.svg" class="avatar">
+          <img [src]="otroUsuario()?.urlImg || 'assets/icon/card-media.png'" class="avatar">
         </ion-col>
-
         <ion-col>
           <ion-row>
-            <h2>Ana Martínez</h2>
+            <h2>{{ otroUsuario()?.nombre }} {{ otroUsuario()?.apellidos }}</h2>
           </ion-row>
-
           <div class="usuario-datos">
             <div class="usuario-rating">
-              <p class="rating">4.8</p>
+              <p class="rating">{{ otroUsuario()?.raiting ?? 0 }}</p>
               <ion-icon class="rating-star" name="star"></ion-icon>
               <p class="separador">·</p>
-              <p class="intercambios">12 intercambios</p>
+              <p class="intercambios">{{ otroUsuario()?.intercambios ?? 0 }} intercambios</p>
             </div>
           </div>
-
         </ion-col>
       </ion-row>
-
     </ion-grid>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <app-mensajes-component></app-mensajes-component>
+  <!-- Tarjeta del producto -->
+  @if (producto()) {
+    <ion-toolbar class="fondo bordes-redondeados sin-padding-lateral">
+      <ion-grid>
+        <ion-row class="centro">
+          <ion-col size="2.5">
+            <img class="img_prod margen-izq" [src]="producto()!.imagenes?.[0]?.urlImg || 'assets/icon/card-media.png'"/>
+          </ion-col>
+          <ion-col>
+            <ion-row><p class="sin-margen margen-izq">{{ producto()!.titulo }}</p></ion-row>
+            <ion-row class="sin-margen">
+              <p class="sin-margen margen-izq color-nombre">{{ producto()!.tipo }}</p>
+              <p class="sin-margen margen-izq"> · Talla {{ producto()!.talla }}</p>
+            </ion-row>
+          </ion-col>
+          <ion-col size="2">
+            <ion-button class="sin-margen chip-rosa" [routerLink]="['/anuncio', producto()!.id]">Ver</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-toolbar>
+  }
+
+  <div class="chat-container">
+
+    @for (msg of mensajes(); track msg.id) {
+
+      <!-- Mensaje de texto -->
+      @if (msg.tipo === 'TEXTO') {
+        <div class="message" [class.user]="esMio(msg)" [class.other]="!esMio(msg)">
+          <div class="message-content">
+            <div class="message-text">{{ msg.contenido }}</div>
+            <div class="message-time">{{ formatearHora(msg.fechaEnvio) }}</div>
+          </div>
+        </div>
+      }
+
+      <!-- Propuesta de fecha -->
+      @if (msg.tipo === 'FECHA') {
+        <div class="system-notification">
+          {{ esMio(msg) ? 'Has propuesto una fecha' : ((otroUsuario()?.nombre ?? 'El otro usuario') + ' ha propuesto una fecha') }}
+        </div>
+        <div class="options-container">
+          <div class="option-item">
+            <ion-row class="orden">
+              <ion-col size="2">
+                <ion-icon name="calendar-outline" style="font-size:32px"></ion-icon>
+              </ion-col>
+              <ion-col>
+                <p class="sin-margen"><b>{{ formatearFecha(msg.contenido!) }}</b></p>
+              </ion-col>
+              @if (puedeEditar(msg)) {
+                <ion-col size="3">
+                  <ion-button fill="clear" size="small" (click)="editar(msg)">✏️ Editar</ion-button>
+                </ion-col>
+              }
+            </ion-row>
+            @if (!esMio(msg) && msg.aceptado == null && puedeResponderPropuesta()) {
+              <div class="propuesta-botones">
+                <ion-button size="small" color="success" (click)="aceptarPropuesta(msg.id!)">Aceptar</ion-button>
+                <ion-button size="small" color="danger" (click)="rechazarPropuesta(msg.id!)">Rechazar</ion-button>
+              </div>
+            }
+            @if (msg.aceptado === true) {
+              <p class="aceptado-texto">✓ Fecha acordada</p>
+            }
+            @if (msg.aceptado === false) {
+              <p class="rechazado-texto">✗ Rechazada</p>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Propuesta de fecha de entrega -->
+      @if (msg.tipo === 'FECHA_DEVOLUCION') {
+        <div class="system-notification">
+          {{ esMio(msg) ? 'Has propuesto una fecha de entrega' : ((otroUsuario()?.nombre ?? 'El otro usuario') + ' ha propuesto una fecha de entrega') }}
+        </div>
+        <div class="options-container">
+          <div class="option-item option-entrega">
+            <ion-row class="orden">
+              <ion-col size="2">
+                <ion-icon name="return-down-forward-outline" style="font-size:32px"></ion-icon>
+              </ion-col>
+              <ion-col>
+                <p class="sin-margen label-entrega">Fecha de entrega</p>
+                <p class="sin-margen"><b>{{ formatearFecha(msg.contenido!) }}</b></p>
+              </ion-col>
+              @if (puedeEditar(msg)) {
+                <ion-col size="3">
+                  <ion-button fill="clear" size="small" (click)="editar(msg)">✏️ Editar</ion-button>
+                </ion-col>
+              }
+            </ion-row>
+            @if (!esMio(msg) && msg.aceptado == null) {
+              <div class="propuesta-botones">
+                <ion-button size="small" color="success" (click)="aceptarPropuesta(msg.id!)">Aceptar</ion-button>
+                <ion-button size="small" color="danger" (click)="rechazarPropuesta(msg.id!)">Rechazar</ion-button>
+              </div>
+            }
+            @if (msg.aceptado === true) { <p class="aceptado-texto">✓ Fecha de entrega acordada</p> }
+            @if (msg.aceptado === false) { <p class="rechazado-texto">✗ Rechazada</p> }
+          </div>
+        </div>
+      }
+
+      <!-- Propuesta de prenda (intercambio) -->
+      @if (msg.tipo === 'PRODUCTO') {
+        <div class="system-notification">
+          {{ esMio(msg) ? 'Has propuesto una prenda' : ((otroUsuario()?.nombre ?? 'El otro usuario') + ' ha propuesto una prenda') }}
+        </div>
+        <div class="options-container">
+          <div class="option-item option-prenda">
+            <ion-row class="orden">
+              <ion-col size="2">
+                <img [src]="getProductoImg(msg.contenido!)" class="img-prenda-propuesta">
+              </ion-col>
+              <ion-col>
+                <p class="sin-margen label-prenda">Quiere esta prenda a cambio</p>
+              </ion-col>
+              <ion-col size="auto">
+                <ion-button fill="clear" size="small" class="chip-rosa sin-margen"
+                            [routerLink]="['/anuncio', msg.contenido]">Ver</ion-button>
+                @if (puedeEditar(msg)) {
+                  <ion-button fill="clear" size="small" (click)="editar(msg)">✏️</ion-button>
+                }
+              </ion-col>
+            </ion-row>
+            @if (!esMio(msg) && msg.aceptado == null) {
+              <div class="propuesta-botones">
+                <ion-button size="small" color="success" (click)="aceptarPropuesta(msg.id!)">Aceptar</ion-button>
+                <ion-button size="small" color="danger" (click)="rechazarPropuesta(msg.id!)">Rechazar</ion-button>
+              </div>
+            }
+            @if (msg.aceptado === true) { <p class="aceptado-texto">✓ Prenda acordada</p> }
+            @if (msg.aceptado === false) { <p class="rechazado-texto">✗ Rechazada</p> }
+          </div>
+        </div>
+      }
+
+      <!-- Propuesta de ubicación -->
+      @if (msg.tipo === 'UBICACION') {
+        <div class="system-notification">
+          {{ esMio(msg) ? 'Has propuesto un lugar' : ((otroUsuario()?.nombre ?? 'El otro usuario') + ' ha propuesto un lugar') }}
+        </div>
+        <div class="options-container">
+          <div class="option-item">
+            <ion-row class="orden">
+              <ion-col size="2">
+                <ion-icon name="location-outline" style="font-size:32px"></ion-icon>
+              </ion-col>
+              <ion-col>
+                <p class="sin-margen"><b>{{ msg.contenido }}</b></p>
+              </ion-col>
+              @if (puedeEditar(msg)) {
+                <ion-col size="3">
+                  <ion-button fill="clear" size="small" (click)="editar(msg)">✏️ Editar</ion-button>
+                </ion-col>
+              }
+            </ion-row>
+            <div class="mapa-container">
+              <iframe
+                [src]="getMapUrl(msg.contenido!)"
+                class="mapa-iframe"
+                allowfullscreen
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+              </iframe>
+            </div>
+            @if (!esMio(msg) && msg.aceptado == null && puedeResponderPropuesta()) {
+              <div class="propuesta-botones">
+                <ion-button size="small" color="success" (click)="aceptarPropuesta(msg.id!)">Aceptar</ion-button>
+                <ion-button size="small" color="danger" (click)="rechazarPropuesta(msg.id!)">Rechazar</ion-button>
+              </div>
+            }
+            @if (msg.aceptado === true) {
+              <p class="aceptado-texto">✓ Lugar acordado</p>
+            }
+            @if (msg.aceptado === false) {
+              <p class="rechazado-texto">✗ Rechazado</p>
+            }
+          </div>
+        </div>
+      }
+
+    }
+
+    <!-- Banner de confirmación -->
+    @if (chat()?.completado) {
+      <div class="centro confirmacion-banner">
+        <b>¡SE HA CONFIRMADO EL INTERCAMBIO!</b>
+      </div>
+    }
+
+  </div>
 </ion-content>
+
+<ion-footer>
+  @if (!puedeConfirmar() && !yoConfirme() && !chat()?.completado) {
+    <div class="aviso-confirmar">
+      <ion-icon name="information-circle-outline"></ion-icon>
+      <span>{{ motivoNoConfirmar() }}</span>
+    </div>
+  }
+  <!-- Fila de propuestas -->
+  <div class="action-buttons">
+    <ion-button fill="clear" (click)="proponerFecha()">
+      <ion-chip class="chip-intercambio"><p>📅</p><p><b>Fecha</b></p></ion-chip>
+    </ion-button>
+    <ion-button fill="clear" (click)="proponerLugar()">
+      <ion-chip class="chip-rosa"><p>📍</p><p><b>Lugar</b></p></ion-chip>
+    </ion-button>
+    <ion-button fill="clear" (click)="proponerEntrega()">
+      <ion-chip class="chip-entrega"><p>📦</p><p><b>Entrega</b></p></ion-chip>
+    </ion-button>
+    @if (esIntercambio() && esPropietario()) {
+      <ion-button fill="clear" (click)="proponerPrenda()">
+        <ion-chip class="chip-prenda"><p>👗</p><p><b>Prenda</b></p></ion-chip>
+      </ion-button>
+    }
+  </div>
+  <!-- Fila de confirmar -->
+  <div class="confirm-row">
+    <ion-button expand="block" fill="clear" (click)="confirmar()"
+                [disabled]="!puedeConfirmar() || yoConfirme() || chat()?.completado">
+      <ion-chip class="chip-confirmar" [class.chip-confirmar-off]="!puedeConfirmar() || yoConfirme()">
+        <p><b>{{ yoConfirme() ? '⏳ Esperando al otro...' : '✓ Confirmar intercambio' }}</b></p>
+      </ion-chip>
+    </ion-button>
+  </div>
+  <ion-toolbar>
+    <ion-input placeholder="Escribe un mensaje..." [(ngModel)]="nuevoMensaje"
+               (keyup.enter)="enviarMensaje()"></ion-input>
+    <ion-buttons slot="end">
+      <ion-button (click)="enviarMensaje()" [disabled]="!nuevoMensaje.trim()">
+        <ion-icon name="send"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

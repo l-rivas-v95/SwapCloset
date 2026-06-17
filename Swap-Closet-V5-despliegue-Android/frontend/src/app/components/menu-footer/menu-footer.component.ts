@@ -1,7 +1,8 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import {NavigationEnd, Router, RouterModule} from "@angular/router";
 import {AuthService} from "../../service/authService/auth.service";
+import {NotificacionService} from "../../service/notificacionService/notificacion.service";
 import {UsuarioDTO} from "../../modelos/UsuarioDTO";
 import {NgIf} from "@angular/common";
 import {Subscription} from "rxjs";
@@ -16,16 +17,21 @@ import {Subscription} from "rxjs";
 export class MenuFooterComponent implements OnInit, OnDestroy {
   usuario: UsuarioDTO | null = null;
   mostrar: boolean = true;
-  rutasSinFooter = ['/login', '/registro', '/animacion-inicio']; // Rutas donde no mostrar footer
+  rutasSinFooter = ['/login', '/registro', '/animacion-inicio'];
+
+  noLeidos = 0;
 
   private routerSub!: Subscription;
-
-  constructor(private authService: AuthService, private router: Router) {}
+  private noLeidosSub?: Subscription;
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private notificaciones = inject(NotificacionService);
 
   ngOnInit() {
     this.authService.usuarioActual$.subscribe(user => this.usuario = user);
 
-    // Detectar cambios de ruta
+    this.noLeidosSub = this.notificaciones.noLeidos$.subscribe(n => this.noLeidos = n);
+
     this.routerSub = this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.mostrar = !this.rutasSinFooter.includes(event.urlAfterRedirects);
@@ -34,7 +40,8 @@ export class MenuFooterComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.routerSub) this.routerSub.unsubscribe();
+    this.routerSub?.unsubscribe();
+    this.noLeidosSub?.unsubscribe();
   }
 }
 

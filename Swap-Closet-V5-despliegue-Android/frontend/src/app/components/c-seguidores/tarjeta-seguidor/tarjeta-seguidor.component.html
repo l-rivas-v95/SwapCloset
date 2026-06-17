@@ -1,4 +1,4 @@
-<ion-card class="card margen-lateral" [routerLink]="['/perfil', usuario?.id]">
+<ion-card class="card margen-lateral" (click)="irAPerfil()">
   <ion-row class="sin-margen">
 
     <ion-col class="col-avatar" size="3">
@@ -33,7 +33,7 @@
 
         [ngClass]="seguido ? 'boton-seguido' : 'boton-rosa'"
 
-        (click)="toggleSeguir($event)"
+        (click)="$event.stopPropagation(); toggleSeguir($event)"
 
         [disabled]="isOwnProfile || !usuario?.id">
 

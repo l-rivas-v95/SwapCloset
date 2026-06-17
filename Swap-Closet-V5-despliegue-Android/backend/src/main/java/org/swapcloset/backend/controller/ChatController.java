@@ -69,4 +69,25 @@ public class ChatController {
     public ResponseEntity<List<ChatDTO>> getByUsuario(@PathVariable Integer usuarioId) {
         return ResponseEntity.ok(chatService.findByUsuarioId(usuarioId));
     }
+
+    @PostMapping("/find-or-create")
+    public ResponseEntity<ChatDTO> findOrCreate(
+            @RequestParam Integer usuario1Id,
+            @RequestParam Integer usuario2Id,
+            @RequestParam Integer producto1Id) {
+        ChatDTO chat = chatService.findOrCreate(usuario1Id, usuario2Id, producto1Id);
+        return ResponseEntity.ok(chat);
+    }
+
+    @PatchMapping("/{id}/confirmar")
+    public ResponseEntity<ChatDTO> confirmar(
+            @PathVariable Integer id,
+            @RequestParam Integer usuarioId) {
+        try {
+            ChatDTO updated = chatService.confirmar(id, usuarioId);
+            return ResponseEntity.ok(updated);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }

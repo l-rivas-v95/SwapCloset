@@ -39,7 +39,8 @@
 
       <ion-row class="centro">
         <ion-col>
-          <ion-searchbar class="barra" placeholder="Buscar persona"></ion-searchbar>
+          <ion-searchbar class="barra" placeholder="Buscar persona"
+            (ionInput)="busqueda = $event.detail.value ?? ''"></ion-searchbar>
         </ion-col>
       </ion-row>
 
@@ -53,7 +54,7 @@
 
     <!-- SEGUIDORES -->
     <ion-row *ngIf="segmentoSeleccionado === 'seguidores'">
-      <ion-col size="12" *ngFor="let seguidor of seguidores()">
+      <ion-col size="12" *ngFor="let seguidor of filtrar(seguidores())">
         <app-tarjeta-seguidor [usuario]="seguidor"></app-tarjeta-seguidor>
       </ion-col>
 
@@ -64,7 +65,7 @@
 
     <!-- SIGUIENDO -->
     <ion-row *ngIf="segmentoSeleccionado === 'siguiendo'">
-      <ion-col size="12" *ngFor="let seguido of seguidos()">
+      <ion-col size="12" *ngFor="let seguido of filtrar(seguidos())">
         <app-tarjeta-seguidor [usuario]="seguido"></app-tarjeta-seguidor>
       </ion-col>
 

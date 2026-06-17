@@ -14,3 +14,22 @@ ion-footer {
   right: 0;
   z-index: 10;
 }
+
+.btn-chat-wrapper {
+  position: relative;
+}
+
+.badge-notif {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  font-size: 10px;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
