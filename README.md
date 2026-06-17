@@ -277,9 +277,6 @@ Capturas recomendadas:
 - Añadir filtros de búsqueda por talla, categoría, estado o usuario.
 - Añadir paginación en los listados.
 - Mejorar la gestión visual de los estados de intercambio.
-- Añadir subida de imágenes para las prendas.
 - Documentar la API con Swagger/OpenAPI.
-- Añadir tests unitarios.
-- Añadir tests de integración.
 - Mejorar la gestión global de errores.
 - Añadir validaciones más específicas para las operaciones de intercambio.
