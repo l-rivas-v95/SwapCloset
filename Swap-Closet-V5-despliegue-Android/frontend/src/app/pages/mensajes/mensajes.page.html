@@ -233,7 +233,6 @@
       <span>{{ motivoNoConfirmar() }}</span>
     </div>
   }
-  <!-- Fila de propuestas -->
   <div class="action-buttons">
     <ion-button fill="clear" (click)="proponerFecha()">
       <ion-chip class="chip-intercambio"><p>📅</p><p><b>Fecha</b></p></ion-chip>
@@ -250,7 +249,6 @@
       </ion-button>
     }
   </div>
-  <!-- Fila de confirmar -->
   <div class="confirm-row">
     <ion-button expand="block" fill="clear" (click)="confirmar()"
                 [disabled]="!puedeConfirmar() || yoConfirme() || chat()?.completado">

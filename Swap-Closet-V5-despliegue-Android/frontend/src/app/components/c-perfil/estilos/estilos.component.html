@@ -6,26 +6,24 @@
   <ion-card-content>
     <div class="section">
       <div class="chip-group">
-        <ion-chip
-          class="chip-rosa"
-          *ngFor="let est of estilosSeleccionados">
+        <span class="chip-rosa" *ngFor="let est of estilosSeleccionados">
           {{ est }}
+          <button *ngIf="esMiPerfil" class="btn-close" (click)="eliminarEstilo(est)">
+            <ion-icon name="close-circle"></ion-icon>
+          </button>
+        </span>
 
-          @if (esMiPerfil) {
-            <ion-icon
-              name="close-circle"
-              class="icon-close"
-              (click)="eliminarEstilo(est)">
-            </ion-icon>
-          }
-        </ion-chip>
-
-        @if (esMiPerfil) {
-          <ion-chip class="chip-add" (click)="agregarEstilo()">
-            <ion-icon name="add-outline"></ion-icon>
-          </ion-chip>
-        }
+        <button *ngIf="esMiPerfil" class="chip-add" (click)="agregarEstilo()">
+          <ion-icon name="add-outline"></ion-icon>
+        </button>
       </div>
     </div>
   </ion-card-content>
 </ion-card>
+
+<ion-action-sheet
+  [isOpen]="asOpen"
+  [header]="asHeader"
+  [buttons]="asButtons"
+  (didDismiss)="asOpen = false">
+</ion-action-sheet>

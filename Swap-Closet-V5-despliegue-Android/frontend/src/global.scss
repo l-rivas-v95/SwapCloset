@@ -15,3 +15,117 @@
 ion-content {
   --padding-bottom: calc(90px + env(safe-area-inset-bottom));
 }
+
+/* ===================================================
+   FIX ANDROID WEBVIEW: ion-segment-button
+   Las CSS custom properties de Ionic cruzan el Shadow DOM.
+   Hay que ponerlas en global.scss sin scoping de Angular.
+   =================================================== */
+
+/* Base para todos los segment buttons */
+ion-segment-button {
+  --background: #ffffff;
+  --color: #7a7a7a;
+  --indicator-color: transparent;
+  --border-radius: 30px;
+}
+
+/* Publicar: Intercambio (singular) → rosa */
+ion-segment-button[value="intercambio"] {
+  --background-checked: #ffd6e0;
+  --color-checked: #ff3f84;
+}
+
+/* Publicar: Préstamo (singular) → azul */
+ion-segment-button[value="prestamo"] {
+  --background-checked: #d6e8ff;
+  --color-checked: #3f6bff;
+}
+
+/* Favoritos/Publicaciones: Intercambios (plural) → azul */
+ion-segment-button[value="intercambios"] {
+  --background-checked: #C6DFFF;
+  --color-checked: #3F42FF;
+}
+
+/* Favoritos/Publicaciones: Préstamos (plural) → rosa */
+ion-segment-button[value="prestamos"] {
+  --background-checked: #FFE2E3;
+  --color-checked: #FF3FBF;
+}
+
+/* Mensajes: Todos / Activos / Completados → rosa */
+ion-segment-button[value="todos"],
+ion-segment-button[value="Activos"],
+ion-segment-button[value="Completados"] {
+  --background-checked: #ffd6e0;
+  --color-checked: #ff3f84;
+}
+
+/* ===================================================
+   FIX ANDROID WEBVIEW: margen superior (safe area)
+   =================================================== */
+/* Ionic usa esta variable internamente para añadir el safe-area
+   al primer toolbar del header sin cortar el contenido */
+ion-app {
+  --ion-safe-area-top: env(safe-area-inset-top);
+  --ion-safe-area-bottom: env(safe-area-inset-bottom);
+}
+
+/* ===================================================
+   FIX ANDROID WEBVIEW: overflow:hidden en ion-header
+   recorta el searchbar del segundo toolbar.
+   =================================================== */
+ion-header {
+  overflow: visible !important;
+}
+
+/* ===================================================
+   REEMPLAZO ion-segment: div + button nativo
+   Sin Shadow DOM → CSS funciona directamente en Android
+   =================================================== */
+.botones-seleccion {
+  display: flex;
+  background: #f5f5f5;
+  border-radius: 30px;
+  padding: 4px;
+  gap: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.seg-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: #7a7a7a;
+  border-radius: 30px;
+  padding: 10px 4px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  font-family: inherit;
+}
+
+/* ── Custom modal overlay (reemplaza ion-modal en Android) ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+  display: flex;
+  align-items: flex-end;
+}
+
+.modal-sheet {
+  background: var(--ion-background-color, #fff);
+  width: 100%;
+  max-height: 92vh;
+  border-radius: 16px 16px 0 0;
+  overflow-y: auto;
+}
+
+.modal-sheet--half {
+  max-height: 55vh;
+}

@@ -1,0 +1,134 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button routerLink="/home">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Test Modales</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-list>
+
+    <ion-item>
+      <ion-label class="ion-text-wrap">
+        <b>A</b> — [isOpen] sin keepContentsMounted
+      </ion-label>
+      <ion-button slot="end" (click)="abrirA()">Abrir</ion-button>
+    </ion-item>
+
+    <ion-item>
+      <ion-label class="ion-text-wrap">
+        <b>B</b> — [isOpen] + keepContentsMounted
+      </ion-label>
+      <ion-button slot="end" (click)="abrirB()">Abrir</ion-button>
+    </ion-item>
+
+    <ion-item>
+      <ion-label class="ion-text-wrap">
+        <b>C</b> — ModalController sin injector
+      </ion-label>
+      <ion-button slot="end" (click)="abrirC()">Abrir</ion-button>
+    </ion-item>
+
+    <ion-item>
+      <ion-label class="ion-text-wrap">
+        <b>D</b> — ModalController + EnvironmentInjector
+      </ion-label>
+      <ion-button slot="end" (click)="abrirD()">Abrir</ion-button>
+    </ion-item>
+
+    <ion-item>
+      <ion-label class="ion-text-wrap">
+        <b>E</b> — ViewChild + present()
+      </ion-label>
+      <ion-button slot="end" (click)="abrirE()">Abrir</ion-button>
+    </ion-item>
+
+    <ion-item>
+      <ion-label class="ion-text-wrap">
+        <b>F</b> — Custom overlay (&#64;if + CSS)
+      </ion-label>
+      <ion-button slot="end" (click)="abrirF()">Abrir</ion-button>
+    </ion-item>
+
+  </ion-list>
+
+  <!-- Log de eventos -->
+  <ion-card>
+    <ion-card-header><ion-card-title>Log</ion-card-title></ion-card-header>
+    <ion-card-content>
+      <pre style="font-size:11px; white-space: pre-wrap;">{{ log || 'Pulsa un botón...' }}</pre>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
+
+<!-- ── A: [isOpen] sin keepContentsMounted ── -->
+<ion-modal [isOpen]="isOpen1" (didDismiss)="isOpen1 = false">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar color="success">
+        <ion-title>A — FUNCIONA ✅</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="isOpen1 = false">Cerrar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <h2>[isOpen] sin keepContentsMounted</h2>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<!-- ── B: [isOpen] + keepContentsMounted ── -->
+<ion-modal [isOpen]="isOpen2" keepContentsMounted="true" (didDismiss)="isOpen2 = false">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar color="warning">
+        <ion-title>B — FUNCIONA ✅</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="isOpen2 = false">Cerrar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <h2>[isOpen] + keepContentsMounted</h2>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<!-- ── E: ViewChild + present() ── -->
+<ion-modal #modal4ref>
+  <ng-template>
+    <ion-header>
+      <ion-toolbar color="tertiary">
+        <ion-title>E — FUNCIONA ✅</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="modal4ref.dismiss()">Cerrar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <h2>ViewChild + present()</h2>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<!-- ── F: Custom overlay (@if + CSS) ── -->
+@if (isOpen3) {
+  <div class="test-backdrop" (click)="isOpen3 = false">
+    <div class="test-sheet" (click)="$event.stopPropagation()">
+      <div class="test-sheet-header">
+        <b>F — FUNCIONA ✅</b>
+        <button (click)="isOpen3 = false">✕</button>
+      </div>
+      <div style="padding: 24px;">
+        <h2>Custom overlay (&#64;if + CSS)</h2>
+      </div>
+    </div>
+  </div>
+}

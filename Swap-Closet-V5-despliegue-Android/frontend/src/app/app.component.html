@@ -4,4 +4,12 @@
   <ion-footer>
     <app-menu-footer></app-menu-footer>
   </ion-footer>
+
+  @if (overlay.overlayConfig(); as config) {
+    <div class="modal-overlay" (click)="overlay.close(null)">
+      <div class="modal-sheet" (click)="$event.stopPropagation()">
+        <ng-container *ngComponentOutlet="config.component; inputs: config.inputs"></ng-container>
+      </div>
+    </div>
+  }
 </ion-app>

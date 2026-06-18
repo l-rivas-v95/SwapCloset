@@ -1,8 +1,9 @@
 import {Component, inject} from '@angular/core';
-import {IonicModule, ModalController} from "@ionic/angular";
+import {IonicModule} from "@ionic/angular";
 import {FormsModule} from "@angular/forms";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {CommonModule} from "@angular/common";
+import {OverlayService} from "../../service/overlay/overlay.service";
 
 @Component({
   selector: 'app-local-modal-component',
@@ -12,13 +13,12 @@ import {CommonModule} from "@angular/common";
   imports: [IonicModule, FormsModule, CommonModule]
 })
 export class LocalModalComponentComponent {
+  private overlayService = inject(OverlayService);
+  private sanitizer = inject(DomSanitizer);
 
   searchQuery = '';
   mapUrl: SafeResourceUrl | null = null;
   buscado = false;
-
-  private modalCtrl = inject(ModalController);
-  private sanitizer = inject(DomSanitizer);
 
   buscar() {
     if (!this.searchQuery.trim()) return;
@@ -27,13 +27,9 @@ export class LocalModalComponentComponent {
     this.buscado = true;
   }
 
-  dismiss() {
-    this.modalCtrl.dismiss(null);
-  }
+  dismiss() { this.overlayService.close(null); }
 
   confirm() {
-    if (this.searchQuery.trim()) {
-      this.modalCtrl.dismiss(this.searchQuery.trim());
-    }
+    if (this.searchQuery.trim()) { this.overlayService.close(this.searchQuery.trim()); }
   }
 }

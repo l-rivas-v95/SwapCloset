@@ -1,5 +1,5 @@
 import {Component, inject, OnDestroy, OnInit, signal, ViewChild} from '@angular/core';
-import {IonicModule, IonContent, ModalController} from "@ionic/angular";
+import {IonicModule, IonContent} from "@ionic/angular";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {DateModalComponentComponent} from "../../components/date-modal-component/date-modal-component.component";
 import {LocalModalComponentComponent} from "../../components/local-modal-component/local-modal-component.component";
@@ -15,6 +15,7 @@ import {AuthService} from "../../service/authService/auth.service";
 import {UsuarioService} from "../../service/usuarioService/usuario.service";
 import {ProductoService} from "../../service/productoService/producto.service";
 import {NotificacionService} from "../../service/notificacionService/notificacion.service";
+import {OverlayService} from "../../service/overlay/overlay.service";
 
 import {ChatDTO} from "../../modelos/ChatDTO";
 import {MensajeDTO} from "../../modelos/MensajeDTO";
@@ -26,8 +27,7 @@ import {ProductoDTO} from "../../modelos/ProductoDTO";
   templateUrl: './mensajes.page.html',
   styleUrls: ['./mensajes.page.scss'],
   standalone: true,
-  imports: [IonicModule, RouterLink, FormsModule, CommonModule, DatePipe,
-            DateModalComponentComponent, LocalModalComponentComponent, ProductoPickerModalComponent]
+  imports: [IonicModule, RouterLink, FormsModule, CommonModule, DatePipe]
 })
 export class MensajesPage implements OnInit, OnDestroy {
 
@@ -52,9 +52,9 @@ export class MensajesPage implements OnInit, OnDestroy {
   private authService = inject(AuthService);
   private usuarioService = inject(UsuarioService);
   private productoService = inject(ProductoService);
-  private modalCtrl = inject(ModalController);
   private sanitizer = inject(DomSanitizer);
   private notificaciones = inject(NotificacionService);
+  private overlayService = inject(OverlayService);
 
   ngOnInit() {
     const usuario = this.authService.getUsuario();
@@ -65,13 +65,11 @@ export class MensajesPage implements OnInit, OnDestroy {
     this.chatId = Number(this.route.snapshot.paramMap.get('id'));
     this.cargarChat(this.chatId);
 
-    // Polling cada 5s para ver cambios del otro usuario
     this.pollSub = interval(5000).subscribe(() => {
       this.mensajeService.getMensajesByChat(this.chatId).subscribe(msgs => {
         this.mensajes.set(msgs);
       });
       this.chatService.getChat(this.chatId).subscribe(c => this.chat.set(c));
-      // Mantener mensajes como leídos mientras se está en la conversación
       this.mensajeService.marcarLeidos(this.chatId, this.miUsuarioId).subscribe();
     });
   }
@@ -81,7 +79,6 @@ export class MensajesPage implements OnInit, OnDestroy {
   }
 
   cargarChat(chatId: number) {
-    // Marcar mensajes como leídos al entrar y actualizar badge inmediatamente
     this.mensajeService.marcarLeidos(chatId, this.miUsuarioId).subscribe({
       next: () => this.notificaciones.refrescar()
     });
@@ -89,14 +86,11 @@ export class MensajesPage implements OnInit, OnDestroy {
     this.chatService.getChat(chatId).subscribe({
       next: (chat) => {
         this.chat.set(chat);
-
         const otroId = chat.usuario1Id === this.miUsuarioId ? chat.usuario2Id! : chat.usuario1Id!;
         this.usuarioService.getCartaUsuarios(otroId).subscribe(u => this.otroUsuario.set(u));
-
         if (chat.producto1Id) {
           this.productoService.getProducto(chat.producto1Id).subscribe(p => this.producto.set(p));
         }
-
         this.cargarMensajes(chatId);
       },
       error: (err) => console.error('Error cargando chat:', err)
@@ -107,7 +101,6 @@ export class MensajesPage implements OnInit, OnDestroy {
     this.mensajeService.getMensajesByChat(chatId).subscribe({
       next: (msgs) => {
         this.mensajes.set(msgs);
-        // Precargar imágenes de prendas propuestas
         msgs.filter(m => m.tipo === 'PRODUCTO' && m.contenido).forEach(m => {
           const id = Number(m.contenido);
           if (!this.productosImgCache.has(id)) {
@@ -130,78 +123,43 @@ export class MensajesPage implements OnInit, OnDestroy {
   enviarMensaje() {
     const texto = this.nuevoMensaje.trim();
     if (!texto || !this.chat()?.id) return;
-
     const msg: MensajeDTO = {
       idChat: this.chat()!.id,
       contenido: texto,
       idRemitente: this.miUsuarioId,
       tipo: 'TEXTO'
     };
-
     this.mensajeService.enviar(msg).subscribe({
-      next: () => {
-        this.nuevoMensaje = '';
-        this.cargarMensajes(this.chat()!.id!);
-      }
+      next: () => { this.nuevoMensaje = ''; this.cargarMensajes(this.chat()!.id!); }
     });
   }
 
-  async proponerFecha() {
-    const modal = await this.modalCtrl.create({
-      component: DateModalComponentComponent,
-      breakpoints: [0, 1],
-      initialBreakpoint: 1
+  proponerFecha() {
+    this.overlayService.open(DateModalComponentComponent, {}, (data) => {
+      if (data) this.enviarPropuesta('FECHA', data);
     });
-    await modal.present();
-    const { data } = await modal.onWillDismiss();
-    if (data) {
-      this.enviarPropuesta('FECHA', data);
-    }
   }
 
-  async proponerLugar() {
-    const modal = await this.modalCtrl.create({
-      component: LocalModalComponentComponent,
-      breakpoints: [0, 1],
-      initialBreakpoint: 1
+  proponerLugar() {
+    this.overlayService.open(LocalModalComponentComponent, {}, (data) => {
+      if (data) this.enviarPropuesta('UBICACION', data);
     });
-    await modal.present();
-    const { data } = await modal.onWillDismiss();
-    if (data) {
-      this.enviarPropuesta('UBICACION', data);
-    }
   }
 
-  async proponerEntrega() {
-    const modal = await this.modalCtrl.create({
-      component: DateModalComponentComponent,
-      breakpoints: [0, 1],
-      initialBreakpoint: 1
+  proponerEntrega() {
+    this.overlayService.open(DateModalComponentComponent, {}, (data) => {
+      if (data) this.enviarPropuesta('FECHA_DEVOLUCION', data);
     });
-    await modal.present();
-    const { data } = await modal.onWillDismiss();
-    if (data) {
-      this.enviarPropuesta('FECHA_DEVOLUCION', data);
-    }
   }
 
-  async proponerPrenda() {
-    const otroId = this.chat()?.usuario1Id; // el que contactó, sus prendas
+  proponerPrenda() {
+    const otroId = this.chat()?.usuario1Id;
     if (!otroId) return;
-    const modal = await this.modalCtrl.create({
-      component: ProductoPickerModalComponent,
-      componentProps: { usuarioId: otroId },
-      breakpoints: [0, 1],
-      initialBreakpoint: 1
+    this.overlayService.open(ProductoPickerModalComponent, { usuarioId: otroId }, (data) => {
+      if (data?.id) this.enviarPropuesta('PRODUCTO', String(data.id));
     });
-    await modal.present();
-    const { data } = await modal.onWillDismiss();
-    if (data?.id) {
-      this.enviarPropuesta('PRODUCTO', String(data.id));
-    }
   }
 
-  // El propietario del producto es usuario2 (el que recibe el contacto)
   esPropietario(): boolean {
     return this.miUsuarioId === this.chat()?.usuario2Id;
   }
@@ -238,7 +196,6 @@ export class MensajesPage implements OnInit, OnDestroy {
     const chatId = this.chat()?.id;
     if (!chatId || !this.puedeConfirmar()) return;
 
-    // Enviar mensaje de notificación al otro usuario
     const aviso: MensajeDTO = {
       idChat: chatId,
       contenido: `✅ ${this.miNombre} ha confirmado el intercambio. ¡Confírmalo tú también para completarlo!`,
@@ -272,68 +229,42 @@ export class MensajesPage implements OnInit, OnDestroy {
     return msg.idRemitente === this.miUsuarioId;
   }
 
-  esPropuestaPendiente(msg: MensajeDTO): boolean {
-    return (msg.tipo === 'FECHA' || msg.tipo === 'UBICACION' || msg.tipo === 'PRODUCTO')
-      && (msg.aceptado === null || msg.aceptado === undefined);
-  }
-
-  // Solo editable si es mío y está pendiente (aceptado === null)
   puedeEditar(msg: MensajeDTO): boolean {
     return this.esMio(msg) && msg.aceptado == null &&
       (msg.tipo === 'FECHA' || msg.tipo === 'FECHA_DEVOLUCION' || msg.tipo === 'UBICACION' || msg.tipo === 'PRODUCTO');
   }
 
-  // Editar: abre el modal correspondiente y sobreescribe el mensaje existente
-  async editar(msg: MensajeDTO) {
+  editar(msg: MensajeDTO) {
     if (!msg.id) return;
-    let nuevoContenido: string | null = null;
+    const editId = msg.id;
+    const editMsg = { ...msg };
+
+    const guardar = (nuevoContenido: string) => {
+      const actualizado: MensajeDTO = { ...editMsg, contenido: nuevoContenido };
+      this.mensajeService.actualizar(editId, actualizado).subscribe({
+        next: () => this.cargarMensajes(this.chat()!.id!)
+      });
+    };
 
     switch (msg.tipo) {
       case 'FECHA':
-      case 'FECHA_DEVOLUCION': {
-        const modal = await this.modalCtrl.create({
-          component: DateModalComponentComponent,
-          breakpoints: [0, 1], initialBreakpoint: 1
-        });
-        await modal.present();
-        const { data } = await modal.onWillDismiss();
-        nuevoContenido = data ?? null;
+      case 'FECHA_DEVOLUCION':
+        this.overlayService.open(DateModalComponentComponent, {}, (data) => { if (data) guardar(data); });
         break;
-      }
-      case 'UBICACION': {
-        const modal = await this.modalCtrl.create({
-          component: LocalModalComponentComponent,
-          breakpoints: [0, 1], initialBreakpoint: 1
-        });
-        await modal.present();
-        const { data } = await modal.onWillDismiss();
-        nuevoContenido = data ?? null;
+      case 'UBICACION':
+        this.overlayService.open(LocalModalComponentComponent, {}, (data) => { if (data) guardar(data); });
         break;
-      }
       case 'PRODUCTO': {
         const otroId = this.chat()?.usuario1Id;
         if (!otroId) return;
-        const modal = await this.modalCtrl.create({
-          component: ProductoPickerModalComponent,
-          componentProps: { usuarioId: otroId },
-          breakpoints: [0, 1], initialBreakpoint: 1
+        this.overlayService.open(ProductoPickerModalComponent, { usuarioId: otroId }, (data) => {
+          if (data?.id) guardar(String(data.id));
         });
-        await modal.present();
-        const { data } = await modal.onWillDismiss();
-        nuevoContenido = data?.id ? String(data.id) : null;
         break;
       }
     }
-
-    if (!nuevoContenido) return;
-    const actualizado: MensajeDTO = { ...msg, contenido: nuevoContenido };
-    this.mensajeService.actualizar(msg.id, actualizado).subscribe({
-      next: () => this.cargarMensajes(this.chat()!.id!)
-    });
   }
 
-  // Los botones aparecen cuando AMBOS tipos han sido propuestos alguna vez,
-  // independientemente de si alguno fue ya aceptado/rechazado (para no bloquear rerropuestas)
   puedeResponderPropuesta(): boolean {
     const msgs = this.mensajes();
     return msgs.some(m => m.tipo === 'FECHA') && msgs.some(m => m.tipo === 'UBICACION');
@@ -341,10 +272,10 @@ export class MensajesPage implements OnInit, OnDestroy {
 
   puedeConfirmar(): boolean {
     const msgs = this.mensajes();
-    const fechaOk    = msgs.some(m => m.tipo === 'FECHA' && m.aceptado === true);
-    const lugarOk    = msgs.some(m => m.tipo === 'UBICACION' && m.aceptado === true);
-    const entregaOk  = msgs.some(m => m.tipo === 'FECHA_DEVOLUCION' && m.aceptado === true);
-    const prendaOk   = !this.esIntercambio() || msgs.some(m => m.tipo === 'PRODUCTO' && m.aceptado === true);
+    const fechaOk   = msgs.some(m => m.tipo === 'FECHA' && m.aceptado === true);
+    const lugarOk   = msgs.some(m => m.tipo === 'UBICACION' && m.aceptado === true);
+    const entregaOk = msgs.some(m => m.tipo === 'FECHA_DEVOLUCION' && m.aceptado === true);
+    const prendaOk  = !this.esIntercambio() || msgs.some(m => m.tipo === 'PRODUCTO' && m.aceptado === true);
     return fechaOk && lugarOk && entregaOk && prendaOk;
   }
 

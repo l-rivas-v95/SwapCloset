@@ -1,7 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import {
-  ActionSheetController,
-  AlertController,
   IonicModule,
   ToastController
 } from '@ionic/angular';
@@ -37,12 +35,18 @@ export class AnuncioPage implements OnInit {
 
   idProducto!: string;
 
+  // Declarative overlay state
+  asOpen = false;
+  asButtons: any[] = [];
+  alertOpen = false;
+  alertHeader = '';
+  alertMessage = '';
+  alertButtons: any[] = [];
+
   private route = inject(ActivatedRoute);
   private productoService = inject(ProductoService);
   private usuarioService = inject(UsuarioService);
   private authService = inject(AuthService);
-  private actionSheetCtrl = inject(ActionSheetController);
-  private alertCtrl = inject(AlertController);
   private router = inject(Router);
   private location = inject(Location);
   private toastCtrl = inject(ToastController);
@@ -92,50 +96,26 @@ export class AnuncioPage implements OnInit {
     this.location.back();
   }
 
-  async mostrarOpciones() {
+  mostrarOpciones() {
     if (this.producto()?.idUsuario !== this.idUsuarioLogueado) return;
 
-    const sheet = await this.actionSheetCtrl.create({
-      header: 'Opciones del Anuncio',
-      buttons: [
-        {
-          text: 'Editar',
-          icon: 'create-outline',
-          handler: () => this.modoEdicion.set(true)
-        },
-        {
-          text: 'Desactivar',
-          icon: 'archive-outline',
-          handler: () => this.confirmarDesactivacion()
-        },
-        {
-          text: 'Eliminar',
-          role: 'destructive',
-          icon: 'trash-outline',
-          handler: () => this.confirmarEliminacion()
-        },
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          icon: 'close'
-        }
-      ]
-    });
-
-    await sheet.present();
+    this.asButtons = [
+      { text: 'Editar', icon: 'create-outline', handler: () => this.modoEdicion.set(true) },
+      { text: 'Desactivar', icon: 'archive-outline', handler: () => this.confirmarDesactivacion() },
+      { text: 'Eliminar', role: 'destructive', icon: 'trash-outline', handler: () => this.confirmarEliminacion() },
+      { text: 'Cancelar', role: 'cancel', icon: 'close' }
+    ];
+    this.asOpen = true;
   }
 
-  async confirmarDesactivacion() {
-    const alert = await this.alertCtrl.create({
-      header: 'Desactivar anuncio',
-      message: 'El anuncio dejará de aparecer como activo, pero no se eliminará. ¿Quieres continuar?',
-      buttons: [
-        { text: 'Cancelar', role: 'cancel' },
-        { text: 'Desactivar', handler: () => this.desactivarAnuncio() }
-      ]
-    });
-
-    await alert.present();
+  confirmarDesactivacion() {
+    this.alertHeader = 'Desactivar anuncio';
+    this.alertMessage = 'El anuncio dejará de aparecer como activo, pero no se eliminará. ¿Quieres continuar?';
+    this.alertButtons = [
+      { text: 'Cancelar', role: 'cancel' },
+      { text: 'Desactivar', handler: () => this.desactivarAnuncio() }
+    ];
+    this.alertOpen = true;
   }
 
   desactivarAnuncio() {
@@ -157,17 +137,14 @@ export class AnuncioPage implements OnInit {
     });
   }
 
-  async confirmarEliminacion() {
-    const alert = await this.alertCtrl.create({
-      header: 'Confirmar Eliminación',
-      message: '¿Seguro que deseas eliminar este anuncio?',
-      buttons: [
-        { text: 'Cancelar', role: 'cancel' },
-        { text: 'Eliminar', handler: () => this.eliminarAnuncio() }
-      ]
-    });
-
-    await alert.present();
+  confirmarEliminacion() {
+    this.alertHeader = 'Confirmar Eliminación';
+    this.alertMessage = '¿Seguro que deseas eliminar este anuncio?';
+    this.alertButtons = [
+      { text: 'Cancelar', role: 'cancel' },
+      { text: 'Eliminar', handler: () => this.eliminarAnuncio() }
+    ];
+    this.alertOpen = true;
   }
 
   eliminarAnuncio() {

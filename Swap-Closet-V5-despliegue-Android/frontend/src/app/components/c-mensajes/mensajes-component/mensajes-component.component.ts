@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {AlertController, IonicModule, ModalController} from "@ionic/angular";
+import {IonicModule} from "@ionic/angular";
 import {FormsModule} from "@angular/forms";
 import {DateModalComponentComponent} from "../../date-modal-component/date-modal-component.component";
 import {LocalModalComponentComponent} from "../../local-modal-component/local-modal-component.component";
@@ -15,6 +15,8 @@ import {MensajeUbicacionComponent} from "../mensaje-ubicacion/mensaje-ubicacion.
   imports: [
     IonicModule,
     FormsModule,
+    DateModalComponentComponent,
+    LocalModalComponentComponent,
     CartaChatProductoComponent,
     MensajeFechaComponent,
     MensajeUbicacionComponent
@@ -29,63 +31,46 @@ export class MensajesComponentComponent  implements OnInit {
   selectedLocation: string = '';
   isConfirmed: boolean = false;
 
-  constructor(
-    // eslint-disable-next-line @angular-eslint/prefer-inject
-    private modalCtrl: ModalController,
-    // eslint-disable-next-line @angular-eslint/prefer-inject
-    private alertCtrl: AlertController
-  ) {}
+  // Declarative overlay state
+  showDateModal = false;
+  showLocationModal = false;
+  alertOpen = false;
+  alertHeader = '';
+  alertMessage = '';
+  alertButtons: any[] = [];
 
-  async proposeDate() {
-    const modal = await this.modalCtrl.create({
-      component: DateModalComponentComponent,
-      componentProps: {
-        currentDate: this.selectedDate
-      }
-    });
-
-    modal.onDidDismiss().then((result) => {
-      if (result.data) {
-        this.selectedDate = this.formatDate(result.data);
-      }
-    });
-
-    await modal.present();
+  proposeDate() {
+    this.showDateModal = true;
   }
 
-  async proposeLocation() {
-    const modal = await this.modalCtrl.create({
-      component: LocalModalComponentComponent
-    });
-
-    modal.onDidDismiss().then((result) => {
-      if (result.data) {
-        this.selectedLocation = result.data;
-      }
-    });
-
-    await modal.present();
+  onDateDismiss(event: CustomEvent) {
+    this.showDateModal = false;
+    const data = (event as any).detail?.data;
+    if (data) {
+      this.selectedDate = this.formatDate(data);
+    }
   }
 
-  async confirmExchange() {
-    const alert = await this.alertCtrl.create({
-      header: 'Confirmar intercambio',
-      message: '¿Estás seguro de que quieres confirmar el intercambio?',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel'
-        },
-        {
-          text: 'Confirmar',
-          handler: () => {
-            this.isConfirmed = true;
-          }
-        }
-      ]
-    });
+  proposeLocation() {
+    this.showLocationModal = true;
+  }
 
-    await alert.present();
+  onLocationDismiss(event: CustomEvent) {
+    this.showLocationModal = false;
+    const data = (event as any).detail?.data;
+    if (data) {
+      this.selectedLocation = data;
+    }
+  }
+
+  confirmExchange() {
+    this.alertHeader = 'Confirmar intercambio';
+    this.alertMessage = '¿Estás seguro de que quieres confirmar el intercambio?';
+    this.alertButtons = [
+      { text: 'Cancelar', role: 'cancel' },
+      { text: 'Confirmar', handler: () => { this.isConfirmed = true; } }
+    ];
+    this.alertOpen = true;
   }
 
   sendMessage() {

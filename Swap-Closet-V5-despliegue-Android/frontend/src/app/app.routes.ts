@@ -14,6 +14,7 @@ import {RegistroPage} from "./pages/registro/registro.page";
 import {AnimacionInicioPage} from "./pages/animacion-inicio/animacion-inicio.page";
 import {MensajesPage} from "./pages/mensajes/mensajes.page";
 import {ConfirmacionIntercambioPage} from "./pages/confirmacion-intercambio/confirmacion-intercambio.page";
+import {TestModalPage} from "./pages/test-modal/test-modal.page";
 
 export const routes: Routes = [
   {path: '', redirectTo: 'animacion-inicio', pathMatch: 'full'},
@@ -37,5 +38,6 @@ export const routes: Routes = [
   {path: 'confirmacion-intercambio/:id', component: ConfirmacionIntercambioPage},
   {path: 'anuncio-prestamo/:id', redirectTo: 'anuncio/:id', pathMatch: 'full'},
   {path: 'anuncio-intercambio/:id', redirectTo: 'anuncio/:id', pathMatch: 'full'},
-  {path: 'perfil-otro/:id', redirectTo: 'perfil/:id', pathMatch: 'full'}
+  {path: 'perfil-otro/:id', redirectTo: 'perfil/:id', pathMatch: 'full'},
+  {path: 'test-modal', component: TestModalPage}
 ];

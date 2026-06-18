@@ -5,17 +5,16 @@
 
       <ion-row>
         <ion-col>
-          <ion-segment class="botones-seleccion" value="intercambio" (ionChange)="onTipoOfertaChange($event)">
-
-            <ion-segment-button value="intercambio">
-              <ion-label class="fuente"><h2><b>Intercambio</b></h2></ion-label>
-            </ion-segment-button>
-
-            <ion-segment-button value="prestamo">
-              <ion-label class="fuente"><h2><b>Préstamo</b></h2></ion-label>
-            </ion-segment-button>
-
-          </ion-segment>
+          <div class="botones-seleccion">
+            <button class="seg-btn fuente"
+              [style.background]="tipoOferta === 'intercambio' ? '#ffd6e0' : 'transparent'"
+              [style.color]="tipoOferta === 'intercambio' ? '#ff3f84' : '#7a7a7a'"
+              (click)="seleccionarTipo('intercambio')"><b>Intercambio</b></button>
+            <button class="seg-btn fuente"
+              [style.background]="tipoOferta === 'prestamo' ? '#d6e8ff' : 'transparent'"
+              [style.color]="tipoOferta === 'prestamo' ? '#3f6bff' : '#7a7a7a'"
+              (click)="seleccionarTipo('prestamo')"><b>Préstamo</b></button>
+          </div>
         </ion-col>
       </ion-row>
 

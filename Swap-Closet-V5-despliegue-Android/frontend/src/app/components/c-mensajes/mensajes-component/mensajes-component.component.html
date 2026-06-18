@@ -168,6 +168,29 @@
     </ion-toolbar>
   </ion-footer>
 
+
+  <ion-modal [isOpen]="showDateModal" [breakpoints]="[0,1]" [initialBreakpoint]="1"
+    (willDismiss)="onDateDismiss($event)">
+    <ng-template>
+      <app-date-modal-component></app-date-modal-component>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal [isOpen]="showLocationModal" [breakpoints]="[0,1]" [initialBreakpoint]="1"
+    (willDismiss)="onLocationDismiss($event)">
+    <ng-template>
+      <app-local-modal-component></app-local-modal-component>
+    </ng-template>
+  </ion-modal>
+
+  <ion-alert
+    [isOpen]="alertOpen"
+    [header]="alertHeader"
+    [message]="alertMessage"
+    [buttons]="alertButtons"
+    (didDismiss)="alertOpen = false">
+  </ion-alert>
+
 </ion-content>
 
 

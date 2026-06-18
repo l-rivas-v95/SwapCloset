@@ -1,4 +1,5 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, inject, input, signal, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import {
   AsyncPipe,
@@ -67,13 +68,30 @@ export class CartaHomeIntercambioComponent {
   private authService = inject(AuthService);
   private favoritosService = inject(FavoritosService);
   private toastCtrl = inject(ToastController);
+  private destroyRef = inject(DestroyRef);
 
-  // ID del usuario logeado (se establece en ngOnInit)
+  // ID del usuario logeado
   currentUserId: number | null = null;
 
   ngOnInit(): void {
-    this.currentUserId = this.authService.getUsuario()?.id ?? null;
-    this.checkInitialFavoriteState();
+    // Suscribirse al observable para que funcione aunque el usuario
+    // cargue tarde (race condition en Android WebView).
+    // BehaviorSubject emite el valor actual de forma síncrona al suscribirse.
+    this.authService.usuarioActual$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(usuario => {
+        const prevId = this.currentUserId;
+        this.currentUserId = usuario?.id ?? null;
+        // Comprobar favoritos la primera vez que tengamos userId
+        if (!prevId && this.currentUserId) {
+          this.checkInitialFavoriteState();
+        }
+      });
+
+    // Si ya estaba cargado (caso normal), checkear favoritos ahora
+    if (this.currentUserId) {
+      this.checkInitialFavoriteState();
+    }
   }
 
   getImagenProducto(): string {

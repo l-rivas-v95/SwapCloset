@@ -32,26 +32,22 @@
   margin-bottom: 10px;
 }
 
-ion-segment-button {
-  height: 100%;
-  --background: #f0f0f0;   /* gris por defecto */
+/* Fix Android WebView: ::ng-deep para que las CSS vars crucen el Shadow DOM */
+::ng-deep .botones-seleccion ion-segment-button {
+  --background: #f0f0f0;
   --color: #888888;
   --border-radius: 15px;
-  border-radius: 15px;
-  margin: 0 5px;
-  --indicator-color: transparent;  /* ocultar indicator */
+  --indicator-color: transparent;
 }
 
-/* Intercambio seleccionado */
-ion-segment-button[value="intercambio"] {
-  --color-checked: #ff3f84;
+::ng-deep .botones-seleccion ion-segment-button[value="intercambio"] {
   --background-checked: #ffd6e0;
+  --color-checked: #ff3f84;
 }
 
-/* Préstamo seleccionado */
-ion-segment-button[value="prestamo"] {
-  --color-checked: #3f6bff;
+::ng-deep .botones-seleccion ion-segment-button[value="prestamo"] {
   --background-checked: #d6e8ff;
+  --color-checked: #3f6bff;
 }
 
 .btn-fecha{

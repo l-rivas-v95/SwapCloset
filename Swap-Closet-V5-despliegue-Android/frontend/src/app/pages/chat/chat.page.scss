@@ -51,7 +51,6 @@ ion-icon{
 .bordes-redondeados {
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
-  overflow: hidden; /* 🔥 Esto oculta los bordes rectos internos */
 }
 
 .fondo{
@@ -75,43 +74,12 @@ ion-icon{
   height: 5vh;
 }
 
-/* Fuerza el estilo del botón activo */
-ion-segment-button.segment-button-checked {
-  --background: #ffd6e0;
-  --color:  #ff3f84; /* texto blanco */
-  --indicator-color: transparent;
-  border-radius: 30px;
-}
-
-/* Estilo específico para la parte interna */
-ion-segment-button.segment-button-checked::part(native) {
-  background: #ffd6e0 !important;
-  --color:  #ff3f84 !important;
-  color: white !important;
-  border-radius: 30px !important;
-  overflow: hidden;
-}
-
-/* Botones no activos */
-ion-segment-button {
+/* Fix Android WebView: usar CSS vars de Ionic en lugar de .segment-button-checked / ::part(native) */
+::ng-deep .botones-seleccion ion-segment-button {
   --background: #ffffff;
   --color: #888888;
-  border-radius: 30px;
-  --border-width: 0;
-  --border-style: none;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-ion-segment-button.segment-button-checked {
-  background: #ffd6e0 !important;
-  color: white !important;
-  border-radius: 30px !important;
-  overflow: hidden;
-}
-
-/* Aplica también al ion-label dentro */
-ion-segment-button.segment-button-checked ion-label,
-ion-segment-button.segment-button-checked p {
-  color: #ff3f84 !important;
+  --background-checked: #ffd6e0;
+  --color-checked: #ff3f84;
+  --indicator-color: transparent;
+  --border-radius: 30px;
 }

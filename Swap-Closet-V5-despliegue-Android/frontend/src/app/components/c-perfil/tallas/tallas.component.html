@@ -7,33 +7,40 @@
     <div class="tallas-container">
       <div class="talla-item">
         <p>Camiseta</p>
-        <ion-chip
+        <button
           class="talla-chip"
           [class.talla-chip-editable]="esMiPerfil"
           (click)="elegirTalla('tCamiseta')">
-          {{ usuario()?.tCamiseta }}
-        </ion-chip>
+          {{ usuario()?.tCamiseta || '–' }}
+        </button>
       </div>
 
       <div class="talla-item">
         <p>Pantalón</p>
-        <ion-chip
+        <button
           class="talla-chip"
           [class.talla-chip-editable]="esMiPerfil"
           (click)="elegirTalla('tPantalon')">
-          {{ usuario()?.tPantalon }}
-        </ion-chip>
+          {{ usuario()?.tPantalon || '–' }}
+        </button>
       </div>
 
       <div class="talla-item">
         <p>Calzado</p>
-        <ion-chip
+        <button
           class="talla-chip"
           [class.talla-chip-editable]="esMiPerfil"
           (click)="elegirTalla('tCalzado')">
-          {{ usuario()?.tCalzado }}
-        </ion-chip>
+          {{ usuario()?.tCalzado || '–' }}
+        </button>
       </div>
     </div>
   </ion-card-content>
 </ion-card>
+
+<ion-action-sheet
+  [isOpen]="asOpen"
+  [header]="asHeader"
+  [buttons]="asButtons"
+  (didDismiss)="asOpen = false">
+</ion-action-sheet>

@@ -52,6 +52,21 @@
 
 </ion-content>
 
+<ion-action-sheet
+  [isOpen]="asOpen"
+  header="Opciones del Anuncio"
+  [buttons]="asButtons"
+  (didDismiss)="asOpen = false">
+</ion-action-sheet>
+
+<ion-alert
+  [isOpen]="alertOpen"
+  [header]="alertHeader"
+  [message]="alertMessage"
+  [buttons]="alertButtons"
+  (didDismiss)="alertOpen = false">
+</ion-alert>
+
 @if (!modoEdicion() && usuario()?.id !== idUsuarioLogueado) {
   <ion-footer>
     <app-btn-contactar

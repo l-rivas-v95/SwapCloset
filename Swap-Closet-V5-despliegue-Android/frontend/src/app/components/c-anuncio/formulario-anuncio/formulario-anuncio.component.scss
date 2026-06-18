@@ -19,9 +19,31 @@
   position: absolute;
   bottom: 8px;
   left: 8px;
-  --background: #FFE2E3;
-  --color: #FF3FBF;
   box-shadow: 0 2px 8px rgba(96, 95, 95, 0.5);
+}
+
+/* Plain button/span chip base */
+.chip-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: none;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.btn-close-chip {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  color: inherit;
+  font-size: 16px;
 }
 
 .producto-imagen {
@@ -196,16 +218,14 @@
 }
 
 .chip-rosa {
-  --background: #FFE2E3;
-  --color: #FF3FBF;
+  background: #FFE2E3;
+  color: #FF3FBF;
   box-shadow: 0 2px 8px rgba(96, 95, 95, 0.5);
-  gap: 1rem;
 }
-.chip-azul{
-  --background: #c6dfff;
-  --color: #5056FF;
+.chip-azul {
+  background: #c6dfff;
+  color: #5056FF;
   box-shadow: 0 2px 8px rgba(96, 95, 95, 0.5);
-  margin: 10px;
 }
 
 .fecha-date{
@@ -321,18 +341,18 @@
 .chip-camara {
   display: flex;
   justify-content: center;
-  justify-items: center;
   align-items: center;
-  align-content: center;
   position: absolute;
   bottom: 5px;
   right: 0;
-  --background: #F45097;
-  --color: #fff;
+  background: #F45097;
+  color: #fff;
   font-size: 18px;
   height: 32px;
   padding: 0 10px;
   border-radius: 20px;
+  border: none;
+  cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 

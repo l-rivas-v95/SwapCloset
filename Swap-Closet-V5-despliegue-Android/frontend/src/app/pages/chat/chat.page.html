@@ -16,18 +16,20 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-          <ion-segment class="botones-seleccion" [value]="segmento()"
-            (ionChange)="segmento.set($event.detail.value + '')">
-            <ion-segment-button value="todos">
-              <ion-label><p class="fuente"><b>Todos</b></p></ion-label>
-            </ion-segment-button>
-            <ion-segment-button value="Activos">
-              <ion-label><p class="fuente"><b>Activos</b></p></ion-label>
-            </ion-segment-button>
-            <ion-segment-button value="Completados">
-              <ion-label><p class="fuente"><b>Listos</b></p></ion-label>
-            </ion-segment-button>
-          </ion-segment>
+          <div class="botones-seleccion">
+            <button class="seg-btn"
+              [style.background]="segmento() === 'todos' ? '#ffd6e0' : 'transparent'"
+              [style.color]="segmento() === 'todos' ? '#ff3f84' : '#7a7a7a'"
+              (click)="segmento.set('todos')">Todos</button>
+            <button class="seg-btn"
+              [style.background]="segmento() === 'Activos' ? '#ffd6e0' : 'transparent'"
+              [style.color]="segmento() === 'Activos' ? '#ff3f84' : '#7a7a7a'"
+              (click)="segmento.set('Activos')">Activos</button>
+            <button class="seg-btn"
+              [style.background]="segmento() === 'Completados' ? '#ffd6e0' : 'transparent'"
+              [style.color]="segmento() === 'Completados' ? '#ff3f84' : '#7a7a7a'"
+              (click)="segmento.set('Completados')">Listos</button>
+          </div>
         </ion-col>
       </ion-row>
 

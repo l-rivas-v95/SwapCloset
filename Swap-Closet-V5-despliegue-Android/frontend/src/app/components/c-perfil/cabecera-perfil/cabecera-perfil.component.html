@@ -2,18 +2,14 @@
   <div class="perfil-header">
     <div class="perfil-foto-container">
       <img [src]="usuario()?.urlImg || 'assets/icon/card-media.png'" alt="Foto de perfil" class="perfil-foto" />
-
       @if (esMiPerfil) {
-        <ion-chip class="chip-camara" (click)="cambiarFoto()">
+        <button class="chip-camara" (click)="cambiarFoto()">
           <ion-icon color="white" name="camera-outline"></ion-icon>
-        </ion-chip>
+        </button>
       }
     </div>
-
     <h2 class="perfil-nombre">{{usuario()?.nombre}} {{usuario()?.apellidos}}</h2>
-    <p class="perfil-descripcion">
-      {{usuario()?.descripcion}}
-    </p>
+    <p class="perfil-descripcion">{{usuario()?.descripcion}}</p>
     <p class="perfil-ubicacion">
       <ion-icon name="location-outline"></ion-icon>
       {{usuario()?.direccion}}
@@ -68,14 +64,11 @@
       @if (!esMiPerfil) {
         <div class="caja-boton">
           <ion-button
-            fill="clear"
-            expand="block"
+            fill="clear" expand="block"
             [class]="isFollowing() ? 'btn-seguido' : 'btn-publicar'"
             (click)="toggleFollow()">
             <b>{{ isFollowing() ? 'Dejar de seguir' : 'Seguir' }}</b>
-            <ion-icon
-              class="margen-left"
-              slot="end"
+            <ion-icon class="margen-left" slot="end"
               [name]="isFollowing() ? 'person-remove-outline' : 'person-add-outline'">
             </ion-icon>
           </ion-button>

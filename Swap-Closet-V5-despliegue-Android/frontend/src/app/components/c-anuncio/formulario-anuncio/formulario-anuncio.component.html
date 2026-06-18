@@ -6,17 +6,15 @@
           <ion-row>
             <div class="imagen-container">
               <img [src]="getImagenEdicion()" (error)="onImgError($event)" alt="Imagen del producto" class="producto-imagen"/>
-
-              <ion-chip class="chip-camara" (click)="cambiarFoto()">
+              <button class="chip-camara" (click)="cambiarFoto()">
                 <ion-icon class="icono-camara" color="white" name="camera-outline"></ion-icon>
-              </ion-chip>
-
-              <ion-chip
+              </button>
+              <button
                 [ngClass]="(producto?.tipo | lowercase) === 'intercambio' ? 'chip-rosa' : 'chip-azul'"
-                class="chip-intercambio"
+                class="chip-intercambio chip-btn"
                 (click)="seleccionarTipoOferta()">
                 <b>{{ producto?.tipo }}</b>
-              </ion-chip>
+              </button>
             </div>
           </ion-row>
         </ion-grid>
@@ -27,25 +25,23 @@
       <div class="info-container">
 
         <ion-input class="producto-titulo edit-input" [(ngModel)]="producto.titulo"></ion-input>
-
         <ion-textarea class="producto-descripcion edit-textarea" autoGrow="true" [(ngModel)]="producto.descripcion"></ion-textarea>
 
         <div class="chip-group">
-          <ion-chip
+          <span
             *ngFor="let est of estilosSeleccionados"
+            class="chip-btn"
             [ngClass]="(producto?.tipo | lowercase) === 'intercambio' ? 'chip-rosa' : 'chip-azul'"
           >
             {{ est }}
-            <ion-icon name="close-circle" class="icon-close" (click)="eliminarEstilo(est)"></ion-icon>
-          </ion-chip>
-
-          <ion-chip
-            class="chip-add"
-            (click)="agregarEstilo()"
-            [ngClass]="(producto?.tipo | lowercase) === 'intercambio' ? 'chip-rosa' : 'chip-azul'"
-          >
+            <button class="btn-close-chip" (click)="eliminarEstilo(est)">
+              <ion-icon name="close-circle"></ion-icon>
+            </button>
+          </span>
+          <button class="chip-btn chip-add" (click)="agregarEstilo()"
+            [ngClass]="(producto?.tipo | lowercase) === 'intercambio' ? 'chip-rosa' : 'chip-azul'">
             <ion-icon name="add-outline"></ion-icon>
-          </ion-chip>
+          </button>
         </div>
 
         <ion-row>
@@ -65,7 +61,6 @@
                 <span class="detalle-valor">{{ producto.talla || 'Selecciona talla' }}</span>
               </div>
             </ion-col>
-
             <ion-col>
               <div (click)="seleccionarEstado()" class="detalle-item">
                 <span class="detalle-label">Estado</span>
@@ -73,7 +68,6 @@
               </div>
             </ion-col>
           </ion-row>
-
           <ion-row>
             <ion-col>
               <div class="detalle-item">
@@ -81,9 +75,8 @@
                 <ion-input class="detalle-valor" [(ngModel)]="producto.marca"></ion-input>
               </div>
             </ion-col>
-
             <ion-col>
-              <div class="detalle-item"  (click)="seleccionarColor()">
+              <div class="detalle-item" (click)="seleccionarColor()">
                 <span class="detalle-label">Color</span>
                 <span class="detalle-valor">{{ producto.color || 'Selecciona color' }}</span>
               </div>
@@ -94,44 +87,19 @@
         <div class="fecha-section">
           <ion-icon name="calendar-sharp" class="icon"></ion-icon>
           <p class="fecha-texto">Disponible hasta el:</p>
-
           <ion-button class="btn-modal" fill="outline" size="small" (click)="abrirFechaModal()">
             <ion-icon slot="start" name="calendar-outline"></ion-icon>
-            {{ producto.fechaDevolucion || 'Selecciona fecha'  | date:'dd/MM/yyyy' }}
+            {{ producto.fechaDevolucion || 'Selecciona fecha' | date:'dd/MM/yyyy' }}
           </ion-button>
-
-          <ion-modal
-            #modalFecha
-            [keepContentsMounted]="true"
-            class="modal-calendario"
-            [breakpoints]="[0, 0.5]"
-            [initialBreakpoint]="0.5" > <ng-template>
-            <ion-content class="ion-padding">
-              <ion-datetime
-                presentation="date-time"
-                [(ngModel)]="producto.fechaDevolucion"
-                [showDefaultButtons]="true"
-                (ionCancel)="cerrarFechaModal()"
-                (ionChange)="cerrarFechaModal()">
-              </ion-datetime>
-            </ion-content>
-          </ng-template>
-          </ion-modal>
         </div>
 
         <ng-container *ngIf="(producto?.tipo | lowercase) !== 'intercambio'">
           <div class="precio-section editable-price-line">
             <ion-icon class="icon" name="cash-sharp"></ion-icon>
             <span class="precio-texto-label">Precio por día:</span>
-
-            <ion-input
-              type="number"
-              class="precio-valor edit-input-inline"
-              placeholder="0"
-              [(ngModel)]="producto.precio"
-              inputmode="decimal">
+            <ion-input type="number" class="precio-valor edit-input-inline" placeholder="0"
+              [(ngModel)]="producto.precio" inputmode="decimal">
             </ion-input>
-
             <span class="precio-unidad"><b>€</b></span>
           </div>
         </ng-container>
@@ -140,7 +108,6 @@
           <ion-col>
             <ion-button class="btn-cancelar" expand="block" (click)="cancelarEdicion()"><b>Cancelar</b></ion-button>
           </ion-col>
-
           <ion-col>
             <ion-button class="btn-guardar" expand="block" (click)="guardarCambios()"><b>Guardar</b></ion-button>
           </ion-col>
@@ -150,3 +117,10 @@
     </ion-row>
   </ion-grid>
 </div>
+
+<ion-action-sheet
+  [isOpen]="asOpen"
+  [header]="asHeader"
+  [buttons]="asButtons"
+  (didDismiss)="asOpen = false">
+</ion-action-sheet>

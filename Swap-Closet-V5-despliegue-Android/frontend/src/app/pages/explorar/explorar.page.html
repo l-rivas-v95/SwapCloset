@@ -14,33 +14,27 @@
       </ion-row>
     </ion-grid>
   </ion-toolbar>
-
-  <ion-toolbar class="bordes-redondeados fondo">
-    <ion-grid>
-      <ion-row>
-        <ion-col>
-          <ion-searchbar style="--border-radius: 30px; margin-top: 6px;" placeholder="Buscar prenda"
-            (ionInput)="busqueda.set($event.detail.value ?? '')"></ion-searchbar>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-toolbar>
 </ion-header>
 
-  <ion-content [fullscreen]="true">
-    <ion-grid>
-      <ion-row>
-        <ion-col>
-          @for(pro of productosFiltrados(); track pro.id){
-            @if(pro.id !== undefined && pro.id !== null){
-              <app-carta-horizontal-intercambio
-                [producto]="pro"
-                [routerLink]="['/anuncio', pro.id]"
-                class="contenedor-cartas"/>
-            }
-          }
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+<ion-content [fullscreen]="true">
+  <div class="searchbar-wrapper">
+    <ion-searchbar style="--border-radius: 30px;" placeholder="Buscar prenda"
+      (ionInput)="busqueda.set($event.detail.value ?? '')"></ion-searchbar>
+  </div>
 
-  </ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        @for(pro of productosFiltrados(); track pro.id){
+          @if(pro.id !== undefined && pro.id !== null){
+            <app-carta-horizontal-intercambio
+              [producto]="pro"
+              [routerLink]="['/anuncio', pro.id]"
+              class="contenedor-cartas"/>
+          }
+        }
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

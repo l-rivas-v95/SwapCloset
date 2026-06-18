@@ -1,5 +1,5 @@
 import {Component, EventEmitter, inject, Input, Output, Signal} from '@angular/core';
-import {IonicModule, ActionSheetController, ToastController} from '@ionic/angular';
+import {IonicModule, ToastController} from '@ionic/angular';
 import {NgIf} from '@angular/common';
 import {UsuarioDTO} from "../../../modelos/UsuarioDTO";
 import {UsuarioService} from "../../../service/usuarioService/usuario.service";
@@ -20,28 +20,26 @@ export class TallasComponent {
   private usuarioService = inject(UsuarioService);
   private toastCtrl = inject(ToastController);
 
-  constructor(private actionSheetCtrl: ActionSheetController) {}
+  asOpen = false;
+  asHeader = 'Selecciona talla';
+  asButtons: any[] = [];
 
-  async elegirTalla(tipo: 'tCamiseta' | 'tPantalon' | 'tCalzado') {
+  elegirTalla(tipo: 'tCamiseta' | 'tPantalon' | 'tCalzado') {
     if (!this.esMiPerfil) return;
 
     let opciones: string[] = [];
-
     if (tipo === 'tCamiseta') opciones = ['XS', 'S', 'M', 'L', 'XL'];
     if (tipo === 'tPantalon') opciones = ['38', '40', '42', '44', '46'];
     if (tipo === 'tCalzado') opciones = ['36', '37', '38', '39', '40', '41', '42'];
 
-    const botones = opciones.map(talla => ({
-      text: talla,
-      handler: () => this.guardarTalla(tipo, talla)
-    }));
-
-    const actionSheet = await this.actionSheetCtrl.create({
-      header: `Selecciona talla`,
-      buttons: [...botones, {text: 'Cancelar', role: 'cancel'}]
-    });
-
-    await actionSheet.present();
+    this.asButtons = [
+      ...opciones.map(talla => ({
+        text: talla,
+        handler: () => { this.guardarTalla(tipo, talla); }
+      })),
+      { text: 'Cancelar', role: 'cancel' }
+    ];
+    this.asOpen = true;
   }
 
   private guardarTalla(tipo: 'tCamiseta' | 'tPantalon' | 'tCalzado', talla: string) {

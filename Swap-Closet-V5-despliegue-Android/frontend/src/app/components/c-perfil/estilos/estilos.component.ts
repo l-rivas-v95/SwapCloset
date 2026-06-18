@@ -1,19 +1,19 @@
-import {Component, effect, inject, Input, OnInit, signal} from '@angular/core';
-import {IonicModule, ActionSheetController, ToastController} from '@ionic/angular';
-import {NgForOf, NgClass} from '@angular/common';
+import {Component, inject, Input, signal} from '@angular/core';
+import {IonicModule, ToastController} from '@ionic/angular';
+import {NgForOf, NgClass, NgIf} from '@angular/common';
 import {UsuarioDTO} from "../../../modelos/UsuarioDTO";
 import {UsuarioService} from "../../../service/usuarioService/usuario.service";
+import { Signal } from '@angular/core';
 
 @Component({
   selector: 'app-estilos',
   templateUrl: './estilos.component.html',
   styleUrls: ['./estilos.component.scss'],
   standalone: true,
-  imports: [IonicModule, NgForOf, NgClass]
+  imports: [IonicModule, NgForOf, NgClass, NgIf]
 })
-export class EstilosComponent implements OnInit {
+export class EstilosComponent {
 
-  estilosSeleccionados: string[] = [];
   estilosExtra = ['Vintage', 'Boho', 'Elegante', 'Minimal', 'Sport'];
 
   @Input() usuario = signal<UsuarioDTO | null>(null);
@@ -22,41 +22,33 @@ export class EstilosComponent implements OnInit {
   private usuarioService = inject(UsuarioService);
   private toastCtrl = inject(ToastController);
 
-  constructor(private actionSheetCtrl: ActionSheetController) {
-    effect(() => {
-      const u = this.usuario();
-      if (!u?.estilo) {
-        this.estilosSeleccionados = [];
-        return;
-      }
+  asOpen = false;
+  asHeader = 'Añadir estilo';
+  asButtons: any[] = [];
 
-      this.estilosSeleccionados = u.estilo
-        .split(',')
-        .map(e => e.trim())
-        .filter(e => e.length > 0);
-    });
+  // Getter para que Angular lo recalcule en cada ciclo de change detection
+  // trackea el signal del padre directamente desde el template
+  get estilosSeleccionados(): string[] {
+    const u = this.usuario();
+    if (!u?.estilo) return [];
+    return u.estilo.split(',').map(e => e.trim()).filter(e => e.length > 0);
   }
 
-  ngOnInit(): void {}
-
-  async agregarEstilo() {
+  agregarEstilo() {
     if (!this.esMiPerfil) return;
 
-    const botones = this.estilosExtra.map(est => ({
-      text: est,
-      handler: () => {
-        if (!this.estilosSeleccionados.includes(est)) {
-          this.guardarEstilos([...this.estilosSeleccionados, est]);
+    this.asButtons = [
+      ...this.estilosExtra.map(est => ({
+        text: est,
+        handler: () => {
+          if (!this.estilosSeleccionados.includes(est)) {
+            this.guardarEstilos([...this.estilosSeleccionados, est]);
+          }
         }
-      }
-    }));
-
-    const actionSheet = await this.actionSheetCtrl.create({
-      header: 'Añadir estilo',
-      buttons: [...botones, {text: 'Cancelar', role: 'cancel'}] as any[]
-    });
-
-    await actionSheet.present();
+      })),
+      { text: 'Cancelar', role: 'cancel' }
+    ];
+    this.asOpen = true;
   }
 
   eliminarEstilo(est: string) {

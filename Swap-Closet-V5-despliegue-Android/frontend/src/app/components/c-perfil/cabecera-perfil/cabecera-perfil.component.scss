@@ -67,18 +67,18 @@
 .chip-camara {
   display: flex;
   justify-content: center;
-  justify-items: center;
   align-items: center;
-  align-content: center;
   position: absolute;
   bottom: 0;
   right: 0;
-  --background: #F45097;
-  --color: #fff;
+  background: #F45097;
+  color: #fff;
   font-size: 18px;
   height: 32px;
   padding: 0 10px;
   border-radius: 20px;
+  border: none;
+  cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -149,17 +149,18 @@ ion-icon{
 }
 
 .perfil-stats ion-icon {
-  font-size: 22px;
+  font-size: 16px;
 }
 
 .numero {
   font-weight: bold;
   color: #333;
-  margin: 4px 0 0 0;
+  font-size: 13px;
+  margin: 2px 0 0 0;
 }
 
 .label {
-  font-size: 13px;
+  font-size: 10px;
   color: #777;
 }
 

@@ -1,5 +1,5 @@
 import {Component, inject, OnDestroy, OnInit} from '@angular/core';
-import { IonicModule, ActionSheetController } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular';
 import { NgForOf} from '@angular/common';
 import {ProductoFormService} from "../../../service/productoFormService/producto-form.service";
 import {Subscription} from "rxjs";
@@ -37,7 +37,9 @@ export class DatosAdicionalesChipComponent implements OnInit, OnDestroy {
   private productoFormService = inject(ProductoFormService);
   private resetSub?: Subscription;
 
-  constructor(private actionSheetCtrl: ActionSheetController) {}
+  asOpen = false;
+  asHeader = '';
+  asButtons: any[] = [];
 
   ngOnInit() {
     this.inicializarValores();
@@ -77,40 +79,38 @@ export class DatosAdicionalesChipComponent implements OnInit, OnDestroy {
     }
   }
 
-  async abrirMenuExtra(tipo: 'categoria' | 'color' | 'estilo') {
+  abrirMenuExtra(tipo: 'categoria' | 'color' | 'estilo') {
     let opciones: string[] = [];
     if (tipo === 'categoria') opciones = this.categoriasExtra;
     if (tipo === 'color') opciones = this.coloresExtra;
     if (tipo === 'estilo') opciones = this.estilosExtra;
 
-    const botones = opciones.map(op => ({
-      text: op,
-      handler: () => {
-        if (tipo === 'categoria') {
-          if (!this.categorias.includes(op)) this.categorias.push(op);
-          this.categoriaSeleccionada = op;
-          this.actualizarTallas();
-          this.productoFormService.updateForm({ categoria: op });
+    this.asHeader = `Añadir ${tipo}`;
+    this.asButtons = [
+      ...opciones.map(op => ({
+        text: op,
+        handler: () => {
+          if (tipo === 'categoria') {
+            if (!this.categorias.includes(op)) this.categorias.push(op);
+            this.categoriaSeleccionada = op;
+            this.actualizarTallas();
+            this.productoFormService.updateForm({ categoria: op });
+          }
+          if (tipo === 'color') {
+            if (!this.colores.includes(op)) this.colores.push(op);
+            if (!this.coloresSeleccionados.includes(op)) this.coloresSeleccionados.push(op);
+            this.productoFormService.updateForm({ color: this.coloresSeleccionados.join(', ') });
+          }
+          if (tipo === 'estilo') {
+            if (!this.estilos.includes(op)) this.estilos.push(op);
+            if (!this.estilosSeleccionados.includes(op)) this.estilosSeleccionados.push(op);
+            this.productoFormService.updateForm({ estilo: this.estilosSeleccionados.join(', ') });
+          }
         }
-        if (tipo === 'color') {
-          if (!this.colores.includes(op)) this.colores.push(op);
-          if (!this.coloresSeleccionados.includes(op)) this.coloresSeleccionados.push(op);
-          this.productoFormService.updateForm({ color: this.coloresSeleccionados.join(', ') });
-        }
-        if (tipo === 'estilo') {
-          if (!this.estilos.includes(op)) this.estilos.push(op);
-          if (!this.estilosSeleccionados.includes(op)) this.estilosSeleccionados.push(op);
-          this.productoFormService.updateForm({ estilo: this.estilosSeleccionados.join(', ') });
-        }
-      }
-    }));
-
-    const actionSheet = await this.actionSheetCtrl.create({
-      header: `Añadir ${tipo}`,
-      buttons: [...botones, { text: 'Cancelar', role: 'cancel' }] as any[]
-    });
-
-    await actionSheet.present();
+      })),
+      { text: 'Cancelar', role: 'cancel' }
+    ];
+    this.asOpen = true;
   }
 
   actualizarTallas() {

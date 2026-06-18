@@ -26,14 +26,16 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-          <ion-segment [(ngModel)]="segmentoSeleccionado" class="botones-seleccion">
-            <ion-segment-button value="seguidores">
-              <ion-label><b>Seguidores</b></ion-label>
-            </ion-segment-button>
-            <ion-segment-button value="siguiendo">
-              <ion-label><b>Siguiendo</b></ion-label>
-            </ion-segment-button>
-          </ion-segment>
+          <div class="botones-seleccion">
+            <button class="seg-btn"
+              [style.background]="segmentoSeleccionado === 'seguidores' ? '#FFE2E3' : 'transparent'"
+              [style.color]="segmentoSeleccionado === 'seguidores' ? '#FF3FBF' : '#7a7a7a'"
+              (click)="segmentoSeleccionado = 'seguidores'">Seguidores</button>
+            <button class="seg-btn"
+              [style.background]="segmentoSeleccionado === 'siguiendo' ? '#C6DFFF' : 'transparent'"
+              [style.color]="segmentoSeleccionado === 'siguiendo' ? '#3F42FF' : '#7a7a7a'"
+              (click)="segmentoSeleccionado = 'siguiendo'">Siguiendo</button>
+          </div>
         </ion-col>
       </ion-row>
 

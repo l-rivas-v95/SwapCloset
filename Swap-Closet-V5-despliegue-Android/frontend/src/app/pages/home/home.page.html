@@ -12,24 +12,24 @@
     </ion-grid>
   </ion-toolbar>
 
-  <div class="menu-desplegable">
-    @if(mostrarMenu){
-      <app-datos-adicionales-chip/>
-    }</div>
-
   <ion-toolbar>
     <ion-grid>
       <ion-row>
         <ion-col><ion-chip color="primary">Casual</ion-chip></ion-col>
         <ion-col><ion-chip color="secondary">Formal</ion-chip></ion-col>
         <ion-col><ion-chip color="tertiary">Accesorios</ion-chip></ion-col>
-
       </ion-row>
     </ion-grid>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <!-- Desplegable fuera del header para que no lo recorte overflow:hidden -->
+  @if(mostrarMenu){
+    <div class="menu-desplegable">
+      <app-datos-adicionales-chip/>
+    </div>
+  }
   <ion-grid>
     <ion-row>
       <ion-col class="sin-margen">

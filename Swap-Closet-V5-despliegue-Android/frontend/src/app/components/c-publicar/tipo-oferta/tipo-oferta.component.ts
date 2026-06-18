@@ -34,6 +34,10 @@ export class TipoOfertaComponent implements OnInit, OnDestroy {
     this.resetSub?.unsubscribe();
   }
 
+  seleccionarTipo(valor: 'intercambio' | 'prestamo') {
+    this.onTipoOfertaChange({ detail: { value: valor } });
+  }
+
   onTipoOfertaChange(event: any) {
     const valor = event.detail.value as 'intercambio' | 'prestamo';
     this.tipoOferta = valor;
