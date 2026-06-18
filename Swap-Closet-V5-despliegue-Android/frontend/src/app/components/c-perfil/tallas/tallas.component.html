@@ -11,17 +11,17 @@
           class="talla-chip"
           [class.talla-chip-editable]="esMiPerfil"
           (click)="elegirTalla('tCamiseta')">
-          {{ usuario()?.tCamiseta || '–' }}
+          {{ usuario()?.tCamiseta || '-' }}
         </button>
       </div>
 
       <div class="talla-item">
-        <p>Pantalón</p>
+        <p>Pantalon</p>
         <button
           class="talla-chip"
           [class.talla-chip-editable]="esMiPerfil"
           (click)="elegirTalla('tPantalon')">
-          {{ usuario()?.tPantalon || '–' }}
+          {{ usuario()?.tPantalon || '-' }}
         </button>
       </div>
 
@@ -31,16 +31,9 @@
           class="talla-chip"
           [class.talla-chip-editable]="esMiPerfil"
           (click)="elegirTalla('tCalzado')">
-          {{ usuario()?.tCalzado || '–' }}
+          {{ usuario()?.tCalzado || '-' }}
         </button>
       </div>
     </div>
   </ion-card-content>
 </ion-card>
-
-<ion-action-sheet
-  [isOpen]="asOpen"
-  [header]="asHeader"
-  [buttons]="asButtons"
-  (didDismiss)="asOpen = false">
-</ion-action-sheet>

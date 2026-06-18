@@ -1,0 +1,14 @@
+<div class="modal-handle-bar"></div>
+
+@if (header) {
+  <div class="modal-header">
+    <span class="modal-title">{{ header }}</span>
+  </div>
+}
+
+<div class="sheet-buttons">
+  @for (op of options; track op) {
+    <button class="sheet-btn" (click)="seleccionar(op)">{{ op }}</button>
+  }
+  <button class="sheet-btn sheet-btn--cancel" (click)="cancelar()">Cancelar</button>
+</div>

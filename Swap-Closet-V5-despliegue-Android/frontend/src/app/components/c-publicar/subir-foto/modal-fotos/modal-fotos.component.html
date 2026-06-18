@@ -1,33 +1,29 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Seleccionar imagen</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="close()">
-        <ion-icon name="close"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<div class="modal-handle-bar"></div>
 
-<ion-content>
-  <div class="subir-imagen">
-    <ion-icon name="cloud-upload-outline"></ion-icon>
-    <h3>Subir imágenes del producto</h3>
-    <p>Selecciona una o varias imágenes desde tu dispositivo.</p>
+<div class="modal-header">
+  <span class="modal-title">Seleccionar imagen</span>
+  <button class="modal-close-btn" (click)="close()">
+    <ion-icon name="close"></ion-icon>
+  </button>
+</div>
 
-    <label class="boton-subir">
-      Elegir imágenes
-      <input
-        type="file"
-        accept="image/*"
-        multiple
-        hidden
-        (change)="seleccionarArchivo($event)">
-    </label>
+<div class="modal-body">
+  <ion-icon name="cloud-upload-outline" class="upload-icon"></ion-icon>
+  <h3>Subir imágenes del producto</h3>
+  <p>Selecciona una o varias imágenes desde tu dispositivo.</p>
 
-    @if (subiendo) {
-      <ion-spinner name="crescent"></ion-spinner>
-      <p>Subiendo imágenes...</p>
-    }
-  </div>
-</ion-content>
+  <label class="boton-subir">
+    Elegir imágenes
+    <input
+      type="file"
+      accept="image/*"
+      multiple
+      hidden
+      (change)="seleccionarArchivo($event)">
+  </label>
+
+  @if (subiendo) {
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Subiendo imágenes...</p>
+  }
+</div>

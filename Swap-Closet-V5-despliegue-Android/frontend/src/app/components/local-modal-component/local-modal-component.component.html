@@ -1,18 +1,12 @@
-<ion-header>
-  <ion-toolbar class="toolbar-rosa">
-    <ion-buttons slot="start">
-      <ion-button (click)="dismiss()" class="btn-cancelar">Cancelar</ion-button>
-    </ion-buttons>
-    <ion-title class="titulo-modal">📍 Lugar del intercambio</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="confirm()" [strong]="true" [disabled]="!searchQuery.trim()" class="btn-confirmar">
-        Proponer
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<div class="modal-handle-bar"></div>
 
-<ion-content class="fondo-modal">
+<div class="modal-header toolbar-rosa">
+  <button class="modal-close-btn btn-cancelar" (click)="dismiss()">Cancelar</button>
+  <span class="modal-title titulo-modal">📍 Lugar del intercambio</span>
+  <button class="modal-close-btn btn-confirmar" (click)="confirm()" [disabled]="!searchQuery.trim()">Proponer</button>
+</div>
+
+<div class="modal-body fondo-modal">
   <div class="search-row">
     <ion-input
       class="input-lugar"
@@ -39,4 +33,4 @@
     </div>
     <p class="hint-texto">¿Es aquí? Pulsa <b>Proponer</b> para enviarlo.</p>
   }
-</ion-content>
+</div>

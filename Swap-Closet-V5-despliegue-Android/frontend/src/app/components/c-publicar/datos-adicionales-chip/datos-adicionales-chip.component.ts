@@ -3,6 +3,9 @@ import { IonicModule } from '@ionic/angular';
 import { NgForOf} from '@angular/common';
 import {ProductoFormService} from "../../../service/productoFormService/producto-form.service";
 import {Subscription} from "rxjs";
+import {OverlayService} from "../../../service/overlay/overlay.service";
+import {BottomSheetComponent} from "../../bottom-sheet/bottom-sheet.component";
+import {EstiloPickerModalComponent} from "../../estilo-picker-modal/estilo-picker-modal.component";
 
 @Component({
   selector: 'app-datos-adicionales-chip',
@@ -35,11 +38,8 @@ export class DatosAdicionalesChipComponent implements OnInit, OnDestroy {
   estilosSeleccionados: string[] = [this.estilos[0]];
 
   private productoFormService = inject(ProductoFormService);
+  private overlayService = inject(OverlayService);
   private resetSub?: Subscription;
-
-  asOpen = false;
-  asHeader = '';
-  asButtons: any[] = [];
 
   ngOnInit() {
     this.inicializarValores();
@@ -80,37 +80,14 @@ export class DatosAdicionalesChipComponent implements OnInit, OnDestroy {
   }
 
   abrirMenuExtra(tipo: 'categoria' | 'color' | 'estilo') {
-    let opciones: string[] = [];
-    if (tipo === 'categoria') opciones = this.categoriasExtra;
-    if (tipo === 'color') opciones = this.coloresExtra;
-    if (tipo === 'estilo') opciones = this.estilosExtra;
-
-    this.asHeader = `Añadir ${tipo}`;
-    this.asButtons = [
-      ...opciones.map(op => ({
-        text: op,
-        handler: () => {
-          if (tipo === 'categoria') {
-            if (!this.categorias.includes(op)) this.categorias.push(op);
-            this.categoriaSeleccionada = op;
-            this.actualizarTallas();
-            this.productoFormService.updateForm({ categoria: op });
-          }
-          if (tipo === 'color') {
-            if (!this.colores.includes(op)) this.colores.push(op);
-            if (!this.coloresSeleccionados.includes(op)) this.coloresSeleccionados.push(op);
-            this.productoFormService.updateForm({ color: this.coloresSeleccionados.join(', ') });
-          }
-          if (tipo === 'estilo') {
-            if (!this.estilos.includes(op)) this.estilos.push(op);
-            if (!this.estilosSeleccionados.includes(op)) this.estilosSeleccionados.push(op);
-            this.productoFormService.updateForm({ estilo: this.estilosSeleccionados.join(', ') });
-          }
-        }
-      })),
-      { text: 'Cancelar', role: 'cancel' }
-    ];
-    this.asOpen = true;
+    if (tipo === 'estilo') {
+      this.overlayService.open(EstiloPickerModalComponent, {}, (seleccionado: string | null) => {
+        if (!seleccionado) return;
+        if (!this.estilos.includes(seleccionado)) this.estilos.push(seleccionado);
+        if (!this.estilosSeleccionados.includes(seleccionado)) this.estilosSeleccionados.push(seleccionado);
+        this.productoFormService.updateForm({ estilo: this.estilosSeleccionados.join(', ') });
+      });
+    }
   }
 
   actualizarTallas() {

@@ -1,15 +1,13 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Seleccionar foto de perfil</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="close()">
-        <ion-icon name="close"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<div class="modal-handle-bar"></div>
 
-<ion-content>
+<div class="modal-header">
+  <span class="modal-title">Seleccionar foto de perfil</span>
+  <button class="modal-close-btn" (click)="close()">
+    <ion-icon name="close"></ion-icon>
+  </button>
+</div>
+
+<div class="modal-body">
   <div class="subir-imagen">
     <ion-icon name="image-outline"></ion-icon>
     <h3>Subir foto de perfil</h3>
@@ -27,4 +25,4 @@
     <ion-spinner *ngIf="subiendo" name="crescent"></ion-spinner>
     <p *ngIf="subiendo">Subiendo imagen...</p>
   </div>
-</ion-content>
+</div>

@@ -1,24 +1,18 @@
-<ion-header>
-  <ion-toolbar class="toolbar-rosa">
-    <ion-buttons slot="start">
-      <ion-button (click)="dismiss()" class="btn-cancelar">Cancelar</ion-button>
-    </ion-buttons>
-    <ion-title class="titulo-modal">📅 Proponer fecha</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="confirm()" [strong]="true" class="btn-confirmar">Proponer</ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<div class="modal-handle-bar"></div>
 
-<ion-content class="fondo-modal">
-  <div class="date-picker">
-    <ion-datetime
-      presentation="date-time"
-      [(ngModel)]="selectedDate"
-      [min]="minDate"
-      locale="es-ES"
-      class="datetime-rosa"
-      size="cover">
-    </ion-datetime>
-  </div>
-</ion-content>
+<div class="modal-header toolbar-rosa">
+  <button class="modal-close-btn btn-cancelar" (click)="dismiss()">Cancelar</button>
+  <span class="modal-title titulo-modal">📅 Proponer fecha</span>
+  <button class="modal-close-btn btn-confirmar" (click)="confirm()">Proponer</button>
+</div>
+
+<div class="modal-body fondo-modal date-picker">
+  <ion-datetime
+    presentation="date-time"
+    [(ngModel)]="selectedDate"
+    [min]="minDate"
+    locale="es-ES"
+    class="datetime-rosa"
+    size="cover">
+  </ion-datetime>
+</div>

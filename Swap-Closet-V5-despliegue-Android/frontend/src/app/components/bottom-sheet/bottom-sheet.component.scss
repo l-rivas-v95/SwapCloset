@@ -1,0 +1,29 @@
+.sheet-buttons {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0 16px;
+}
+
+.sheet-btn {
+  background: none;
+  border: none;
+  border-top: 1px solid var(--ion-color-light, #f4f4f4);
+  padding: 16px 20px;
+  font-size: 16px;
+  text-align: left;
+  cursor: pointer;
+  color: var(--ion-text-color, #333);
+  font-family: inherit;
+
+  &:active {
+    background: var(--ion-color-light, #f4f4f4);
+  }
+}
+
+.sheet-btn--cancel {
+  color: var(--ion-color-medium, #888);
+  font-weight: 600;
+  text-align: center;
+  margin-top: 4px;
+  border-top: 8px solid var(--ion-color-light, #f4f4f4);
+}

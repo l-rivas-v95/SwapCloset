@@ -3,7 +3,9 @@ import {IonicModule, ToastController} from '@ionic/angular';
 import {NgForOf, NgClass, NgIf} from '@angular/common';
 import {UsuarioDTO} from "../../../modelos/UsuarioDTO";
 import {UsuarioService} from "../../../service/usuarioService/usuario.service";
-import { Signal } from '@angular/core';
+import {Signal} from '@angular/core';
+import {OverlayService} from "../../../service/overlay/overlay.service";
+import {EstiloPickerModalComponent} from "../../estilo-picker-modal/estilo-picker-modal.component";
 
 @Component({
   selector: 'app-estilos',
@@ -14,20 +16,13 @@ import { Signal } from '@angular/core';
 })
 export class EstilosComponent {
 
-  estilosExtra = ['Vintage', 'Boho', 'Elegante', 'Minimal', 'Sport'];
-
   @Input() usuario = signal<UsuarioDTO | null>(null);
   @Input() esMiPerfil = true;
 
   private usuarioService = inject(UsuarioService);
   private toastCtrl = inject(ToastController);
+  private overlayService = inject(OverlayService);
 
-  asOpen = false;
-  asHeader = 'Añadir estilo';
-  asButtons: any[] = [];
-
-  // Getter para que Angular lo recalcule en cada ciclo de change detection
-  // trackea el signal del padre directamente desde el template
   get estilosSeleccionados(): string[] {
     const u = this.usuario();
     if (!u?.estilo) return [];
@@ -36,19 +31,12 @@ export class EstilosComponent {
 
   agregarEstilo() {
     if (!this.esMiPerfil) return;
-
-    this.asButtons = [
-      ...this.estilosExtra.map(est => ({
-        text: est,
-        handler: () => {
-          if (!this.estilosSeleccionados.includes(est)) {
-            this.guardarEstilos([...this.estilosSeleccionados, est]);
-          }
-        }
-      })),
-      { text: 'Cancelar', role: 'cancel' }
-    ];
-    this.asOpen = true;
+    this.overlayService.open(EstiloPickerModalComponent, {}, (seleccionado: string | null) => {
+      if (!seleccionado) return;
+      if (!this.estilosSeleccionados.includes(seleccionado)) {
+        this.guardarEstilos([...this.estilosSeleccionados, seleccionado]);
+      }
+    });
   }
 
   eliminarEstilo(est: string) {

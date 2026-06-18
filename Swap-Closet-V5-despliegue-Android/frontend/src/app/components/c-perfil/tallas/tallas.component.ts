@@ -1,8 +1,12 @@
-import {Component, EventEmitter, inject, Input, Output, Signal} from '@angular/core';
+import {Component, EventEmitter, inject, Input, Output, Signal, Type} from '@angular/core';
 import {IonicModule, ToastController} from '@ionic/angular';
 import {NgIf} from '@angular/common';
 import {UsuarioDTO} from "../../../modelos/UsuarioDTO";
 import {UsuarioService} from "../../../service/usuarioService/usuario.service";
+import {OverlayService} from "../../../service/overlay/overlay.service";
+import {TallaCamisetaPickerModalComponent} from "../../talla-camiseta-picker-modal/talla-camiseta-picker-modal.component";
+import {TallaPantalonPickerModalComponent} from "../../talla-pantalon-picker-modal/talla-pantalon-picker-modal.component";
+import {TallaCalzadoPickerModalComponent} from "../../talla-calzado-picker-modal/talla-calzado-picker-modal.component";
 
 @Component({
   selector: 'app-tallas',
@@ -19,27 +23,20 @@ export class TallasComponent {
 
   private usuarioService = inject(UsuarioService);
   private toastCtrl = inject(ToastController);
-
-  asOpen = false;
-  asHeader = 'Selecciona talla';
-  asButtons: any[] = [];
+  private overlayService = inject(OverlayService);
 
   elegirTalla(tipo: 'tCamiseta' | 'tPantalon' | 'tCalzado') {
     if (!this.esMiPerfil) return;
 
-    let opciones: string[] = [];
-    if (tipo === 'tCamiseta') opciones = ['XS', 'S', 'M', 'L', 'XL'];
-    if (tipo === 'tPantalon') opciones = ['38', '40', '42', '44', '46'];
-    if (tipo === 'tCalzado') opciones = ['36', '37', '38', '39', '40', '41', '42'];
+    const componente =
+      tipo === 'tCamiseta' ? TallaCamisetaPickerModalComponent :
+      tipo === 'tPantalon' ? TallaPantalonPickerModalComponent :
+                              TallaCalzadoPickerModalComponent;
 
-    this.asButtons = [
-      ...opciones.map(talla => ({
-        text: talla,
-        handler: () => { this.guardarTalla(tipo, talla); }
-      })),
-      { text: 'Cancelar', role: 'cancel' }
-    ];
-    this.asOpen = true;
+    this.overlayService.open(componente as Type<any>, {}, (talla: string | null) => {
+      if (!talla) return;
+      this.guardarTalla(tipo, talla);
+    });
   }
 
   private guardarTalla(tipo: 'tCamiseta' | 'tPantalon' | 'tCalzado', talla: string) {

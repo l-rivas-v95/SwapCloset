@@ -1,13 +1,12 @@
-<ion-header>
-  <ion-toolbar class="toolbar-rosa">
-    <ion-buttons slot="start">
-      <ion-button (click)="dismiss()" class="btn-cancelar">Cancelar</ion-button>
-    </ion-buttons>
-    <ion-title class="titulo-modal">👗 Seleccionar prenda</ion-title>
-  </ion-toolbar>
-</ion-header>
+<div class="modal-handle-bar"></div>
 
-<ion-content class="fondo-modal">
+<div class="modal-header toolbar-rosa">
+  <button class="modal-close-btn btn-cancelar" (click)="dismiss()">Cancelar</button>
+  <span class="modal-title titulo-modal">👗 Seleccionar prenda</span>
+  <span></span>
+</div>
+
+<div class="modal-body fondo-modal">
   @if (cargando) {
     <div class="loading-center">
       <ion-spinner name="crescent" color="primary"></ion-spinner>
@@ -43,4 +42,4 @@
       }
     </div>
   }
-</ion-content>
+</div>
