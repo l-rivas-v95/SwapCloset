@@ -1,5 +1,5 @@
 import {Component, effect, inject, Input, OnInit, signal} from '@angular/core';
-import {IonicModule, ToastController} from "@ionic/angular";
+import {IonicModule} from "@ionic/angular";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {TarjetaSeguidorComponent} from "../../components/c-seguidores/tarjeta-seguidor/tarjeta-seguidor.component";

@@ -1,5 +1,6 @@
 import {Component, inject, Input} from '@angular/core';
-import {IonicModule, ToastController} from "@ionic/angular";
+import {IonicModule} from "@ionic/angular";
+import {NativeToastService} from "../../../service/nativeToastService/native-toast.service";
 import {NgIf} from "@angular/common";
 import {UsuarioService} from "../../../service/usuarioService/usuario.service";
 import {OverlayService} from "../../../service/overlay/overlay.service";
@@ -15,7 +16,7 @@ export class ModalFotosPerfilComponent {
   @Input() idUsuario!: number;
 
   private usuarioService = inject(UsuarioService);
-  private toastCtrl = inject(ToastController);
+  private toast = inject(NativeToastService);
   private overlayService = inject(OverlayService);
 
   subiendo = false;
@@ -26,8 +27,8 @@ export class ModalFotosPerfilComponent {
     const input = event.target as HTMLInputElement;
     const archivo = input.files?.[0];
     if (!archivo) { input.value = ''; return; }
-    if (!this.idUsuario) { input.value = ''; this.mostrarToast('Usuario no válido'); return; }
-    if (!archivo.type.startsWith('image/')) { input.value = ''; this.mostrarToast('Selecciona una imagen válida'); return; }
+    if (!this.idUsuario) { input.value = ''; this.toast.show('Usuario no válido'); return; }
+    if (!archivo.type.startsWith('image/')) { input.value = ''; this.toast.show('Selecciona una imagen válida'); return; }
 
     const formData = new FormData();
     formData.append('archivo', archivo);
@@ -39,16 +40,11 @@ export class ModalFotosPerfilComponent {
         this.subiendo = false;
         this.overlayService.close({ usuario: usuarioActualizado });
       },
-      error: async () => {
+      error: () => {
         input.value = '';
         this.subiendo = false;
-        await this.mostrarToast('Error al subir la foto');
+        this.toast.show('Error al subir la foto');
       }
     });
-  }
-
-  private async mostrarToast(message: string) {
-    const toast = await this.toastCtrl.create({ message, duration: 1800, position: 'bottom', color: 'dark' });
-    await toast.present();
   }
 }

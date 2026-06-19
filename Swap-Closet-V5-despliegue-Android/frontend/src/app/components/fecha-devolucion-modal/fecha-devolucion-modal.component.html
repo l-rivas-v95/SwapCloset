@@ -1,0 +1,16 @@
+<div class="modal-handle-bar"></div>
+
+<div class="modal-header toolbar-rosa">
+  <button class="modal-close-btn btn-cancelar" (click)="cancelar()">Cancelar</button>
+  <span class="modal-title titulo-modal">Fecha devolucion</span>
+  <span></span>
+</div>
+
+<div class="modal-body">
+  <input
+    #dateInput
+    type="datetime-local"
+    class="date-input-hidden"
+    (change)="onChange($event)"
+    (input)="onChange($event)">
+</div>

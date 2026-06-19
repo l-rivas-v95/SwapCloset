@@ -1,5 +1,6 @@
 import {Component, Input, OnInit, inject} from '@angular/core';
-import {IonicModule, ToastController} from "@ionic/angular";
+import {IonicModule} from "@ionic/angular";
+import {NativeToastService} from "../../../service/nativeToastService/native-toast.service";
 import {NgClass} from "@angular/common";
 import {UsuarioDTO} from "../../../modelos/UsuarioDTO";
 import {SeguidoresService} from "../../../service/seguidoresService/seguidores.service";
@@ -24,7 +25,7 @@ export class TarjetaSeguidorComponent implements OnInit{
 
   private seguidoresService = inject(SeguidoresService);
   private authService = inject(AuthService);
-  private toastCtrl = inject(ToastController);
+  private toast = inject(NativeToastService);
   private router = inject(Router);
 
   irAPerfil() {
@@ -70,7 +71,7 @@ export class TarjetaSeguidorComponent implements OnInit{
     const follower = this.authService.getUsuario();
 
     if (!follower || !follower.id) {
-      this.mostrarToast('Debes iniciar sesión para realizar esta acción.', 'danger');
+      this.toast.show('Debes iniciar sesión para realizar esta acción.');
       return;
     }
     if (this.isOwnProfile || !followedId) {
@@ -81,42 +82,17 @@ export class TarjetaSeguidorComponent implements OnInit{
 
     if (this.seguido) {
       this.seguidoresService.deleteSeguidor(followerId, followedId).subscribe({
-        next: () => {
-          this.seguido = false;
-          this.mostrarToast(`Dejaste de seguir a ${this.usuario?.nombre}`, 'success');
-        },
-        error: () => {
-          this.mostrarToast('Error al dejar de seguir.', 'danger');
-        }
+        next: () => { this.seguido = false; this.toast.show(`Dejaste de seguir a ${this.usuario?.nombre}`); },
+        error: () => this.toast.show('Error al dejar de seguir.')
       });
     } else {
-      const followDto: SeguidorDTO = {
-        idSeguidor: followerId,
-        idSeguido: followedId
-      };
-
+      const followDto: SeguidorDTO = { idSeguidor: followerId, idSeguido: followedId };
       this.seguidoresService.saveSeguidor(followDto).subscribe({
-        next: () => {
-          this.seguido = true;
-          this.mostrarToast(`Ahora sigues a ${this.usuario?.nombre}`, 'success');
-        },
+        next: () => { this.seguido = true; this.toast.show(`Ahora sigues a ${this.usuario?.nombre}`); },
         error: (error) => {
-          let mensaje = 'Error al seguir.';
-          if (error.status === 409) {
-            mensaje = 'Ya estás siguiendo a este usuario.';
-          }
-          this.mostrarToast(mensaje, 'danger');
+          this.toast.show(error.status === 409 ? 'Ya estás siguiendo a este usuario.' : 'Error al seguir.');
         }
       });
     }
-  }
-
-  async mostrarToast(mensaje: string, color: string) {
-    const toast = await this.toastCtrl.create({
-      message: mensaje,
-      duration: 2000,
-      position: 'top'
-    });
-    await toast.present();
   }
 }

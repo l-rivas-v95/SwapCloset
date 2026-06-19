@@ -197,3 +197,12 @@ ion-header {
   margin-top: 4px;
   border-top: 8px solid var(--ion-color-light, #f4f4f4);
 }
+
+/* Input nativo de fecha oculto (se abre via showPicker()) */
+.date-input-hidden {
+  opacity: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}

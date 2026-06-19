@@ -62,3 +62,29 @@ ion-textarea {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+.native-label {
+  display: block;
+  color: #333;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.native-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background: #f8f8f8;
+  padding: 8px 10px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #333;
+  resize: none;
+  outline: none;
+}
+
+.native-textarea:focus {
+  border: 1.5px solid #007aff;
+  background: #fff;
+}

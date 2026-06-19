@@ -1,5 +1,6 @@
 import {Component, EventEmitter, inject, Input, numberAttribute, OnInit, Output, signal} from '@angular/core';
-import {IonicModule, ToastController} from "@ionic/angular";
+import {IonicModule} from "@ionic/angular";
+import {NativeToastService} from "../../../service/nativeToastService/native-toast.service";
 import {DatePipe, LowerCasePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {ProductoDTO} from "../../../modelos/ProductoDTO";
 import {CartaUsuarioDTO} from "../../../modelos/CartaUsuarioDTO";
@@ -53,7 +54,7 @@ export class ComponenteAnuncioComponent implements OnInit {
 
   private favoritosService = inject(FavoritosService);
   private authService = inject(AuthService);
-  private toastCtrl = inject(ToastController);
+  private toast = inject(NativeToastService);
 
   ngOnInit() {
     if (this.producto) {
@@ -81,51 +82,22 @@ export class ComponenteAnuncioComponent implements OnInit {
     const userId = this.idUsuarioLogueado;
     const productId = this.producto?.id;
 
-    if (!userId) {
-      this.mostrarToast('Debes iniciar sesión para añadir favoritos.', 'danger');
-      return;
-    }
+    if (!userId) { this.toast.show('Debes iniciar sesión para añadir favoritos.'); return; }
+    if (!productId) { this.toast.show('Error: ID de producto no disponible.'); return; }
 
-    if (!productId) {
-      this.mostrarToast('Error: ID de producto no disponible.', 'danger');
-      return;
-    }
-
-    const isFav = this.isFavorite();
-
-    if (isFav) {
+    if (this.isFavorite()) {
       this.favoritosService.deleteFavorito(userId, productId).subscribe({
-        next: () => {
-          this.isFavorite.set(false);
-          this.mostrarToast('Quitado de favoritos', 'medium');
-        },
-        error: () => this.mostrarToast('Error al quitar de favoritos.', 'danger')
+        next: () => { this.isFavorite.set(false); this.toast.show('Quitado de favoritos'); },
+        error: () => this.toast.show('Error al quitar de favoritos.')
       });
     } else {
       const favoritoDto: FavoritoDTO = { idUsuario: userId, idProducto: productId };
-
       this.favoritosService.saveFavorito(favoritoDto).subscribe({
-        next: () => {
-          this.isFavorite.set(true);
-          this.mostrarToast('Añadido a favoritos', 'danger');
-        },
+        next: () => { this.isFavorite.set(true); this.toast.show('Añadido a favoritos'); },
         error: (error) => {
-          let mensaje = 'Error al añadir a favoritos.';
-          if (error.status === 400 || error.status === 409) {
-            mensaje = 'El producto ya es tu favorito.';
-          }
-          this.mostrarToast(mensaje, 'danger');
+          this.toast.show(error.status === 400 || error.status === 409 ? 'El producto ya es tu favorito.' : 'Error al añadir a favoritos.');
         }
       });
     }
-  }
-
-  async mostrarToast(mensaje: string, color: string) {
-    const toast = await this.toastCtrl.create({
-      message: mensaje,
-      duration: 2000,
-      position: 'top'
-    });
-    await toast.present();
   }
 }

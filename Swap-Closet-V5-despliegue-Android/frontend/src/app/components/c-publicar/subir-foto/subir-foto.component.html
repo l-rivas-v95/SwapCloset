@@ -1,9 +1,18 @@
 <ion-card class="info-card">
 
+  <!-- Input oculto que abre la cámara directamente -->
+  <input
+    #cameraInput
+    type="file"
+    accept="image/*"
+    capture="environment"
+    hidden
+    (change)="onCameraFile($event)">
+
   <ion-card-title class="margen margeny">Fotos</ion-card-title>
 
   <ion-grid class="centro-separador">
-    <ion-button fill="clear" class="btn-agregar-foto" (click)="abrirGaleria()">
+    <ion-button fill="clear" class="btn-agregar-foto" (click)="abrirCamara()">
       <ion-icon size="large" name="camera"></ion-icon>
       <p class="margen">Añadir fotos</p>
     </ion-button>
@@ -12,6 +21,12 @@
       <p class="margen">Galería</p>
     </ion-button>
   </ion-grid>
+
+  @if (subiendo) {
+    <div style="text-align:center; padding: 8px;">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  }
 
   @if (fotos.length > 0) {
     <div class="preview-grid">

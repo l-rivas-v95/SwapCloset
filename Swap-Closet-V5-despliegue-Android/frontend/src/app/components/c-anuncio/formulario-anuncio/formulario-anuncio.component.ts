@@ -2,9 +2,9 @@ import {Component, effect, EventEmitter, inject, Input, Output} from '@angular/c
 import {
   ActionSheetButton,
   IonicModule,
-  NavController,
-  ToastController
+  NavController
 } from "@ionic/angular";
+import {NativeToastService} from "../../../service/nativeToastService/native-toast.service";
 import {DatePipe, LowerCasePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {Router, RouterLink, RouterModule} from "@angular/router";
 import {FormsModule} from "@angular/forms";
@@ -66,7 +66,7 @@ export class FormularioAnuncioComponent {
   private navCtrl = inject(NavController);
   private router = inject(Router);
   private productoService = inject(ProductoService);
-  private toastCtrl = inject(ToastController);
+  private toast = inject(NativeToastService);
   private overlayService = inject(OverlayService);
 
   constructor() {
@@ -117,21 +117,21 @@ export class FormularioAnuncioComponent {
 
   async guardarCambios() {
     try {
-      if (!this.producto) { await this.mostrarToast('Error interno: producto no definido'); return; }
+      if (!this.producto) { this.toast.show('Error interno: producto no definido'); return; }
       if (!this.producto.titulo || !this.producto.categoria || !this.producto.tipo) {
-        await this.mostrarToast('Debes completar título, categoría y tipo de oferta'); return;
+        this.toast.show('Debes completar título, categoría y tipo de oferta'); return;
       }
       if (this.producto.tipo !== 'intercambio' && this.producto.tipo !== 'prestamo') {
-        await this.mostrarToast('Debes seleccionar un tipo de oferta válido.'); return;
+        this.toast.show('Debes seleccionar un tipo de oferta válido.'); return;
       }
       if (this.producto.tipo.toLowerCase() === 'prestamo') {
         if (this.producto.precio == null || this.producto.fechaDevolucion == null) {
-          await this.mostrarToast('Precio y fecha de devolución obligatorios para préstamos'); return;
+          this.toast.show('Precio y fecha de devolución obligatorios para préstamos'); return;
         }
       }
-      if (!this.primeraImagen) { await this.mostrarToast('Debes seleccionar una imagen principal'); return; }
+      if (!this.primeraImagen) { this.toast.show('Debes seleccionar una imagen principal'); return; }
       this.producto.estilo = this.estilosSeleccionados.length > 0 ? this.estilosSeleccionados.join(', ') : null;
-      if (!this.producto.id) { await this.mostrarToast('Error interno: producto sin ID'); return; }
+      if (!this.producto.id) { this.toast.show('Error interno: producto sin ID'); return; }
 
       await firstValueFrom(this.productoService.updateProducto(this.producto.id, this.producto));
       const imagenes = await firstValueFrom(this.imagenProductoService.getImagenesByProducto(this.producto.id));
@@ -140,17 +140,12 @@ export class FormularioAnuncioComponent {
         const dto: ImagenProductoDTO = { urlImg: this.primeraImagen, orden: 1, idProducto: this.producto.id };
         await firstValueFrom(this.imagenProductoService.updateImagenProducto(imagenPrincipal.id, dto));
       }
-      await this.mostrarToast('Producto guardado correctamente');
+      this.toast.show('Producto guardado correctamente');
       this.guardar.emit(this.producto);
     } catch (error) {
       console.error('Error al guardar cambios del producto:', error);
-      await this.mostrarToast('Error al guardar el producto');
+      this.toast.show('Error al guardar el producto');
     }
-  }
-
-  async mostrarToast(message: string) {
-    const toast = await this.toastCtrl.create({ message, duration: 3000, position: 'bottom', color: 'dark' });
-    await toast.present();
   }
 
   cancelarEdicion() { this.cancelar.emit(); }

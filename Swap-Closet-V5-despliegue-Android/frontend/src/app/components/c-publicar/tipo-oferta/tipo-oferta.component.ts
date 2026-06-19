@@ -1,29 +1,27 @@
 import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
-import {NgIf} from "@angular/common";
+import {NgIf, DatePipe} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {ProductoFormService} from "../../../service/productoFormService/producto-form.service";
 import {Subscription} from "rxjs";
+import {OverlayService} from "../../../service/overlay/overlay.service";
+import {FechaDevolucionModalComponent} from "../../fecha-devolucion-modal/fecha-devolucion-modal.component";
 
 @Component({
     selector: 'app-tipo-oferta',
     templateUrl: './tipo-oferta.component.html',
     styleUrls: ['./tipo-oferta.component.scss'],
     standalone: true,
-    imports: [
-      IonicModule,
-      NgIf,
-      FormsModule
-    ]
+    imports: [IonicModule, NgIf, FormsModule, DatePipe]
 })
 export class TipoOfertaComponent implements OnInit, OnDestroy {
 
   tipoOferta: string = 'intercambio';
   precio: number | null = null;
-  mostrarCalendario: boolean = false;
   fechaDevolucion: string | null = null;
 
   private formService = inject(ProductoFormService);
+  private overlayService = inject(OverlayService);
   private resetSub?: Subscription;
 
   ngOnInit() {
@@ -41,7 +39,6 @@ export class TipoOfertaComponent implements OnInit, OnDestroy {
   onTipoOfertaChange(event: any) {
     const valor = event.detail.value as 'intercambio' | 'prestamo';
     this.tipoOferta = valor;
-
     this.formService.updateForm({ tipoOferta: valor });
 
     if (valor === 'prestamo') {
@@ -49,7 +46,6 @@ export class TipoOfertaComponent implements OnInit, OnDestroy {
     } else {
       this.precio = null;
       this.fechaDevolucion = null;
-      this.mostrarCalendario = false;
       this.formService.updateForm({ precio: null, fechaDevolucion: '' });
     }
   }
@@ -57,22 +53,20 @@ export class TipoOfertaComponent implements OnInit, OnDestroy {
   onPrecioChange(event: any) {
     const valor = Number(event.target.value);
     this.precio = valor;
-    this.formService.updateForm({precio: valor});
+    this.formService.updateForm({ precio: valor });
   }
 
-  toggleCalendario() {
-    this.mostrarCalendario = !this.mostrarCalendario;
-  }
-
-  onFechaChange(event: any) {
-    this.fechaDevolucion = event.detail.value;
-    this.formService.updateForm({fechaDevolucion: this.fechaDevolucion?.toString()});
+  abrirFechaModal() {
+    this.overlayService.open(FechaDevolucionModalComponent, {}, (fecha: string | null) => {
+      if (!fecha) return;
+      this.fechaDevolucion = fecha;
+      this.formService.updateForm({ fechaDevolucion: fecha });
+    });
   }
 
   private limpiarCampos() {
     this.tipoOferta = 'intercambio';
     this.precio = null;
-    this.mostrarCalendario = false;
     this.fechaDevolucion = null;
   }
 }

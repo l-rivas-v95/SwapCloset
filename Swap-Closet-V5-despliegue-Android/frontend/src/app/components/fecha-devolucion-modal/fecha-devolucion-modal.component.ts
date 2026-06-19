@@ -1,35 +1,31 @@
-import {Component, inject, Input} from '@angular/core';
-import {IonicModule} from "@ionic/angular";
-import {FormsModule} from "@angular/forms";
+import {Component, inject, AfterViewInit, ViewChild, ElementRef} from '@angular/core';
 import {OverlayService} from "../../service/overlay/overlay.service";
 
 @Component({
   selector: 'app-fecha-devolucion-modal',
-  template: `
-    <div style="padding:16px">
-      <ion-datetime
-        presentation="date-time"
-        [(ngModel)]="fecha"
-        [showDefaultButtons]="true"
-        (ionCancel)="dismiss()"
-        (ionChange)="confirm($event)">
-      </ion-datetime>
-    </div>
-  `,
+  templateUrl: './fecha-devolucion-modal.component.html',
+  styleUrls: ['./fecha-devolucion-modal.component.scss'],
   standalone: true,
-  imports: [IonicModule, FormsModule]
+  imports: []
 })
-export class FechaDevolucionModalComponent {
-  @Input() initialDate: string = '';
+export class FechaDevolucionModalComponent implements AfterViewInit {
+  @ViewChild('dateInput') dateInput!: ElementRef<HTMLInputElement>;
 
   private overlayService = inject(OverlayService);
 
-  fecha: string = this.initialDate || new Date().toISOString();
+  ngAfterViewInit() {
+    // Abre el picker nativo directamente al montar el componente
+    setTimeout(() => this.dateInput.nativeElement.showPicker(), 100);
+  }
 
-  dismiss() { this.overlayService.close(null); }
+  onChange(event: Event) {
+    const val = (event.target as HTMLInputElement).value;
+    if (val) {
+      this.overlayService.close(val);
+    }
+  }
 
-  confirm(event: any) {
-    const val = event?.detail?.value ?? this.fecha;
-    this.overlayService.close(val);
+  cancelar() {
+    this.overlayService.close(null);
   }
 }

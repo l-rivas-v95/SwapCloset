@@ -54,7 +54,7 @@ public class ProductoService {
     @Transactional(readOnly = true)
     public CartaProductoDTO getCartaProductoDTOidProducto(Integer idProducto){
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
         Producto producto = productoRepository.findById(idProducto).orElseThrow(() ->
                 new IllegalArgumentException("Producto no encontrado"));

@@ -57,6 +57,36 @@
 
   </ion-list>
 
+  <!-- ── TOAST TESTS ─────────────────────────────────── -->
+  <ion-list-header><ion-label><b>TESTS TOAST</b></ion-label></ion-list-header>
+
+  <ion-list>
+    <ion-item>
+      <ion-label class="ion-text-wrap"><b>T1</b> — ToastController position: bottom</ion-label>
+      <ion-button slot="end" (click)="toastT1()">Test</ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-label class="ion-text-wrap"><b>T2</b> — ToastController position: top</ion-label>
+      <ion-button slot="end" (click)="toastT2()">Test</ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-label class="ion-text-wrap"><b>T3</b> — ToastController position: middle</ion-label>
+      <ion-button slot="end" (click)="toastT3()">Test</ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-label class="ion-text-wrap"><b>T4</b> — alert() nativo JS (siempre funciona)</ion-label>
+      <ion-button slot="end" color="danger" (click)="toastT4()">Test</ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-label class="ion-text-wrap"><b>T5</b> — ion-toast declarativo [isOpen]</ion-label>
+      <ion-button slot="end" (click)="toastT5()">Test</ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-label class="ion-text-wrap"><b>T6</b> — Toast custom (div CSS, sin Ionic)</ion-label>
+      <ion-button slot="end" color="success" (click)="toastT6()">Test</ion-button>
+    </ion-item>
+  </ion-list>
+
   <!-- Log de eventos -->
   <ion-card>
     <ion-card-header><ion-card-title>Log</ion-card-title></ion-card-header>
@@ -117,6 +147,34 @@
     </ion-content>
   </ng-template>
 </ion-modal>
+
+<!-- ── T5: ion-toast declarativo ── -->
+<ion-toast
+  [isOpen]="toastDeclarativoOpen"
+  message="T5 — ion-toast declarativo"
+  [duration]="3000"
+  position="middle"
+  (didDismiss)="toastDeclarativoOpen = false">
+</ion-toast>
+
+<!-- ── T6: Toast custom sin Ionic ── -->
+@if (toastCustomVisible) {
+  <div style="
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 24px;
+    z-index: 99999;
+    font-size: 15px;
+    pointer-events: none;
+  ">
+    T6 — Toast custom CSS ✅
+  </div>
+}
 
 <!-- ── F: Custom overlay (@if + CSS) ── -->
 @if (isOpen3) {

@@ -6,6 +6,8 @@ import {Subscription} from "rxjs";
 import {OverlayService} from "../../../service/overlay/overlay.service";
 import {BottomSheetComponent} from "../../bottom-sheet/bottom-sheet.component";
 import {EstiloPickerModalComponent} from "../../estilo-picker-modal/estilo-picker-modal.component";
+import {CategoriaPickerModalComponent} from "../../categoria-picker-modal/categoria-picker-modal.component";
+import {ColorPickerModalComponent} from "../../color-picker-modal/color-picker-modal.component";
 
 @Component({
   selector: 'app-datos-adicionales-chip',
@@ -86,6 +88,21 @@ export class DatosAdicionalesChipComponent implements OnInit, OnDestroy {
         if (!this.estilos.includes(seleccionado)) this.estilos.push(seleccionado);
         if (!this.estilosSeleccionados.includes(seleccionado)) this.estilosSeleccionados.push(seleccionado);
         this.productoFormService.updateForm({ estilo: this.estilosSeleccionados.join(', ') });
+      });
+    } else if (tipo === 'categoria') {
+      this.overlayService.open(CategoriaPickerModalComponent, {}, (seleccionado: string | null) => {
+        if (!seleccionado) return;
+        if (!this.categorias.includes(seleccionado)) this.categorias.push(seleccionado);
+        this.categoriaSeleccionada = seleccionado;
+        this.actualizarTallas();
+        this.productoFormService.updateForm({ categoria: seleccionado });
+      });
+    } else if (tipo === 'color') {
+      this.overlayService.open(ColorPickerModalComponent, {}, (seleccionado: string | null) => {
+        if (!seleccionado) return;
+        if (!this.colores.includes(seleccionado)) this.colores.push(seleccionado);
+        if (!this.coloresSeleccionados.includes(seleccionado)) this.coloresSeleccionados.push(seleccionado);
+        this.productoFormService.updateForm({ color: this.coloresSeleccionados.join(', ') });
       });
     }
   }

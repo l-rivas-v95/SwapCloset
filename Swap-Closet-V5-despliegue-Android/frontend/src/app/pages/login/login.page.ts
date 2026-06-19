@@ -13,8 +13,8 @@ import {
 } from '@ionic/angular/standalone';
 import {UsuarioDTO} from "../../modelos/UsuarioDTO";
 import {UsuarioService} from "../../service/usuarioService/usuario.service";
-import {ToastController} from "@ionic/angular";
 import {AuthService} from "../../service/authService/auth.service";
+import {NativeToastService} from "../../service/nativeToastService/native-toast.service";
 
 @Component({
   selector: 'app-login',
@@ -50,8 +50,9 @@ export class LoginPage {
   private usuarioService = inject(UsuarioService);
   usuario: UsuarioDTO | undefined;
 
-  constructor(private toastCtrl: ToastController,
-              private router: Router,
+  private toast = inject(NativeToastService);
+
+  constructor(private router: Router,
               private authService: AuthService) {
   }
 
@@ -61,65 +62,24 @@ export class LoginPage {
   }
 
   async guardarUsuario() {
-    // Validar contraseñas
-    if (this.password !== this.password2) {
-      const toast = await this.toastCtrl.create({
-        message: 'Las contraseñas no coinciden',
-        duration: 1500,
-        position: 'bottom'
-      });
-      await toast.present();
-      return;
-    }
-
-    // Validar campos vacíos
-    if (!this.nombre || !this.apellidos || !this.correo || !this.password) {
-      const toast = await this.toastCtrl.create({
-        message: 'Por favor, complete todos los campos',
-        duration: 1500,
-        position: 'bottom'
-      });
-      await toast.present();
-      return;
-    }
-
-    // Validar formato del correo
+    if (this.password !== this.password2) { this.toast.show('Las contraseñas no coinciden'); return; }
+    if (!this.nombre || !this.apellidos || !this.correo || !this.password) { this.toast.show('Por favor, complete todos los campos'); return; }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(this.correo)) {
-      const toast = await this.toastCtrl.create({
-        message: 'Correo electrónico inválido',
-        duration: 1500,
-        position: 'bottom'
-      });
-      await toast.present();
-      return;
-    }
+    if (!emailRegex.test(this.correo)) { this.toast.show('Correo electrónico inválido'); return; }
 
     try {
-      // Verificar si el correo existe en el backend
       if (!booleanAttribute(this.usuarioService.verificarEmail(this.correo))) {
-        const toast = await this.toastCtrl.create({
-          message: 'El correo electrónico ya existe',
-          duration: 1500,
-          position: 'bottom'
-        });
-        await toast.present();
-        this.correo = ""
+        this.toast.show('El correo electrónico ya existe');
+        this.correo = '';
         return;
       }
     } catch (err) {
       console.error('Error al verificar el email', err);
-      const toast = await this.toastCtrl.create({
-        message: 'Error al verificar el correo electrónico',
-        duration: 1500,
-        position: 'bottom'
-      });
-      await toast.present();
-      this.correo = ""
+      this.toast.show('Error al verificar el correo electrónico');
+      this.correo = '';
       return;
     }
 
-    // Preparar DTO
     this.usuario = {
       nombre: this.nombre,
       apellidos: this.apellidos,
@@ -128,67 +88,34 @@ export class LoginPage {
       urlImg: "assets/icon/img-perfil-circular-pref.png"
     } as UsuarioDTO;
 
-    // Enviar al backend
     this.usuarioService.guardarUsuario(this.usuario).subscribe({
       next: async (res) => {
         console.log('Usuario guardado:', res);
-        // Guardar usuario como "actual"
         this.authService.setUsuario(res);
-
-        const toast = await this.toastCtrl.create({
-          message: 'Usuario registrado correctamente',
-          duration: 1500,
-          position: 'bottom'
-        });
-        await toast.present();
-        // Limpiar formulario
-        this.nombre = '';
-        this.apellidos = '';
-        this.correo = '';
-        this.password = '';
-
+        this.nombre = ''; this.apellidos = ''; this.correo = ''; this.password = '';
+        this.toast.show('Usuario registrado correctamente');
         await this.router.navigate(['/perfil', res]);
       },
-      error: async (err) => {
+      error: (err) => {
         console.error('Error al guardar usuario', err);
-        const toast = await this.toastCtrl.create({
-          message: 'Error al registrar usuario',
-          duration: 1500,
-          position: 'bottom'
-        });
-        await toast.present();
+        this.toast.show('Error al registrar usuario');
       }
     });
   }
 
-  // Metodo de login (ejemplo simple)
   async login() {
-    if (!this.correoSign || !this.passwordSign) {
-      const toast = await this.toastCtrl.create({
-        message: 'Completa correo y contraseña',
-        duration: 1500,
-        position: 'bottom'
-      });
-      await toast.present();
-      return;
-    }
+    if (!this.correoSign || !this.passwordSign) { this.toast.show('Completa correo y contraseña'); return; }
 
-    this.usuarioService.loginUsuario(this.correoSign, this.passwordSign)
-      .subscribe({
-        next: async (res) => {
-          console.log('Usuario logueado:', res);
-          this.authService.setUsuario(res); // Guardar usuario actual
-          await this.router.navigate(['/home']); // Redirigir
-        },
-        error: async (err) => {
-          console.error('Error login', err);
-          const toast = await this.toastCtrl.create({
-            message: 'Correo o contraseña incorrectos',
-            duration: 1500,
-            position: 'bottom'
-          });
-          await toast.present();
-        }
-      });
+    this.usuarioService.loginUsuario(this.correoSign, this.passwordSign).subscribe({
+      next: async (res) => {
+        console.log('Usuario logueado:', res);
+        this.authService.setUsuario(res);
+        await this.router.navigate(['/home']);
+      },
+      error: (err) => {
+        console.error('Error login', err);
+        this.toast.show('Correo o contraseña incorrectos');
+      }
+    });
   }
 }

@@ -1,8 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import {
-  IonicModule,
-  ToastController
-} from '@ionic/angular';
+import { IonicModule } from '@ionic/angular';
+import {NativeToastService} from "../../service/nativeToastService/native-toast.service";
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Location, NgIf } from '@angular/common';
 
@@ -49,7 +47,7 @@ export class AnuncioPage implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
   private location = inject(Location);
-  private toastCtrl = inject(ToastController);
+  private toast = inject(NativeToastService);
 
   idUsuarioLogueado = this.authService.getUsuario()?.id ?? null;
 
@@ -128,12 +126,12 @@ export class AnuncioPage implements OnInit {
     };
 
     this.productoService.updateProducto(productoActual.id, productoDesactivado).subscribe({
-      next: async (productoActualizado) => {
+      next: (productoActualizado) => {
         this.producto.set(productoActualizado);
-        await this.mostrarToast('Anuncio desactivado');
+        this.toast.show('Anuncio desactivado');
         this.router.navigate(['/perfil']);
       },
-      error: async () => await this.mostrarToast('Error al desactivar el anuncio')
+      error: () => this.toast.show('Error al desactivar el anuncio')
     });
   }
 
@@ -170,13 +168,4 @@ export class AnuncioPage implements OnInit {
     this.cargarProducto(String(this.producto()?.id));
   }
 
-  private async mostrarToast(message: string) {
-    const toast = await this.toastCtrl.create({
-      message,
-      duration: 2000,
-      position: 'bottom',
-      color: 'dark'
-    });
-    await toast.present();
-  }
 }

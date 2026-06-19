@@ -1,5 +1,6 @@
 import {Component, inject} from '@angular/core';
-import {IonicModule, ToastController} from "@ionic/angular";
+import {IonicModule} from "@ionic/angular";
+import {NativeToastService} from "../../../../service/nativeToastService/native-toast.service";
 import {CommonModule} from "@angular/common";
 import {ImagenFormService} from "../../../../service/imagenFormService/imagen-form.service";
 import {ProductoService} from "../../../../service/productoService/producto.service";
@@ -16,7 +17,7 @@ import {OverlayService} from "../../../../service/overlay/overlay.service";
 export class ModalFotosComponent {
   private imagenesFormService = inject(ImagenFormService);
   private productoService = inject(ProductoService);
-  private toastCtrl = inject(ToastController);
+  private toast = inject(NativeToastService);
   private overlayService = inject(OverlayService);
 
   subiendo = false;
@@ -32,7 +33,7 @@ export class ModalFotosComponent {
 
     const imagenesValidas = archivos.filter(archivo => archivo.type.startsWith('image/'));
     if (imagenesValidas.length !== archivos.length) {
-      await this.mostrarToast('Solo se pueden subir imágenes');
+      this.toast.show('Solo se pueden subir imágenes');
     }
     if (imagenesValidas.length === 0) return;
 
@@ -51,12 +52,7 @@ export class ModalFotosComponent {
       this.overlayService.close({ rutas: urlsSubidas });
     } catch (error) {
       this.subiendo = false;
-      await this.mostrarToast('Error al subir imágenes');
+      this.toast.show('Error al subir imágenes');
     }
-  }
-
-  private async mostrarToast(message: string) {
-    const toast = await this.toastCtrl.create({ message, duration: 1800, position: 'bottom', color: 'dark' });
-    await toast.present();
   }
 }

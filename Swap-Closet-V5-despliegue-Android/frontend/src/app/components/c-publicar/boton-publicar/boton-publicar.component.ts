@@ -1,5 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {IonicModule, ToastController} from "@ionic/angular";
+import {IonicModule} from "@ionic/angular";
+import {NativeToastService} from "../../../service/nativeToastService/native-toast.service";
 import {ProductoService} from "../../../service/productoService/producto.service";
 import {Router} from "@angular/router";
 import {AuthService} from "../../../service/authService/auth.service";
@@ -27,7 +28,7 @@ export class BotonPublicarComponent implements OnInit {
   private productoService = inject(ProductoService);
   private imagenService = inject(ImagenProductoService);
   private imagenesFormService = inject(ImagenFormService);
-  private toastCtrl = inject(ToastController);
+  private toast = inject(NativeToastService);
   private router = inject(Router);
   private authService = inject(AuthService);
 
@@ -41,26 +42,34 @@ export class BotonPublicarComponent implements OnInit {
     try {
       //Validaciones básicas
       if (!form.titulo || !form.tipoOferta || !form.categoria) {
-        return this.mostrarToast('Debes completar título, oferta y categoría');
+        this.toast.show('Debes completar título, oferta y categoría');
+        return;
+      }
+
+      // Validación de fecha (obligatoria para todos los tipos)
+      if (!form.fechaDevolucion) {
+        this.toast.show('Debes seleccionar una fecha de devolución');
+        return;
       }
 
       // Validación específica de préstamos
       if (form.tipoOferta === 'prestamo') {
         if (form.precio == null || form.precio === undefined) {
-          return this.mostrarToast('Precio y fecha de devolución obligatorios');
+          this.toast.show('Precio y fecha de devolución obligatorios');
+          return;
         }
       }
 
       // Obtener usuario
       const usuario = this.authService.getUsuario();
       if (!usuario?.id) {
-        await this.mostrarToast('Debes iniciar sesión');
-        return this.router.navigate(['/login']);
+        this.toast.show('Debes iniciar sesión');
+        await this.router.navigate(['/login']);
+        return;
       }
 
       // Construir DTO del producto
       const productoDTO = this.formService.convertirAProductoDTO(usuario.id);
-
 
       // Guardar el producto en el backend
       const productoCreado = await firstValueFrom(
@@ -74,14 +83,15 @@ export class BotonPublicarComponent implements OnInit {
       // Guardar imágenes del producto (solo rutas)
       await this.guardarImagenes(productoCreado.id);
 
-      //  Final
-      await this.mostrarToast('Producto publicado correctamente');
+      // Final — primero reset y navegar, luego toast
       this.formService.resetForm();
+      this.imagenesFormService.resetFotos();
+      this.toast.show('Producto publicado correctamente');
       await this.router.navigate(['/home']);
 
     } catch (err) {
       console.error('Error durante la publicación del producto:', err);
-      this.mostrarToast('Error al publicar el producto');
+      this.toast.show('Error al publicar el producto');
     }
   }
 
@@ -117,12 +127,4 @@ export class BotonPublicarComponent implements OnInit {
     }
   }
 
-  private async mostrarToast(msg: string) {
-    const toast = await this.toastCtrl.create({
-      message: msg,
-      duration: 2000,
-      position: 'bottom'
-    });
-    await toast.present();
-  }
 }

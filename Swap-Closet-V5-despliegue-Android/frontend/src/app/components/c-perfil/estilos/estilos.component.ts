@@ -1,5 +1,6 @@
 import {Component, inject, Input, signal} from '@angular/core';
-import {IonicModule, ToastController} from '@ionic/angular';
+import {IonicModule} from '@ionic/angular';
+import {NativeToastService} from "../../../service/nativeToastService/native-toast.service";
 import {NgForOf, NgClass, NgIf} from '@angular/common';
 import {UsuarioDTO} from "../../../modelos/UsuarioDTO";
 import {UsuarioService} from "../../../service/usuarioService/usuario.service";
@@ -20,7 +21,7 @@ export class EstilosComponent {
   @Input() esMiPerfil = true;
 
   private usuarioService = inject(UsuarioService);
-  private toastCtrl = inject(ToastController);
+  private toast = inject(NativeToastService);
   private overlayService = inject(OverlayService);
 
   get estilosSeleccionados(): string[] {
@@ -54,21 +55,11 @@ export class EstilosComponent {
     };
 
     this.usuarioService.updateUsuario(u.id, actualizado).subscribe({
-      next: async (usuarioGuardado) => {
+      next: (usuarioGuardado) => {
         this.usuario.set(usuarioGuardado);
-        await this.mostrarToast('Estilos guardados');
+        this.toast.show('Estilos guardados');
       },
-      error: async () => await this.mostrarToast('Error al guardar estilos')
+      error: () => this.toast.show('Error al guardar estilos')
     });
-  }
-
-  private async mostrarToast(message: string) {
-    const toast = await this.toastCtrl.create({
-      message,
-      duration: 1500,
-      position: 'bottom',
-      color: 'dark'
-    });
-    await toast.present();
   }
 }
