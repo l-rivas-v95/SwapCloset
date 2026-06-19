@@ -24,12 +24,11 @@
         </div>
       }
 
-      <ion-chip
-        [ngClass]="(producto?.tipo | lowercase ) === 'intercambio' ? 'chip-rosa' : 'chip-azul'"
+      <span
         class="chip-intercambio"
-      >
-        <b>{{ producto?.tipo }}</b>
-      </ion-chip>
+        [style.backgroundColor]="(producto?.tipo | lowercase) === 'intercambio' ? '#FFE2E3' : '#c6dfff'"
+        [style.color]="(producto?.tipo | lowercase) === 'intercambio' ? '#FF3FBF' : '#5056FF'"
+      ><b>{{ producto?.tipo }}</b></span>
 
       @if (usuario?.id !== idUsuarioLogueado) {
         <ion-fab
@@ -60,12 +59,12 @@
     <p class="producto-descripcion">{{ producto?.descripcion }}</p>
 
     <div class="chip-group">
-      <ion-chip
+      <span
         *ngFor="let est of estilos"
-        [ngClass]="(producto?.tipo | lowercase) === 'intercambio' ? 'chip-rosa' : 'chip-azul'"
-      >
-        <b>{{ est }}</b>
-      </ion-chip>
+        class="chip-estilo"
+        [style.backgroundColor]="(producto?.tipo | lowercase) === 'intercambio' ? '#FFE2E3' : '#c6dfff'"
+        [style.color]="(producto?.tipo | lowercase) === 'intercambio' ? '#FF3FBF' : '#5056FF'"
+      ><b>{{ est }}</b></span>
     </div>
 
     <ion-row>

@@ -45,7 +45,6 @@
               [style.background]="getCatColor(categoriaFiltro())?.solid ?? ''"
               [style.color]="categoriaFiltro() ? '#fff' : ''"
               [style.border-color]="getCatColor(categoriaFiltro())?.solid ?? ''"
-              [class.active-picker]="categoriaFiltro() !== null && !getCatColor(categoriaFiltro())"
               (click)="pickerCategoria.set(true)">
               {{ categoriaFiltro() ?? 'Categoría' }}
               <ion-icon name="chevron-down-outline" class="pill-arrow"></ion-icon>
@@ -100,7 +99,7 @@
       <div class="cat-chips-grid">
         @for (c of categorias; track c.label) {
           <button class="cat-chip"
-            [style.background]="categoriaFiltro() === c.label ? c.solid : c.alpha"
+            [style.backgroundColor]="categoriaFiltro() === c.label ? c.solid : c.alpha"
             [style.color]="categoriaFiltro() === c.label ? '#fff' : c.solid"
             (click)="seleccionarCategoria(c.label)">
             {{ c.label }}

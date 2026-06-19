@@ -220,23 +220,21 @@
   position: absolute;
   bottom: 8px;
   left: 8px;
+  border-radius: 20px;
   box-shadow: 0 2px 8px rgba(96, 95, 95, 0.5);
   font-size: 14px;
-  padding: 8px 12px;
+  padding: 6px 12px;
   z-index: 10;
-}
-.chip-rosa {
-  --background: #FFE2E3;
-  --color: #FF3FBF;
-  box-shadow: 0 2px 8px rgba(96, 95, 95, 0.5);
-  margin: 10px;
+  display: inline-block;
 }
 
-.chip-azul{
-  --background: #c6dfff;
-  --color: #5056FF;
-  box-shadow: 0 2px 8px rgba(96, 95, 95, 0.5);
-  margin: 10px;
+.chip-estilo {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 14px;
+  margin: 4px 6px 4px 0;
+  box-shadow: 0 1px 4px rgba(96, 95, 95, 0.3);
 }
 
 .fecha-date{
