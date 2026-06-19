@@ -9,20 +9,7 @@ import {
   TitleCasePipe,
 } from '@angular/common';
 import {NativeToastService} from '../../../service/nativeToastService/native-toast.service';
-import {
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardContent,
-  IonImg,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonFab,
-  IonFabButton,
-  IonIcon,
-  IonChip,
-} from '@ionic/angular/standalone';
+import { IonIcon } from '@ionic/angular/standalone';
 
 import { CartaProductoDTO } from '../../../modelos/CartaProductoDTO';
 import { AuthService } from '../../../service/authService/auth.service';
@@ -35,25 +22,10 @@ import { FavoritoDTO } from '../../../modelos/FavoritoDTO';
   styleUrls: ['./carta-home-intercambio.component.scss'],
   standalone: true,
   imports: [
-    // Ionic standalone components usados en el HTML
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardContent,
-    IonImg,
-    IonGrid,
-    IonRow,
-    IonCol,
-    IonFab,
-    IonFabButton,
     IonIcon,
-    IonChip,
-
-    // Angular
     RouterModule,
     NgIf,
     NgClass,
-    AsyncPipe,
     TitleCasePipe,
     DatePipe,
   ],

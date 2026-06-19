@@ -7,20 +7,16 @@
             <ion-icon size="large" name="arrow-back-outline" class="flecha"></ion-icon>
           </ion-button>
         </ion-col>
-        <ion-col size="2.5" class="izquierda">
+        <ion-col size="2" class="izquierda">
           <img [src]="otroUsuario()?.urlImg || 'assets/icon/card-media.png'" class="avatar">
         </ion-col>
         <ion-col>
-          <ion-row>
-            <h2>{{ otroUsuario()?.nombre }} {{ otroUsuario()?.apellidos }}</h2>
-          </ion-row>
-          <div class="usuario-datos">
-            <div class="usuario-rating">
-              <p class="rating">{{ otroUsuario()?.raiting ?? 0 }}</p>
-              <ion-icon class="rating-star" name="star"></ion-icon>
-              <p class="separador">·</p>
-              <p class="intercambios">{{ otroUsuario()?.intercambios ?? 0 }} intercambios</p>
-            </div>
+          <p class="header-nombre">{{ otroUsuario()?.nombre }} {{ otroUsuario()?.apellidos }}</p>
+          <div class="usuario-rating">
+            <p class="rating">{{ otroUsuario()?.raiting ?? 0 }}</p>
+            <ion-icon class="rating-star" name="star"></ion-icon>
+            <p class="separador">·</p>
+            <p class="intercambios">{{ otroUsuario()?.intercambios ?? 0 }} intercambios</p>
           </div>
         </ion-col>
       </ion-row>
@@ -31,25 +27,14 @@
 <ion-content>
   <!-- Tarjeta del producto -->
   @if (producto()) {
-    <ion-toolbar class="fondo bordes-redondeados sin-padding-lateral">
-      <ion-grid>
-        <ion-row class="centro">
-          <ion-col size="2.5">
-            <img class="img_prod margen-izq" [src]="producto()!.imagenes?.[0]?.urlImg || 'assets/icon/card-media.png'"/>
-          </ion-col>
-          <ion-col>
-            <ion-row><p class="sin-margen margen-izq">{{ producto()!.titulo }}</p></ion-row>
-            <ion-row class="sin-margen">
-              <p class="sin-margen margen-izq color-nombre">{{ producto()!.tipo }}</p>
-              <p class="sin-margen margen-izq"> · Talla {{ producto()!.talla }}</p>
-            </ion-row>
-          </ion-col>
-          <ion-col size="2">
-            <ion-button class="sin-margen chip-rosa" [routerLink]="['/anuncio', producto()!.id]">Ver</ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-toolbar>
+    <div class="producto-banner">
+      <img class="img_prod" [src]="producto()!.imagenes?.[0]?.urlImg || 'assets/icon/card-media.png'"/>
+      <div class="producto-info">
+        <p class="sin-margen">{{ producto()!.titulo }}</p>
+        <p class="sin-margen color-nombre">{{ producto()!.tipo }} · Talla {{ producto()!.talla }}</p>
+      </div>
+      <a class="btn-ver" [routerLink]="['/anuncio', producto()!.id]">Ver</a>
+    </div>
   }
 
   <div class="chat-container">
@@ -234,19 +219,11 @@
     </div>
   }
   <div class="action-buttons">
-    <ion-button fill="clear" (click)="proponerFecha()">
-      <ion-chip class="chip-intercambio"><p>📅</p><p><b>Fecha</b></p></ion-chip>
-    </ion-button>
-    <ion-button fill="clear" (click)="proponerLugar()">
-      <ion-chip class="chip-rosa"><p>📍</p><p><b>Lugar</b></p></ion-chip>
-    </ion-button>
-    <ion-button fill="clear" (click)="proponerEntrega()">
-      <ion-chip class="chip-entrega"><p>📦</p><p><b>Entrega</b></p></ion-chip>
-    </ion-button>
+    <button class="chip-intercambio action-chip" (click)="proponerFecha()">📅 <b>Fecha</b></button>
+    <button class="chip-rosa action-chip" (click)="proponerLugar()">📍 <b>Lugar</b></button>
+    <button class="chip-entrega action-chip" (click)="proponerEntrega()">📦 <b>Entrega</b></button>
     @if (esIntercambio() && esPropietario()) {
-      <ion-button fill="clear" (click)="proponerPrenda()">
-        <ion-chip class="chip-prenda"><p>👗</p><p><b>Prenda</b></p></ion-chip>
-      </ion-button>
+      <button class="chip-prenda action-chip" (click)="proponerPrenda()">👗 <b>Prenda</b></button>
     }
   </div>
   <div class="confirm-row">
@@ -257,13 +234,11 @@
       </ion-chip>
     </ion-button>
   </div>
-  <ion-toolbar>
-    <ion-input placeholder="Escribe un mensaje..." [(ngModel)]="nuevoMensaje"
-               (keyup.enter)="enviarMensaje()"></ion-input>
-    <ion-buttons slot="end">
-      <ion-button (click)="enviarMensaje()" [disabled]="!nuevoMensaje.trim()">
-        <ion-icon name="send"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
+  <div class="msg-bar">
+    <input class="msg-input" type="text" placeholder="Escribe un mensaje..."
+      [(ngModel)]="nuevoMensaje" (keyup.enter)="enviarMensaje()">
+    <button class="msg-send" (click)="enviarMensaje()" [disabled]="!nuevoMensaje.trim()">
+      <ion-icon name="send"></ion-icon>
+    </button>
+  </div>
 </ion-footer>

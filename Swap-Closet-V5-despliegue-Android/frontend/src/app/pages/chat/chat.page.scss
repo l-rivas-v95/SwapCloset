@@ -1,5 +1,5 @@
 .menu-superior{
-  height: 10vh;
+  height: 13vh;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -74,12 +74,48 @@ ion-icon{
   height: 5vh;
 }
 
-/* Fix Android WebView: usar CSS vars de Ionic en lugar de .segment-button-checked / ::part(native) */
-::ng-deep .botones-seleccion ion-segment-button {
-  --background: #ffffff;
-  --color: #888888;
-  --background-checked: #ffd6e0;
-  --color-checked: #ff3f84;
-  --indicator-color: transparent;
-  --border-radius: 30px;
+.seg-btn {
+  border: none;
+  background: transparent;
+  color: #7a7a7a;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 6px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background: #f2f2f2;
+  border-radius: 20px;
+  padding: 6px 12px;
+  margin: 6px 4px 8px;
+  gap: 6px;
+}
+
+.search-icon {
+  font-size: 16px;
+  color: #aaa;
+  flex-shrink: 0;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  color: #333;
+  outline: none;
+
+  &::placeholder { color: #aaa; }
+}
+
+ion-content {
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --background: #f4f4f4;
 }

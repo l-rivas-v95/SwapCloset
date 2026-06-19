@@ -1,40 +1,28 @@
 @if (esVisible) {
-<ion-card class="tarjeta" (click)="abrirChat()">
-  <ion-item lines="none">
-    <ion-avatar class="img_perfil" slot="start">
-      <img [src]="otroUsuario?.urlImg || 'assets/icon/card-media.png'" alt="Foto perfil">
-    </ion-avatar>
-    <ion-label>
-      <h2 class="nombre">{{ otroUsuario?.nombre }} {{ otroUsuario?.apellidos }}</h2>
-      <p class="puntuacion">
-        <ion-icon name="star" class="estrella"></ion-icon> {{ otroUsuario?.raiting ?? 0 }}
-        · {{ otroUsuario?.intercambios ?? 0 }} intercambios
-      </p>
-    </ion-label>
-    @if ((chat.mensajesNoLeidos ?? 0) > 0) {
-      <ion-badge color="danger" slot="end" class="badge-chat">
-        {{ chat.mensajesNoLeidos }}
-      </ion-badge>
-    }
-  </ion-item>
-
-  @if (producto) {
-    <div class="contenedor-producto">
-      <img [src]="producto.imagenes?.[0]?.urlImg || 'assets/icon/card-media.png'" class="imagen-producto">
-      <div class="info-producto">
-        <p class="titulo-producto">{{ producto.titulo }}</p>
-        <div class="detalle-producto">
-          <ion-badge [color]="producto.tipo === 'Intercambio' ? 'danger' : 'primary'" class="etiqueta">
-            {{ producto.tipo }}
-          </ion-badge>
-          <span class="talla">Talla {{ producto.talla }}</span>
-        </div>
+<div class="tarjeta" (click)="abrirChat()">
+  <div class="card-main">
+    <img class="avatar" [src]="otroUsuario?.urlImg || 'assets/icon/card-media.png'" alt="Foto perfil">
+    <div class="card-body">
+      <div class="card-top">
+        <span class="nombre">{{ otroUsuario?.nombre }} {{ otroUsuario?.apellidos }}</span>
+        <span class="hora">{{ ultimoMensaje ? formatearHora(ultimoMensaje.fechaEnvio) : '' }}</span>
       </div>
+      <div class="card-mid">
+        <span class="ultimo-msg">{{ ultimoMensaje?.contenido || 'Sin mensajes aún' }}</span>
+        @if ((chat.mensajesNoLeidos ?? 0) > 0) {
+          <span class="badge">{{ chat.mensajesNoLeidos }}</span>
+        }
+      </div>
+      @if (producto) {
+        <div class="prenda-preview">
+          <img class="prenda-img" [src]="producto.imagenes?.[0]?.urlImg || 'assets/icon/card-media.png'" alt="">
+          <div class="prenda-info">
+            <span class="prenda-nombre">{{ producto.titulo }}</span>
+            <span class="prenda-tipo">{{ producto.tipo }} · Talla {{ producto.talla }}</span>
+          </div>
+        </div>
+      }
     </div>
-  }
-
-  @if (ultimoMensaje) {
-    <p class="mensaje">{{ ultimoMensaje.contenido }}</p>
-  }
-</ion-card>
+  </div>
+</div>
 }

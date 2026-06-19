@@ -15,7 +15,7 @@
         </ion-col>
 
         <ion-col size="2" class="derecha">
-          <ion-icon size="large" name="people"></ion-icon>
+          <ion-icon style="font-size: 28px;" name="people"></ion-icon>
         </ion-col>
 
       </ion-row>
@@ -41,8 +41,11 @@
 
       <ion-row class="centro">
         <ion-col>
-          <ion-searchbar class="barra" placeholder="Buscar persona"
-            (ionInput)="busqueda = $event.detail.value ?? ''"></ion-searchbar>
+          <div class="search-box">
+            <ion-icon name="search-outline" class="search-icon"></ion-icon>
+            <input class="search-input" type="search" placeholder="Buscar persona"
+              (input)="busqueda = $any($event.target).value">
+          </div>
         </ion-col>
       </ion-row>
 

@@ -17,6 +17,39 @@ ion-content {
 }
 
 /* ===================================================
+   FIX ANDROID WEBVIEW: eliminar outline/tap-highlight
+   en todos los elementos para evitar el borde punteado
+   =================================================== */
+* {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+ion-item {
+  --highlight-color-focused: transparent;
+  --highlight-color-valid: transparent;
+  --highlight-color-invalid: transparent;
+  --border-color: transparent;
+}
+
+ion-card {
+  --box-shadow: none;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* ── Títulos de sección (estilo A) ── */
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111;
+  border-left: 3px solid #FF3FBF;
+  padding-left: 10px;
+  margin: 4px 0 12px 16px;
+  display: block;
+}
+
+/* ===================================================
    FIX ANDROID WEBVIEW: ion-segment-button
    Las CSS custom properties de Ionic cruzan el Shadow DOM.
    Hay que ponerlas en global.scss sin scoping de Angular.

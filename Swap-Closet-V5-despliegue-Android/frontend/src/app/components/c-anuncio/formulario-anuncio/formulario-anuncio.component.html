@@ -25,7 +25,7 @@
       <div class="info-container">
 
         <ion-input class="producto-titulo edit-input" [(ngModel)]="producto.titulo"></ion-input>
-        <ion-textarea class="producto-descripcion edit-textarea" autoGrow="true" [(ngModel)]="producto.descripcion"></ion-textarea>
+        <textarea class="producto-descripcion edit-textarea" rows="3" placeholder="Descripción del producto..." [(ngModel)]="producto.descripcion"></textarea>
 
         <div class="chip-group">
           <span
@@ -118,9 +118,23 @@
   </ion-grid>
 </div>
 
-<ion-action-sheet
-  [isOpen]="asOpen"
-  [header]="asHeader"
-  [buttons]="asButtons"
-  (didDismiss)="asOpen = false">
-</ion-action-sheet>
+@if (asOpen) {
+  <div class="modal-overlay" (click)="asOpen = false">
+    <div class="modal-sheet" (click)="$event.stopPropagation()">
+      <div class="modal-handle-bar"></div>
+      <div class="modal-header">
+        <span class="modal-title">{{ asHeader }}</span>
+      </div>
+      <div class="sheet-buttons">
+        @for (btn of asButtons; track btn.text) {
+          @if (btn.role !== 'cancel') {
+            <button class="sheet-btn" (click)="btn.handler && btn.handler(); asOpen = false">
+              {{ btn.text }}
+            </button>
+          }
+        }
+        <button class="sheet-btn sheet-btn--cancel" (click)="asOpen = false">Cancelar</button>
+      </div>
+    </div>
+  </div>
+}

@@ -1,6 +1,6 @@
 import {
   Component, ChangeDetectorRef, ElementRef, EnvironmentInjector,
-  inject, NgZone, ViewChild
+  inject, NgZone, OnDestroy, OnInit, ViewChild
 } from '@angular/core';
 import { IonicModule, ModalController, ToastController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
@@ -13,7 +13,7 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [IonicModule, CommonModule, RouterLink]
 })
-export class TestModalPage {
+export class TestModalPage implements OnInit, OnDestroy {
 
   private modalCtrl   = inject(ModalController);
   private toastCtrl   = inject(ToastController);
@@ -22,14 +22,42 @@ export class TestModalPage {
   private cdr         = inject(ChangeDetectorRef);
 
   // ── Estado de cada botón ──────────────────────────────────
-  isOpen1 = false;   // A: [isOpen] sin keepContentsMounted
-  isOpen2 = false;   // B: [isOpen] + keepContentsMounted
-  isOpen3 = false;   // E: overlay custom @if
+  isOpen1 = false;
+  isOpen2 = false;
+  isOpen3 = false;
   toastDeclarativoOpen = false;
   toastCustomVisible = false;
   log = '';
 
-  @ViewChild('modal4ref') modal4ref!: any;   // D: ViewChild + present()
+  // ── Keyboard tests ────────────────────────────────────────
+  kTest = 0;
+  kLog = '';
+  vvHeight = 0;
+  innerH = 0;
+  kbH = 0;
+
+  private onVV = () => {
+    const vv = window.visualViewport;
+    if (!vv) return;
+    this.vvHeight = Math.round(vv.height);
+    this.innerH   = window.innerHeight;
+    this.kbH      = Math.round(this.innerH - vv.height - vv.offsetTop);
+    this.kLog     = `kbH=${this.kbH}px`;
+
+    // K2: mueve el div manualmente
+    const bar = document.getElementById('k2bar');
+    if (bar) bar.style.bottom = this.kbH > 50 ? `${this.kbH}px` : '0px';
+  };
+
+  @ViewChild('modal4ref') modal4ref!: any;
+
+  ngOnInit() {
+    window.visualViewport?.addEventListener('resize', this.onVV);
+  }
+
+  ngOnDestroy() {
+    window.visualViewport?.removeEventListener('resize', this.onVV);
+  }
 
   // ── A: [isOpen] sin keepContentsMounted ──────────────────
   abrirA() { this.isOpen1 = true; this.addLog('A abierto'); }

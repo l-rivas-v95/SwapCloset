@@ -1,115 +1,121 @@
 .tarjeta {
-  border-radius: 20px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-  margin: 10px 0px 0px 0px;
-  padding: 15px;
-  box-shadow: 0 2px 8px rgba(131, 131, 131, 0.4);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+  padding: 12px 16px;
+  cursor: pointer;
+  margin: 8px 12px 0;
+
+  &:active {
+    background: #fafafa;
+  }
+}
+
+.card-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 2px;
 }
 
 .nombre {
-  font-weight: 600;
-  color: #222;
-}
-
-.img_perfil{
-  margin-left:0px;
-  width: 4rem;
-  height: 4rem;
-
-}
-.puntuacion {
-  display: flex;
-  align-items: center;
-  color: #ffb800;
+  font-size: 16px;
   font-weight: 500;
-  font-size: 0.9rem;
+  color: #111;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.estrella {
-  color: #ffb800;
-  margin-right: 4px;
-  font-size: 1.1rem;
+.hora {
+  font-size: 12px;
+  color: #888;
+  flex-shrink: 0;
+  margin-left: 6px;
 }
 
-.contenedor-producto {
+.card-mid {
   display: flex;
   align-items: center;
-  background: #f6f6f6;
-  border-radius: 15px;
-  padding: 8px;
-  margin-top: 5px;
+  margin-bottom: 6px;
 }
 
-.imagen-producto {
-  width: 50px;
-  height: 50px;
-  border-radius: 10px;
-  object-fit: cover;
-  margin-right: 10px;
-}
-
-.info-producto {
+.ultimo-msg {
+  font-size: 13px;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   flex: 1;
 }
 
-.titulo-producto {
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: #333;
-  margin-top: 0px;
-}
-
-.detalle-producto {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 6px;
-  font-size: 0.8rem;
-  color: #999;
-}
-
-.etiqueta {
-  border-radius: 8px;
-  padding: 2px 8px;
-  font-size: 0.75rem;
-  font-weight: 500;
-}
-
-.etiqueta.intercambio {
-  background: #e4eaff;
-  color: #2a52be;
-}
-
-.etiqueta.excelente {
-  background: #e3ffe7;
-  color: #2eb872;
-}
-
-.talla {
-  color: #777;
-}
-
-.icono-fecha {
-  margin-left: auto;
-  color: #939393;
-}
-
-.fecha {
-  color: #808080;
-  font-size: 0.8rem;
-}
-
-.mensaje {
-  margin-left:10px;
-  margin-top: 10px;
-  color: #666;
-  font-size: 0.9rem;
-}
-
-.badge-chat {
-  font-size: 11px;
+.badge {
+  background: #FF3FBF;
+  color: #fff;
+  border-radius: 10px;
   min-width: 20px;
   height: 20px;
-  border-radius: 10px;
+  font-size: 11px;
   padding: 0 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: 6px;
+}
+
+.prenda-preview {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 6px 8px;
+}
+
+.prenda-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.prenda-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.prenda-nombre {
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.prenda-tipo {
+  font-size: 11px;
+  color: #999;
 }

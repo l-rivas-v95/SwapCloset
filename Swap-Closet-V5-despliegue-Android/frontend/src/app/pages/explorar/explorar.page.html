@@ -1,26 +1,33 @@
 <ion-header class="bordes-redondeados fondo">
   <ion-toolbar class="menu-superior fondo">
     <ion-grid>
-
       <ion-row class="caja-menu-sup">
         <ion-col>
           <h1 class="izquierda"><b>Explorar</b></h1>
         </ion-col>
-
         <ion-col class="derecha">
-          <ion-icon style="font-size: 45px;" name="options-outline"></ion-icon>
+          <ion-icon style="font-size: 28px;" name="options-outline"></ion-icon>
         </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
 
+  <ion-toolbar class="fondo">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <div class="search-box">
+            <ion-icon name="search-outline" class="search-icon"></ion-icon>
+            <input class="search-input" type="search" placeholder="Buscar prenda"
+              (input)="busqueda.set($any($event.target).value)">
+          </div>
+        </ion-col>
       </ion-row>
     </ion-grid>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <div class="searchbar-wrapper">
-    <ion-searchbar style="--border-radius: 30px;" placeholder="Buscar prenda"
-      (ionInput)="busqueda.set($event.detail.value ?? '')"></ion-searchbar>
-  </div>
+<ion-content>
 
   <ion-grid>
     <ion-row>

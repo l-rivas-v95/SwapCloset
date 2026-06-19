@@ -1,108 +1,97 @@
-/* NUEVO: contenedor relativo para colocar los fabs dentro */
-.contenedor-imagen {
+.card {
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 0 0 12px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+}
+
+/* ── Imagen ── */
+.img-wrap {
   position: relative;
   width: 100%;
   height: 220px;
   overflow: hidden;
-  border-radius: 30px 30px 0 0;
   background: #f2f2f2;
 }
 
-/* Imagen dentro del contenedor */
-.contenedor-imagen img {
+.img-wrap img {
   width: 100%;
   height: 100%;
-  border-radius: 30px 30px 0 0;
-  display: block;
   object-fit: cover;
+  display: block;
 }
 
-/* FAB arriba derecha dentro de la imagen */
-.fab-derecha {
+.badge {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.badge-rosa { background: #ffe2e3; color: #FF3FBF; }
+.badge-azul { background: #e0eaff; color: #3060d0; }
+
+.heart-btn {
   position: absolute;
   top: 10px;
   right: 10px;
-}
-
-/* FAB abajo izquierda dentro de la imagen */
-.fab-izquierda {
-  position: absolute;
-  bottom: -25px;
-  left: 10px;
-}
-
-/* Tus estilos */
-.centro{
+  background: rgba(255,255,255,0.85);
+  border: none;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
   display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: center;
+  font-size: 18px;
+  cursor: pointer;
 }
-.izquierda{
+
+/* ── Body ── */
+.body {
+  padding: 10px 14px 12px;
   display: flex;
-  justify-content: left;
-  align-items: center;
+  flex-direction: column;
+  gap: 5px;
 }
-.derecha{
-  display: flex;
-  justify-content: right;
-  align-items: center;
-}
-.margen{
-  margin-left: 2vw;
-  margin-bottom:0;
-  margin-top:0;
-}
-.sin-margen{
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111;
   margin: 0;
-  padding: 0;
 }
-.espaciado{
+
+.row {
   display: flex;
-  justify-content: space-around;
-}
-.espacio{
-  gap: 10vw;
-}
-.para-iconos{
-  font-size: 1.3rem;
-}
-.estado-color{
-  color: #22a116;
-}
-.desborde{
-  display: inline;
-  white-space: nowrap; /* evita saltos de línea */
-}
-.color-nombre{
-  color: #404040;
-}
-.carta-redonda{
-  border-radius: 30px;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* Chip */
-.chip-rosa{
-  animation: none;
-  background-color: #ffe2e3;
-  margin-bottom: 4vh;
-  color: #FF3FBF;
+.tags {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  overflow: hidden;
 }
 
-.chip-azul{
-  animation: none;
-  background-color: #c6dfff;
-  margin-bottom: 4vh;
-  color: #5056FF
+.tag { font-size: 13px; color: #333; white-space: nowrap; }
+.dot { color: #bbb; font-size: 13px; }
+.estado { color: #22a116; font-size: 13px; font-weight: 500; white-space: nowrap; }
+.precio { color: #FF3FBF; font-size: 13px; font-weight: 600; white-space: nowrap; }
+.fecha-dev { font-size: 12px; color: #888; white-space: nowrap; flex-shrink: 0; margin-left: 4px; }
+
+.divider {
+  height: 0.5px;
+  background: #f0f0f0;
 }
 
-/* Precio y estrella */
-.precio-color{
-  color: #FF3FBF;
-}
-.estrella-color{
-  color: #D7BF3B;
-}
+.author { font-size: 13px; color: #444; font-weight: 500; }
+.rating { font-size: 13px; color: #D7BF3B; white-space: nowrap; }
 
-.puntuacion{
-  font-size: 1rem;
-}
+.loc { font-size: 12px; color: #999; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pub { font-size: 12px; color: #bbb; white-space: nowrap; margin-left: 4px; flex-shrink: 0; }

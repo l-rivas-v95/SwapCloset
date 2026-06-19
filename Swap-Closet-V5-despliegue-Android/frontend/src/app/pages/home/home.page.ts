@@ -12,7 +12,8 @@ import {
   IonButton,
   IonIcon,
   IonChip,
-  IonContent
+  IonContent,
+  ViewWillEnter
 } from '@ionic/angular/standalone';
 
 import { ProductoService } from '../../service/productoService/producto.service';
@@ -59,16 +60,15 @@ import { DatosAdicionalesChipComponent } from '../../components/c-publicar/datos
     ])
   ]
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, ViewWillEnter {
   mostrarMenu = false;
 
   private productoService = inject(ProductoService);
 
   productos = signal<CartaProductoDTO[]>([]);
 
-  ngOnInit() {
-    this.cargarProductos();
-  }
+  ngOnInit() { this.cargarProductos(); }
+  ionViewWillEnter() { this.cargarProductos(); }
 
   cargarProductos() {
     this.productoService.getAllCartasProductosActivos().subscribe({

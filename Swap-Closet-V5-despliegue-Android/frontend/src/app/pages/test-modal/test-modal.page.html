@@ -87,6 +87,53 @@
     </ion-item>
   </ion-list>
 
+  <!-- ── KEYBOARD TESTS ─────────────────────────────────── -->
+  <ion-list-header><ion-label><b>TESTS TECLADO / INPUT FIJO</b></ion-label></ion-list-header>
+
+  <ion-list>
+    <ion-item>
+      <ion-label class="ion-text-wrap"><b>K1</b> — position:fixed bottom:0 (sin nada más)</ion-label>
+      <ion-button slot="end" (click)="kTest=1">Activar</ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-label class="ion-text-wrap"><b>K2</b> — position:fixed + visualViewport resize</ion-label>
+      <ion-button slot="end" (click)="kTest=2">Activar</ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-label class="ion-text-wrap"><b>K3</b> — position:sticky bottom:0 dentro de ion-content</ion-label>
+      <ion-button slot="end" (click)="kTest=3">Activar</ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-label class="ion-text-wrap"><b>K4</b> — ion-footer nativo de Ionic</ion-label>
+      <ion-button slot="end" (click)="kTest=4">Activar</ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-label class="ion-text-wrap"><b>K5</b> — Quitar todos los tests</ion-label>
+      <ion-button slot="end" color="medium" (click)="kTest=0; kLog=''">Quitar</ion-button>
+    </ion-item>
+  </ion-list>
+
+  <p style="font-size:12px; padding: 4px 16px; color:#666;">
+    Activa uno, toca el input de abajo → ¿se ve el input encima del teclado?
+  </p>
+
+  <!-- K3: sticky dentro del content -->
+  @if (kTest === 3) {
+    <div style="position:sticky; bottom:0; background:#e8f5e9; padding:10px; border-radius:12px; margin:8px;">
+      <b>K3 sticky:</b>
+      <input type="text" placeholder="Escribe aquí (K3 sticky)" (focus)="kLog='K3: foco OK'"
+        style="width:100%;border:1px solid #ccc;border-radius:8px;padding:8px;margin-top:6px;">
+    </div>
+  }
+
+  <!-- Log -->
+  <ion-card>
+    <ion-card-header><ion-card-title>Log teclado: {{ kLog || '—' }}</ion-card-title></ion-card-header>
+    <ion-card-content>
+      <pre style="font-size:11px;">vvHeight={{ vvHeight }} | innerH={{ innerH }} | kbH={{ kbH }}</pre>
+    </ion-card-content>
+  </ion-card>
+
   <!-- Log de eventos -->
   <ion-card>
     <ion-card-header><ion-card-title>Log</ion-card-title></ion-card-header>
@@ -96,6 +143,41 @@
   </ion-card>
 
 </ion-content>
+
+<!-- ── K1: position fixed bottom 0, sin nada más ── -->
+@if (kTest === 1) {
+  <div id="k1bar" style="
+    position:fixed; bottom:0; left:0; right:0;
+    background:#bbdefb; padding:10px 12px; z-index:9999;
+    display:flex; gap:8px; align-items:center;">
+    <input type="text" placeholder="K1 fixed bottom:0" (focus)="kLog='K1: foco'" (input)="kLog='K1: escribiendo'"
+      style="flex:1;border:1px solid #1565c0;border-radius:8px;padding:8px;">
+    <span style="font-size:11px;color:#1565c0;">K1</span>
+  </div>
+}
+
+<!-- ── K2: position fixed + visualViewport ── -->
+@if (kTest === 2) {
+  <div id="k2bar" style="
+    position:fixed; bottom:0; left:0; right:0;
+    background:#f3e5f5; padding:10px 12px; z-index:9999;
+    display:flex; gap:8px; align-items:center;">
+    <input type="text" placeholder="K2 fixed + visualViewport" (focus)="kLog='K2: foco'" (input)="kLog='K2: escribiendo'"
+      style="flex:1;border:1px solid #7b1fa2;border-radius:8px;padding:8px;">
+    <span style="font-size:11px;color:#7b1fa2;">K2</span>
+  </div>
+}
+
+<!-- ── K4: ion-footer nativo ── -->
+@if (kTest === 4) {
+  <ion-footer>
+    <ion-toolbar>
+      <input type="text" placeholder="K4 ion-footer nativo" (focus)="kLog='K4: foco'" (input)="kLog='K4: escribiendo'"
+        style="width:85%;border:1px solid #e65100;border-radius:8px;padding:8px;margin:4px 8px;">
+      <span style="font-size:11px;color:#e65100;">K4</span>
+    </ion-toolbar>
+  </ion-footer>
+}
 
 <!-- ── A: [isOpen] sin keepContentsMounted ── -->
 <ion-modal [isOpen]="isOpen1" (didDismiss)="isOpen1 = false">

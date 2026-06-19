@@ -1,9 +1,121 @@
-ion-footer {
-  overflow: hidden;
-  bottom: 56px; /* Altura del menu-footer que está fixed encima */
+.fondo {
+  background-color: #ffffff;
+  --background: #ffffff;
+  box-shadow: 0 2px 8px rgba(131, 131, 131, 0.4);
 }
 
-/* Evitar que el contenido quede tapado por CONTACTAR + menú inferior */
+.menu-superior {
+  height: 13vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.bordes-redondeados {
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+}
+
+.caja-menu-sup {
+  display: flex;
+  align-items: center;
+  min-height: 100%;
+}
+
+.centro {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.centro-opciones {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.titulo-header {
+  font-size: 18px;
+  margin: 0;
+  color: #111;
+}
+
+ion-footer {
+  overflow: hidden;
+  bottom: 56px;
+}
+
 ion-content {
-  --padding-bottom: 120px;
+  --padding-bottom: 70px;
+}
+
+/* ── Custom bottom sheet ──────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 9000;
+  display: flex;
+  align-items: flex-end;
+}
+
+.modal-sheet {
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  width: 100%;
+  padding: 12px 0 0;
+  padding-bottom: calc(56px + 12px); /* tab bar height + extra */
+}
+
+.modal-handle-bar {
+  width: 40px;
+  height: 4px;
+  background: #ddd;
+  border-radius: 2px;
+  margin: 0 auto 8px;
+}
+
+.modal-header {
+  padding: 8px 20px 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.modal-title {
+  font-weight: 600;
+  font-size: 16px;
+  color: #333;
+}
+
+.sheet-buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+.sheet-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 24px;
+  font-size: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+  text-align: left;
+
+  ion-icon {
+    font-size: 22px;
+  }
+
+  &:active {
+    background: #f5f5f5;
+  }
+
+  &--cancel {
+    margin-top: 8px;
+    border-top: 1px solid #f0f0f0;
+    font-weight: 600;
+    color: #555;
+    justify-content: center;
+  }
 }

@@ -33,13 +33,7 @@ export class AnuncioPage implements OnInit {
 
   idProducto!: string;
 
-  // Declarative overlay state
   asOpen = false;
-  asButtons: any[] = [];
-  alertOpen = false;
-  alertHeader = '';
-  alertMessage = '';
-  alertButtons: any[] = [];
 
   private route = inject(ActivatedRoute);
   private productoService = inject(ProductoService);
@@ -96,24 +90,13 @@ export class AnuncioPage implements OnInit {
 
   mostrarOpciones() {
     if (this.producto()?.idUsuario !== this.idUsuarioLogueado) return;
-
-    this.asButtons = [
-      { text: 'Editar', icon: 'create-outline', handler: () => this.modoEdicion.set(true) },
-      { text: 'Desactivar', icon: 'archive-outline', handler: () => this.confirmarDesactivacion() },
-      { text: 'Eliminar', role: 'destructive', icon: 'trash-outline', handler: () => this.confirmarEliminacion() },
-      { text: 'Cancelar', role: 'cancel', icon: 'close' }
-    ];
     this.asOpen = true;
   }
 
   confirmarDesactivacion() {
-    this.alertHeader = 'Desactivar anuncio';
-    this.alertMessage = 'El anuncio dejará de aparecer como activo, pero no se eliminará. ¿Quieres continuar?';
-    this.alertButtons = [
-      { text: 'Cancelar', role: 'cancel' },
-      { text: 'Desactivar', handler: () => this.desactivarAnuncio() }
-    ];
-    this.alertOpen = true;
+    if (confirm('El anuncio dejará de aparecer como activo. ¿Quieres continuar?')) {
+      this.desactivarAnuncio();
+    }
   }
 
   desactivarAnuncio() {
@@ -136,13 +119,9 @@ export class AnuncioPage implements OnInit {
   }
 
   confirmarEliminacion() {
-    this.alertHeader = 'Confirmar Eliminación';
-    this.alertMessage = '¿Seguro que deseas eliminar este anuncio?';
-    this.alertButtons = [
-      { text: 'Cancelar', role: 'cancel' },
-      { text: 'Eliminar', handler: () => this.eliminarAnuncio() }
-    ];
-    this.alertOpen = true;
+    if (confirm('¿Seguro que deseas eliminar este anuncio?')) {
+      this.eliminarAnuncio();
+    }
   }
 
   eliminarAnuncio() {

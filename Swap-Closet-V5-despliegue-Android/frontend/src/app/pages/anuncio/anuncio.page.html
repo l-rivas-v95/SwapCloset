@@ -1,34 +1,36 @@
-<ion-header></ion-header>
+<ion-header class="fondo bordes-redondeados">
+  <ion-toolbar class="menu-superior fondo">
+    <ion-grid>
+      <ion-row class="caja-menu-sup">
+        <ion-col size="2" class="centro">
+          @if (!modoEdicion()) {
+            <ion-button fill="clear" style="--color: #111" (click)="volver()">
+              <ion-icon name="arrow-back-outline" style="font-size: 22px; color: #111;"></ion-icon>
+            </ion-button>
+          } @else {
+            <ion-icon name="pencil" style="font-size: 22px; color: #111;"></ion-icon>
+          }
+        </ion-col>
+        <ion-col>
+          @if (!modoEdicion()) {
+            <h1 class="titulo-header"><b>Detalle del anuncio</b></h1>
+          } @else {
+            <h1 class="titulo-header"><b>Editar anuncio</b></h1>
+          }
+        </ion-col>
+        <ion-col size="3" class="centro-opciones">
+          @if (usuario()?.id === idUsuarioLogueado && !modoEdicion()) {
+            <ion-button fill="clear" style="--color: #FF3FBF" (click)="mostrarOpciones()">
+              <ion-icon name="ellipsis-vertical-outline" style="font-size: 22px; color: #FF3FBF;"></ion-icon>
+            </ion-button>
+          }
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
 
 <ion-content>
-
-  <ion-row>
-    <ion-col size="2" class="centro">
-      @if (!modoEdicion()) {
-        <ion-button fill="clear" (click)="volver()">
-          <ion-icon class="flecha" name="arrow-back-outline" size="large"></ion-icon>
-        </ion-button>
-      } @else {
-        <ion-icon name="pencil" size="large"></ion-icon>
-      }
-    </ion-col>
-
-    <ion-col size="7">
-      @if (!modoEdicion()) {
-        <h2><b>Detalle del anuncio</b></h2>
-      } @else {
-        <h2><b>Editar anuncio</b></h2>
-      }
-    </ion-col>
-
-    <ion-col size="3" class="centro-opciones">
-      @if (usuario()?.id === idUsuarioLogueado && !modoEdicion()) {
-        <ion-button fill="clear" (click)="mostrarOpciones()">
-          <ion-icon class="icono-puntos" name="ellipsis-vertical-outline" size="large"></ion-icon>
-        </ion-button>
-      }
-    </ion-col>
-  </ion-row>
 
   @if (!modoEdicion()) {
     <app-componente-anuncio
@@ -52,20 +54,28 @@
 
 </ion-content>
 
-<ion-action-sheet
-  [isOpen]="asOpen"
-  header="Opciones del Anuncio"
-  [buttons]="asButtons"
-  (didDismiss)="asOpen = false">
-</ion-action-sheet>
-
-<ion-alert
-  [isOpen]="alertOpen"
-  [header]="alertHeader"
-  [message]="alertMessage"
-  [buttons]="alertButtons"
-  (didDismiss)="alertOpen = false">
-</ion-alert>
+@if (asOpen) {
+  <div class="modal-overlay" (click)="asOpen = false">
+    <div class="modal-sheet" (click)="$event.stopPropagation()">
+      <div class="modal-handle-bar"></div>
+      <div class="modal-header">
+        <span class="modal-title">Opciones del anuncio</span>
+      </div>
+      <div class="sheet-buttons">
+        <button class="sheet-btn" (click)="asOpen = false; modoEdicion.set(true)">
+          <ion-icon name="create-outline"></ion-icon> Editar
+        </button>
+        <button class="sheet-btn" (click)="asOpen = false; confirmarDesactivacion()">
+          <ion-icon name="archive-outline"></ion-icon> Desactivar
+        </button>
+        <button class="sheet-btn" style="color:#e53935" (click)="asOpen = false; confirmarEliminacion()">
+          <ion-icon name="trash-outline"></ion-icon> Eliminar
+        </button>
+        <button class="sheet-btn sheet-btn--cancel" (click)="asOpen = false">Cancelar</button>
+      </div>
+    </div>
+  </div>
+}
 
 @if (!modoEdicion() && usuario()?.id !== idUsuarioLogueado) {
   <ion-footer>

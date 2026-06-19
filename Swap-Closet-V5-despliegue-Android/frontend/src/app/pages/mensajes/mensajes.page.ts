@@ -57,6 +57,7 @@ export class MensajesPage implements OnInit, OnDestroy {
   private overlayService = inject(OverlayService);
 
   ngOnInit() {
+
     const usuario = this.authService.getUsuario();
     if (!usuario?.id) return;
     this.miUsuarioId = usuario.id;

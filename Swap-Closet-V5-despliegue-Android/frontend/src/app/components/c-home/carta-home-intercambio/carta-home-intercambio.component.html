@@ -1,85 +1,44 @@
-<ion-card class="carta-redonda">
+<div class="card">
 
-  <div class="contenedor-imagen">
-
+  <div class="img-wrap">
+    <img [src]="getImagenProducto()" (error)="onImgError($event)" alt="">
+    <span class="badge" [class.badge-rosa]="producto()?.tipo === 'intercambio'" [class.badge-azul]="producto()?.tipo !== 'intercambio'">
+      {{(producto()?.tipo | titlecase) || 'Intercambio'}}
+    </span>
     @if (producto()?.usuarioId !== currentUserId) {
-      <ion-fab class="fab-derecha" (click)="$event.stopPropagation()">
-        <ion-fab-button
-          class="boton-fab"
-          size="small"
-          color="transparent"
-
-          (click)="toggleFavorito()"
-
-          [disabled]="!producto()?.productoId || !currentUserId">
-
-          <ion-icon
-            size="large"
-
-            [name]="isFavorite() ? 'heart' : 'heart-outline'"
-            [color]="isFavorite() ? 'danger' : 'light'">
-          </ion-icon>
-
-        </ion-fab-button>
-      </ion-fab>
+      <button class="heart-btn" (click)="$event.stopPropagation(); toggleFavorito()">
+        <ion-icon [name]="isFavorite() ? 'heart' : 'heart-outline'" [style.color]="isFavorite() ? '#e53935' : '#fff'"></ion-icon>
+      </button>
     }
-
-    <ion-fab class="fab-izquierda">
-      <ion-chip [ngClass]="producto()?.tipo === 'intercambio' ? 'chip-rosa' : 'chip-azul'">
-        <b>{{(producto()?.tipo | titlecase) || 'Intercambio'}}</b>
-      </ion-chip>
-    </ion-fab>
-
-    <img [src]="getImagenProducto()" (error)="onImgError($event)"/>
   </div>
 
-  <ion-card-header>
-    <ion-card-title>{{producto()?.titulo}}</ion-card-title>
-  </ion-card-header>
+  <div class="body">
+    <p class="title">{{producto()?.titulo}}</p>
 
-  <ion-card-content>
-    <ion-grid class="sin-margen">
+    <div class="row">
+      <div class="tags">
+        <span class="tag">Talla {{producto()?.talla}}</span>
+        <span class="dot"> • </span>
+        <span class="estado">{{producto()?.estado}}</span>
+        @if (producto()?.tipo !== 'intercambio') {
+          <span class="dot"> • </span>
+          <span class="precio">{{producto()?.precio}} €/día</span>
+        }
+      </div>
+      <span class="fecha-dev">📅 {{producto()?.fechaDevolucion | date:'dd/MM/yyyy'}}</span>
+    </div>
 
-      <ion-row>
-        <ion-col class="izquierda">
-          <p class="sin-margen desborde">Talla {{producto()?.talla}}</p>
-          <p class="margen desborde">•</p>
-          <p class="margen estado-color desborde">{{producto()?.estado}}</p>
-          <ng-container *ngIf="producto()?.tipo !== 'intercambio'">
-            <p class="margen precio-color desborde">•</p>
-            <p class="margen precio-color desborde">{{ producto()?.precio }} €/día</p>
-          </ng-container>
-        </ion-col>
+    <div class="divider"></div>
 
-        <ion-col class="derecha">
-          <ion-icon class="para-iconos" name="calendar-number-outline"></ion-icon>
-          <p class="margen">{{producto()?.fechaDevolucion | date:'dd/MM/yyyy'}}</p>
-        </ion-col>
-      </ion-row>
+    <div class="row">
+      <span class="author">{{producto()?.nombreUsuario}} {{producto()?.apellidosUsuario}}</span>
+      <span class="rating">★ {{producto()?.raiting}}</span>
+    </div>
 
-      <ion-row>
-        <ion-col>
-          <p class="sin-margen color-nombre">{{producto()?.nombreUsuario}} {{producto()?.apellidosUsuario}}</p>
-        </ion-col>
+    <div class="row">
+      <span class="loc">📍 {{producto()?.ubicacionUsuario}}</span>
+      <span class="pub">{{producto()?.fechaCreacion | date:'dd/MM/yyyy'}}</span>
+    </div>
+  </div>
 
-        <ion-col class="derecha">
-          <ion-icon class="para-iconos estrella-color" name="star"></ion-icon>
-          <p class="margen puntuacion">{{producto()?.raiting}}</p>
-        </ion-col>
-      </ion-row>
-
-      <ion-row>
-        <ion-col class="izquierda">
-          <ion-icon size="small" name="location-outline"></ion-icon>
-          <p class="margen">{{producto()?.ubicacionUsuario}}</p>
-        </ion-col>
-
-        <ion-col class="derecha">
-          <p class="sin-margen">Publicado {{producto()?.fechaCreacion | date:'dd/MM/yyyy'}}</p>
-        </ion-col>
-      </ion-row>
-
-    </ion-grid>
-  </ion-card-content>
-
-</ion-card>
+</div>

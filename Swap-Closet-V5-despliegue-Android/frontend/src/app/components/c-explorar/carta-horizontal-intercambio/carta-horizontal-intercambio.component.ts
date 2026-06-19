@@ -1,10 +1,9 @@
 import {Component, inject, input, OnInit} from '@angular/core';
-import {IonicModule} from "@ionic/angular";
 import {ProductoDTO} from "../../../modelos/ProductoDTO";
 import {Observable} from "rxjs";
 import {UsuarioDTO} from "../../../modelos/UsuarioDTO";
 import {UsuarioService} from "../../../service/usuarioService/usuario.service";
-import {AsyncPipe, DatePipe, NgClass, NgIf} from "@angular/common";
+import {AsyncPipe, DatePipe, NgClass} from "@angular/common";
 import {RaitingService} from "../../../service/raitingService/raiting.service";
 
 @Component({
@@ -13,8 +12,6 @@ import {RaitingService} from "../../../service/raitingService/raiting.service";
     styleUrls: ['./carta-horizontal-intercambio.component.scss'],
     standalone: true,
   imports: [
-    IonicModule,
-    NgIf,
     AsyncPipe,
     NgClass,
     DatePipe

@@ -1,5 +1,5 @@
 import {Component, inject, OnInit, signal} from '@angular/core';
-import {IonicModule} from '@ionic/angular';
+import {IonicModule, ViewWillEnter} from '@ionic/angular';
 import {ActivatedRoute, RouterModule} from '@angular/router';
 import {NgIf} from "@angular/common";
 import {UsuarioService} from "../../service/usuarioService/usuario.service";
@@ -30,7 +30,7 @@ import {UsuarioEstadisticasDTO} from "../../modelos/UsuarioEstadisticasDTO";
     OpcionesPrefilComponent
   ]
 })
-export class PerfilPage implements OnInit {
+export class PerfilPage implements OnInit, ViewWillEnter {
 
   usuario = signal<UsuarioDTO | null>(null);
   usuarioEstadisticas = signal<UsuarioEstadisticasDTO | null>(null);
@@ -41,6 +41,14 @@ export class PerfilPage implements OnInit {
   private route = inject(ActivatedRoute);
 
   ngOnInit() {
+    this.cargarPerfil();
+  }
+
+  ionViewWillEnter() {
+    this.cargarPerfil();
+  }
+
+  private cargarPerfil() {
     const idRuta = Number(this.route.snapshot.paramMap.get('id'));
     const usuarioSesion = this.authService.getUsuario();
     const idUsuario = idRuta || usuarioSesion?.id;

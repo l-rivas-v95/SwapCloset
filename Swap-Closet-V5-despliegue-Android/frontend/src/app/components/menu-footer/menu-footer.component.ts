@@ -17,7 +17,7 @@ import {Subscription} from "rxjs";
 export class MenuFooterComponent implements OnInit, OnDestroy {
   usuario: UsuarioDTO | null = null;
   mostrar: boolean = true;
-  rutasSinFooter = ['/login', '/registro', '/animacion-inicio'];
+  rutasSinFooter = ['/login', '/registro', '/animacion-inicio', '/mensajes'];
 
   noLeidos = 0;
 
@@ -34,7 +34,7 @@ export class MenuFooterComponent implements OnInit, OnDestroy {
 
     this.routerSub = this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        this.mostrar = !this.rutasSinFooter.includes(event.urlAfterRedirects);
+        this.mostrar = !this.rutasSinFooter.some(r => event.urlAfterRedirects.startsWith(r));
       }
     });
   }
