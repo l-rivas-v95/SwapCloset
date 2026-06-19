@@ -72,6 +72,7 @@ public class ProductoService {
         dto.setTitulo(producto.getTitulo());
         dto.setEstado(producto.getEstado());
         dto.setTalla(producto.getTalla());
+        dto.setCategoria(producto.getCategoria());
 
         // Formateo de fechas
         dto.setFechaDevolucion(producto.getFechaDevolucion() != null ?

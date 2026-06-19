@@ -67,6 +67,7 @@ public class FavoritoService {
             dto.setTitulo(producto.getTitulo());
             dto.setEstado(producto.getEstado());
             dto.setTalla(producto.getTalla());
+            dto.setCategoria(producto.getCategoria());
             dto.setFechaDevolucion(producto.getFechaDevolucion() != null ?
                     producto.getFechaDevolucion().format(formatter) : null);
             dto.setFechaCreacion(producto.getFechaCreacion() != null ?

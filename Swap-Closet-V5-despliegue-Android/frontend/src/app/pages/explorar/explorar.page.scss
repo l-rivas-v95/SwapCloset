@@ -70,6 +70,46 @@ ion-icon{
   flex-shrink: 0;
 }
 
+.filtros-row {
+  display: flex;
+  gap: 8px;
+  padding: 4px 0 6px;
+
+  &--secondary {
+    padding-top: 0;
+    padding-bottom: 8px;
+  }
+}
+
+.tipo-pill {
+  flex-shrink: 0;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  background: transparent;
+  color: #777;
+  font-size: 13px;
+  padding: 5px 14px;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &.active-todos        { background: #f0f0f0; color: #333; border-color: #bbb; font-weight: 500; }
+  &.active-intercambio  { background: #FFE2E3; color: #C0246E; border-color: #FF3FBF; font-weight: 500; }
+  &.active-prestamo     { background: #C6DFFF; color: #1A3FCC; border-color: #3F6BFF; font-weight: 500; }
+  &.active-picker       { background: #FFE2E3; color: #C0246E; border-color: #FF3FBF; font-weight: 500; }
+}
+
+.picker-pill {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pill-arrow {
+  font-size: 11px;
+}
+
+
 .search-input {
   flex: 1;
   border: none;

@@ -48,28 +48,36 @@
   border-bottom-right-radius: 30px;
 }
 
-.menu-desplegable {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  background: #ffffff;
-  border-radius: 0 0 20px 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-  padding: 8px 0;
-  animation: fadeDown 0.2s ease;
+.toolbar-cats {
+  --background: #ffffff;
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
 }
 
-@keyframes fadeDown {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.cats-row {
+  display: flex;
+  gap: 8px;
+  padding: 6px 12px 10px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.cat-pill {
+  flex-shrink: 0;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 5px 14px;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 contenedor-cartas{

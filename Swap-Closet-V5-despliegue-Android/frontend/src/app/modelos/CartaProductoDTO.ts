@@ -6,6 +6,7 @@ export interface CartaProductoDTO {
   titulo: string,
   estado: string,
   talla: string,
+  categoria: string,
   fechaDevolucion: string,
   fechaCreacion: string,
   activo: boolean,

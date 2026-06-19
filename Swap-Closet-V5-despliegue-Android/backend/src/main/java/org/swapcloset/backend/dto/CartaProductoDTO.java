@@ -14,6 +14,7 @@ public class CartaProductoDTO {
     private String titulo;
     private String estado;
     private String talla;
+    private String categoria;
     private String fechaDevolucion;
     private String fechaCreacion;
     private Boolean activo;

@@ -3,37 +3,36 @@
     <ion-grid>
       <ion-row class="caja-menu-sup">
         <h1 class="margen izquierda"><b>Tendencias</b></h1>
-        <ion-col size="2">
-          <ion-button size="small" class="btn-deplegable" shape="round" (click)="toggleMenu()">
-            <ion-icon slot="icon-only" name="add-outline"></ion-icon>
-          </ion-button>
-        </ion-col>
       </ion-row>
     </ion-grid>
   </ion-toolbar>
 
-  <ion-toolbar>
-    <ion-grid>
-      <ion-row>
-        <ion-col><ion-chip color="primary">Casual</ion-chip></ion-col>
-        <ion-col><ion-chip color="secondary">Formal</ion-chip></ion-col>
-        <ion-col><ion-chip color="tertiary">Accesorios</ion-chip></ion-col>
-      </ion-row>
-    </ion-grid>
+  <ion-toolbar class="fondo toolbar-cats">
+    <div class="cats-row">
+      @for (cat of categorias; track cat.label) {
+        <button class="cat-pill"
+          [style.background]="categoriaFiltro() === cat.label ? cat.solid : cat.alpha"
+          [style.color]="categoriaFiltro() === cat.label ? '#fff' : cat.solid"
+          (click)="seleccionarCategoria(cat.label)">
+          {{ cat.label }}
+        </button>
+      }
+    </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <!-- Desplegable fuera del header para que no lo recorte overflow:hidden -->
-  @if(mostrarMenu){
-    <div class="menu-desplegable">
-      <app-datos-adicionales-chip/>
-    </div>
-  }
+  <ion-refresher slot="fixed" (ionRefresh)="onRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="chevron-down-outline"
+      refreshingSpinner="crescent">
+    </ion-refresher-content>
+  </ion-refresher>
+
   <ion-grid>
     <ion-row>
       <ion-col class="sin-margen">
-        @for(pro of productos(); track pro.productoId){
+        @for(pro of productosFiltrados(); track pro.productoId){
           @if(pro.productoId !== undefined && pro.productoId !== null){
             <app-carta-home-intercambio
               [producto]="pro"
