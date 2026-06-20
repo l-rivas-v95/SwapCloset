@@ -1,4 +1,4 @@
-import {booleanAttribute, Component, inject} from '@angular/core';
+import {booleanAttribute, Component, inject, OnInit} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {Router, RouterLink} from '@angular/router';
 
@@ -34,8 +34,8 @@ import {NativeToastService} from "../../service/nativeToastService/native-toast.
     IonCheckbox
   ]
 })
-export class LoginPage {
-  modoRegistro = false; // false = login, true = registro
+export class LoginPage implements OnInit {
+  modoRegistro = false;
 
   // Campos de registro
   nombre: string = '';
@@ -46,6 +46,7 @@ export class LoginPage {
 
   correoSign: string = '';
   passwordSign: string = '';
+  recordar: boolean = false;
 
   private usuarioService = inject(UsuarioService);
   usuario: UsuarioDTO | undefined;
@@ -53,7 +54,16 @@ export class LoginPage {
   private toast = inject(NativeToastService);
 
   constructor(private router: Router,
-              private authService: AuthService) {
+              private authService: AuthService) {}
+
+  ngOnInit() {
+    const saved = localStorage.getItem('sc_recordar');
+    if (saved) {
+      const { email, pwd } = JSON.parse(saved);
+      this.correoSign   = email ?? '';
+      this.passwordSign = pwd   ?? '';
+      this.recordar     = true;
+    }
   }
 
 
@@ -108,7 +118,11 @@ export class LoginPage {
 
     this.usuarioService.loginUsuario(this.correoSign, this.passwordSign).subscribe({
       next: async (res) => {
-        console.log('Usuario logueado:', res);
+        if (this.recordar) {
+          localStorage.setItem('sc_recordar', JSON.stringify({ email: this.correoSign, pwd: this.passwordSign }));
+        } else {
+          localStorage.removeItem('sc_recordar');
+        }
         this.authService.setUsuario(res);
         await this.router.navigate(['/home']);
       },

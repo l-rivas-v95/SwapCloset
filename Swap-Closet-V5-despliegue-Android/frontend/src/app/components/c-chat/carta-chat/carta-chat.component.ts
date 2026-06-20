@@ -1,4 +1,4 @@
-import {Component, inject, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
 import {Router} from "@angular/router";
 import {ChatDTO} from "../../../modelos/ChatDTO";
 import {CartaUsuarioDTO} from "../../../modelos/CartaUsuarioDTO";
@@ -20,6 +20,7 @@ export class CartaChatComponent implements OnInit {
   @Input() chat!: ChatDTO;
   @Input() miUsuarioId!: number;
   @Input() busqueda: string = '';
+  @Output() chatSeleccionado = new EventEmitter<number>();
 
   otroUsuario: CartaUsuarioDTO | null = null;
   producto: ProductoDTO | null = null;
@@ -72,6 +73,10 @@ export class CartaChatComponent implements OnInit {
   }
 
   abrirChat() {
-    this.router.navigate(['/mensajes', this.chat.id]);
+    if (this.chatSeleccionado.observed) {
+      this.chatSeleccionado.emit(this.chat.id!);
+    } else {
+      this.router.navigate(['/mensajes', this.chat.id]);
+    }
   }
 }

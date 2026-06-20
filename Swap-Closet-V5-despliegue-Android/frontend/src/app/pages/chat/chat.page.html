@@ -1,4 +1,5 @@
-<ion-header class="fondo bordes-redondeados">
+<!-- ── Header móvil ── -->
+<ion-header class="fondo bordes-redondeados mobile-header">
   <ion-toolbar class="menu-superior fondo">
     <ion-grid>
       <ion-row class="caja-menu-sup">
@@ -32,7 +33,6 @@
           </div>
         </ion-col>
       </ion-row>
-
       <ion-row class="centro">
         <ion-col>
           <div class="search-box">
@@ -47,13 +47,77 @@
 </ion-header>
 
 <ion-content>
-  @if (chatsFiltrados().length === 0) {
-    <div class="empty-state">
-      <ion-icon name="chatbubbles-outline"></ion-icon>
-      <p>No tienes conversaciones todavía</p>
+
+  <!-- ══════════════════ MOBILE LAYOUT ══════════════════ -->
+  <div class="mobile-only">
+    @if (chatsFiltrados().length === 0) {
+      <div class="empty-state">
+        <ion-icon name="chatbubbles-outline"></ion-icon>
+        <p>No tienes conversaciones todavía</p>
+      </div>
+    }
+    @for (chat of chatsFiltrados(); track chat.id) {
+      <app-carta-chat [chat]="chat" [miUsuarioId]="miUsuarioId" [busqueda]="busqueda()"/>
+    }
+  </div>
+
+  <!-- ══════════════════ DESKTOP LAYOUT ══════════════════ -->
+  <div class="desktop-only">
+    <div class="d-split">
+
+      <!-- Panel izquierdo: lista de chats -->
+      <div class="d-left">
+
+        <div class="d-left-header">
+          <h2 class="d-msgs-title">
+            <ion-icon name="chatbubble-outline" class="d-msgs-icon"></ion-icon>
+            Mensajes
+          </h2>
+          <div class="d-seg-btns">
+            <button class="d-seg-btn" [class.active]="segmento() === 'todos'" (click)="segmento.set('todos')">Todos</button>
+            <button class="d-seg-btn" [class.active]="segmento() === 'Activos'" (click)="segmento.set('Activos')">Activos</button>
+            <button class="d-seg-btn" [class.active]="segmento() === 'Completados'" (click)="segmento.set('Completados')">Listos</button>
+          </div>
+          <div class="search-box">
+            <ion-icon name="search-outline" class="search-icon"></ion-icon>
+            <input class="search-input" type="search" placeholder="Buscar..."
+              (input)="busqueda.set($any($event.target).value)">
+          </div>
+        </div>
+
+        <div class="d-chat-list">
+          @if (chatsFiltrados().length === 0) {
+            <div class="d-empty-state">
+              <ion-icon name="chatbubbles-outline"></ion-icon>
+              <p>Sin conversaciones</p>
+            </div>
+          }
+          @for (chat of chatsFiltrados(); track chat.id) {
+            <div [class.d-chat-activo]="chatSeleccionadoId() === chat.id">
+              <app-carta-chat
+                [chat]="chat"
+                [miUsuarioId]="miUsuarioId"
+                [busqueda]="busqueda()"
+                (chatSeleccionado)="chatSeleccionadoId.set($event)"/>
+            </div>
+          }
+        </div>
+
+      </div>
+
+      <!-- Panel derecho: conversación -->
+      <div class="d-right">
+        @if (chatSeleccionadoId()) {
+          <app-mensajes [chatIdInput]="chatSeleccionadoId()" [embedded]="true"/>
+        } @else {
+          <div class="d-no-chat">
+            <ion-icon name="chatbubbles-outline"></ion-icon>
+            <p>Selecciona una conversación</p>
+          </div>
+        }
+      </div>
+
     </div>
-  }
-  @for (chat of chatsFiltrados(); track chat.id) {
-    <app-carta-chat [chat]="chat" [miUsuarioId]="miUsuarioId" [busqueda]="busqueda()"></app-carta-chat>
-  }
+  </div>
+
 </ion-content>

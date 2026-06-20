@@ -6,34 +6,6 @@
     <ion-grid>
       <ion-col class="separacion">
         <ion-row>
-          <ion-button fill="clear" class="sin-margen">
-            <ion-icon size="large" name="settings-outline"></ion-icon>
-            <b class="margen">Editar perfil</b>
-          </ion-button>
-        </ion-row>
-        <ion-row>
-          <ion-button fill="clear" class="sin-margen"
-                      [routerLink]="['/publicaciones-pasadas', usuario()?.id]">
-            <ion-icon size="large" name="cube-outline"></ion-icon>
-            <b class="margen">Publicaciones pasadas</b>
-          </ion-button>
-        </ion-row>
-        <ion-row>
-          <div>
-            <ion-button fill="clear" class="sin-margen"
-                        [routerLink]="['/favoritos', usuario()?.id]">
-              <ion-icon size="large" name="heart-outline"></ion-icon>
-              <b class="margen">Favoritos</b>
-            </ion-button>
-          </div>
-        </ion-row>
-        <ion-row>
-          <ion-button fill="clear" class="sin-margen">
-            <ion-icon size="large" name="star-outline"></ion-icon>
-            <b class="margen">Mis reseñas</b>
-          </ion-button>
-        </ion-row>
-        <ion-row>
           <div (click)="cerrarSesion()" [routerLink]="['/login']">
             <ion-button fill="clear" class="sin-margen">
               <ion-icon class="rojo" size="large" name="exit-outline"></ion-icon>

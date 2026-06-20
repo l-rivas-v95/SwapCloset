@@ -52,6 +52,19 @@
         </ion-fab>
       }
     </div>
+
+    <!-- Tira de miniaturas (desktop) -->
+    @if (imagenes.length > 1) {
+      <div class="thumbnails-strip">
+        @for (img of imagenes; track $index; let i = $index) {
+          <button class="thumb-btn"
+            [class.thumb-btn--active]="i === indiceActivo()"
+            (click)="setImageIndex(i)">
+            <img [src]="img.urlImg || 'assets/icon/card-media.png'" alt="">
+          </button>
+        }
+      </div>
+    }
   </div>
 
   <div class="info-container">
@@ -159,5 +172,16 @@
         </ion-col>
       </ion-row>
     </div>
+
+    <!-- Botón Contactar: solo visible en desktop (en móvil va en ion-footer de anuncio.page) -->
+    @if (usuario?.id !== idUsuarioLogueado && producto?.id && usuario?.id) {
+      <div class="desktop-contactar">
+        <app-btn-contactar
+          [productoId]="producto!.id!"
+          [propietarioId]="usuario!.id!">
+        </app-btn-contactar>
+      </div>
+    }
+
   </div>
 </div>

@@ -1,12 +1,13 @@
-.centro{
-  display: grid;
-  grid-columns: auto;
-  justify-content: center;
-  justify-items: center;
+/* ── Base (móvil) ── */
+.carta-pub {
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  cursor: pointer;
 }
 
-.contenedor-imagen-producto{
+.contenedor-imagen-producto {
+  position: relative;
   width: 105px;
   height: 105px;
   border-radius: 10%;
@@ -14,31 +15,87 @@
   background: #f2f2f2;
 }
 
-.chip-azul {
-  background-color: #C6DFFF;
-  color: #5056FF;
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-  margin-bottom:0px;
-  box-shadow: 0 2px 8px rgba(96, 95, 95, 0.5);
-}
-
-.chip-rosa {
-  background-color: #FFE2E3;
-  color: #FF3FBF;
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-  margin-bottom:0px;
-  box-shadow: 0 2px 8px rgba(96, 95, 95, 0.5);
-}
-
-.imagen-producto{
+.imagen-producto {
   width: 100%;
   height: 100%;
   border-radius: 10%;
-  --border-radius: 10%;
   object-fit: cover;
   display: block;
+}
+
+/* Badge overlay: oculto en móvil */
+.chip-overlay { display: none; }
+
+/* Badge debajo: visible en móvil */
+.chip-below {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 0;
+  box-shadow: 0 2px 8px rgba(96, 95, 95, 0.5);
+}
+
+/* Info adicional: oculta en móvil */
+.carta-info { display: none; }
+
+/* Colores chips */
+.chip-azul { background-color: #C6DFFF; color: #5056FF; }
+.chip-rosa { background-color: #FFE2E3; color: #FF3FBF; }
+
+/* ── Desktop ≥768px ── */
+@media (min-width: 768px) {
+  .carta-pub {
+    align-items: stretch;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #eee;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.15s;
+
+    &:hover { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12); }
+  }
+
+  .contenedor-imagen-producto {
+    width: 100%;
+    height: 160px;
+    border-radius: 0;
+    position: relative;
+  }
+
+  .imagen-producto { border-radius: 0; }
+
+  .chip-overlay {
+    display: flex;
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    margin: 0;
+    font-size: 11px;
+    height: 24px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .chip-below { display: none; }
+
+  .carta-info {
+    display: block;
+    padding: 8px 10px 10px;
+  }
+
+  .carta-titulo {
+    font-size: 13px;
+    font-weight: 600;
+    color: #222;
+    margin: 0 0 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .carta-detalle {
+    font-size: 11px;
+    color: #888;
+    margin: 0;
+  }
 }

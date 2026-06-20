@@ -1,4 +1,7 @@
-import {Component, inject, OnDestroy, OnInit, signal, ViewChild} from '@angular/core';
+import {
+  Component, ElementRef, HostBinding, inject, Input, OnChanges, OnDestroy, OnInit,
+  signal, SimpleChanges, ViewChild
+} from '@angular/core';
 import {IonicModule, IonContent} from "@ionic/angular";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {DateModalComponentComponent} from "../../components/date-modal-component/date-modal-component.component";
@@ -29,9 +32,15 @@ import {ProductoDTO} from "../../modelos/ProductoDTO";
   standalone: true,
   imports: [IonicModule, RouterLink, FormsModule, CommonModule, DatePipe]
 })
-export class MensajesPage implements OnInit, OnDestroy {
+export class MensajesPage implements OnInit, OnChanges, OnDestroy {
+
+  @Input() chatIdInput: number | null = null;
+  @Input() embedded = false;
+
+  @HostBinding('class.is-embedded') get hostClass() { return this.embedded; }
 
   @ViewChild(IonContent) content!: IonContent;
+  @ViewChild('mensajesBody') mensajesBodyRef?: ElementRef;
 
   chat = signal<ChatDTO | null>(null);
   mensajes = signal<MensajeDTO[]>([]);
@@ -57,26 +66,56 @@ export class MensajesPage implements OnInit, OnDestroy {
   private overlayService = inject(OverlayService);
 
   ngOnInit() {
-
     const usuario = this.authService.getUsuario();
     if (!usuario?.id) return;
     this.miUsuarioId = usuario.id;
     this.miNombre = usuario.nombre ?? 'El otro usuario';
 
-    this.chatId = Number(this.route.snapshot.paramMap.get('id'));
-    this.cargarChat(this.chatId);
+    if (this.embedded && this.chatIdInput != null) {
+      this.chatId = this.chatIdInput;
+    } else {
+      this.chatId = Number(this.route.snapshot.paramMap.get('id'));
+    }
+    this.iniciarChat();
+  }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['chatIdInput'] && !changes['chatIdInput'].firstChange) {
+      const id = changes['chatIdInput'].currentValue;
+      if (id != null) {
+        this.chatId = id;
+        this.pollSub?.unsubscribe();
+        this.mensajes.set([]);
+        this.chat.set(null);
+        this.otroUsuario.set(null);
+        this.producto.set(null);
+        this.iniciarChat();
+      }
+    }
+  }
+
+  ngOnDestroy() {
+    this.pollSub?.unsubscribe();
+  }
+
+  private iniciarChat() {
+    this.cargarChat(this.chatId);
     this.pollSub = interval(5000).subscribe(() => {
-      this.mensajeService.getMensajesByChat(this.chatId).subscribe(msgs => {
-        this.mensajes.set(msgs);
-      });
+      this.mensajeService.getMensajesByChat(this.chatId).subscribe(msgs => this.mensajes.set(msgs));
       this.chatService.getChat(this.chatId).subscribe(c => this.chat.set(c));
       this.mensajeService.marcarLeidos(this.chatId, this.miUsuarioId).subscribe();
     });
   }
 
-  ngOnDestroy() {
-    this.pollSub?.unsubscribe();
+  private scrollToBottom() {
+    setTimeout(() => {
+      if (this.embedded) {
+        const el = this.mensajesBodyRef?.nativeElement;
+        if (el) el.scrollTop = el.scrollHeight;
+      } else {
+        this.content?.scrollToBottom(300);
+      }
+    }, 100);
   }
 
   cargarChat(chatId: number) {
@@ -111,7 +150,7 @@ export class MensajesPage implements OnInit, OnDestroy {
             });
           }
         });
-        setTimeout(() => this.content?.scrollToBottom(300), 100);
+        this.scrollToBottom();
       },
       error: (err) => console.error('Error cargando mensajes:', err)
     });

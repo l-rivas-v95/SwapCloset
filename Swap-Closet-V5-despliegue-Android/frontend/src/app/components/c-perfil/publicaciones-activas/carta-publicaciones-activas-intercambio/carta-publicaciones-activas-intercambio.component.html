@@ -1,6 +1,20 @@
-<div class="centro">
+<div class="carta-pub">
   <div class="contenedor-imagen-producto">
     <img [src]="getPrimeraImagen()" (error)="onImgError($event)" class="imagen-producto" alt="Imagen del producto"/>
+    <!-- Badge overlaid en la imagen: visible solo en desktop -->
+    <ion-chip class="chip-overlay" [ngClass]="producto?.tipo === 'Intercambio' ? 'chip-rosa' : 'chip-azul'">
+      {{ producto?.tipo }}
+    </ion-chip>
   </div>
-  <ion-chip [ngClass]="producto?.tipo === 'Intercambio' ? 'chip-rosa' : 'chip-azul'">{{producto?.tipo}}</ion-chip>
+  <!-- Badge debajo de la imagen: visible solo en móvil -->
+  <ion-chip class="chip-below" [ngClass]="producto?.tipo === 'Intercambio' ? 'chip-rosa' : 'chip-azul'">
+    {{ producto?.tipo }}
+  </ion-chip>
+  <!-- Info adicional: visible solo en desktop -->
+  <div class="carta-info">
+    <p class="carta-titulo">{{ producto?.titulo }}</p>
+    <p class="carta-detalle">
+      {{ producto?.talla ? 'Talla ' + producto?.talla : '' }}{{ producto?.talla && producto?.estado ? ' · ' : '' }}{{ producto?.estado }}
+    </p>
+  </div>
 </div>

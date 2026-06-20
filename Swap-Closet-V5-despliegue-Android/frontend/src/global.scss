@@ -240,25 +240,68 @@ ion-header {
   pointer-events: none;
 }
 
-/* ── Layout web: app centrada en escritorio ── */
-@media (min-width: 600px) {
-  body {
-    background: #f0f0f0;
+/* ── Layout desktop con sidebar (≥768px) ── */
+
+/*
+  Móvil: los wrappers son transparentes al layout de Ionic.
+  display:contents hace que ion-router-outlet sea hijo directo de ion-app,
+  igual que antes del cambio, sin afectar el layout nativo de Ionic.
+*/
+.app-layout,
+.page-area {
+  display: contents;
+}
+
+/* Sidebar oculto en móvil (sin :host en el componente para evitar conflicto de especificidad) */
+app-desktop-sidebar {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  /*
+    En desktop activamos el flex real.
+    .app-layout pasa a ser un flex container que ocupa todo ion-app.
+    .page-area contiene ion-router-outlet y actúa como bloque posicionado
+    para que los ion-page (position:absolute; inset:0) queden dentro de él.
+  */
+  .app-layout {
+    display: flex;
+    position: absolute;
+    inset: 0;
   }
 
-  ion-app {
-    max-width: 480px;
-    margin: 0 auto;
-    box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
-    background: #ffffff;
+  app-desktop-sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 220px;
+    flex-shrink: 0;
+    height: 100%;
+    border-right: 1px solid #f0f0f0;
+    background: #fff;
+    z-index: 50;
+    overflow-y: auto;
   }
 
-  /* Los overlays (bottom sheets, modals) deben quedar dentro del contenedor */
+  .page-area {
+    display: block;
+    flex: 1;
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  /* Quitar padding inferior del footer ya oculto */
+  ion-content {
+    --padding-bottom: 0 !important;
+  }
+
+  /* Ocultar footer en desktop */
+  ion-footer {
+    display: none !important;
+  }
+
+  /* Modal overlay dentro del área de contenido */
   .modal-overlay {
-    max-width: 480px;
-    left: 50%;
-    transform: translateX(-50%);
-    right: auto;
-    width: 480px;
+    left: 220px;
   }
 }

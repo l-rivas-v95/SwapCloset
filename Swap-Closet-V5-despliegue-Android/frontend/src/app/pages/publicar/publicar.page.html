@@ -1,51 +1,43 @@
-<ion-header>
+<!-- Header móvil -->
+<ion-header class="mobile-header">
   <ion-toolbar class="menu-superior fondo borde">
     <ion-grid>
-
       <ion-row class="caja-menu-sup">
         <ion-col>
           <h1 class="izquierda"><b>Publicar prenda</b></h1>
         </ion-col>
-
         <ion-col size="3" class="derecha">
           <ion-icon style="font-size: 28px;" name="shirt-outline"></ion-icon>
         </ion-col>
       </ion-row>
-
     </ion-grid>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-row><!-- TIPO DE OFERTA -->
-    <ion-col>
+
+  <!-- Topbar desktop -->
+  <div class="desktop-topbar">
+    <ion-icon name="shirt-outline" class="desktop-topbar-icon"></ion-icon>
+    <h2 class="desktop-topbar-title">Publicar prenda</h2>
+  </div>
+
+  <!-- Layout: columna izq (fotos+tipo) | columna dcha (formulario) -->
+  <div class="publicar-layout">
+
+    <!-- Columna izquierda: tipo + fotos -->
+    <div class="col-left">
       <app-tipo-oferta></app-tipo-oferta>
-    </ion-col>
-  </ion-row>
-
-  <ion-row><!-- AGREGAR FOTOS -->
-    <ion-col>
       <app-subir-foto></app-subir-foto>
-    </ion-col>
-  </ion-row>
+    </div>
 
-  <ion-row>
-    <ion-col>
+    <!-- Columna derecha: descripción + detalles + botón -->
+    <div class="col-right">
       <app-descripcion-producto></app-descripcion-producto>
-    </ion-col>
-
-  </ion-row>
-
-
-  <ion-row> <!-- DETALLES ADICIONALES -->
-    <ion-col>
       <app-datos-adicionales-chip></app-datos-adicionales-chip>
-    </ion-col>
-  </ion-row>
+      <app-boton-publicar></app-boton-publicar>
+    </div>
 
-    <ion-row> <!-- BOTON PUBLICAR -->
-        <ion-col>
-            <app-boton-publicar></app-boton-publicar>
-        </ion-col>
-    </ion-row>
+  </div>
+
 </ion-content>

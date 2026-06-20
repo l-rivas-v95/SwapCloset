@@ -119,3 +119,132 @@ ion-content {
   --padding-top: 0;
   --background: #f4f4f4;
 }
+
+/* ── Mobile/Desktop visibility ── */
+.mobile-only  { display: block; }
+.desktop-only { display: none; }
+
+/* ══════════════════ DESKTOP ≥768px ══════════════════ */
+@media (min-width: 768px) {
+  .mobile-header { display: none !important; }
+  .mobile-only   { display: none !important; }
+  .desktop-only  { display: block; height: 100%; }
+
+  ion-content {
+    --overflow: hidden;
+  }
+
+  /* ── Split layout ── */
+  .d-split {
+    display: flex;
+    height: 100%;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  /* ── Panel izquierdo (lista de chats) ── */
+  .d-left {
+    width: 320px;
+    flex-shrink: 0;
+    border-right: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .d-left-header {
+    flex-shrink: 0;
+    padding: 16px 16px 8px;
+    border-bottom: 1px solid #f0f0f0;
+    background: #fff;
+  }
+
+  .d-msgs-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #111;
+    margin: 0 0 10px;
+  }
+
+  .d-msgs-icon { color: #FF3FBF; font-size: 20px; }
+
+  .d-seg-btns {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+
+  .d-seg-btn {
+    border: none;
+    background: transparent;
+    color: #888;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+
+    &.active {
+      background: #ffd6e0;
+      color: #ff3f84;
+    }
+    &:hover:not(.active) { background: #f5f5f5; }
+  }
+
+  .d-chat-list {
+    flex: 1;
+    overflow-y: auto;
+    background: #fff;
+  }
+
+  /* Chat activo resaltado */
+  .d-chat-activo {
+    background: #fff0f7;
+    border-left: 3px solid #FF3FBF;
+  }
+
+  .d-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 16px;
+    color: #bbb;
+    gap: 8px;
+    ion-icon { font-size: 32px; }
+    p { font-size: 14px; margin: 0; }
+  }
+
+  /* ── Panel derecho (conversación) ── */
+  .d-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #f9f9f9;
+    min-width: 0;
+
+    app-mensajes {
+      flex: 1;
+      overflow: hidden;
+      min-height: 0;
+    }
+  }
+
+  .d-no-chat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    color: #ccc;
+    ion-icon { font-size: 56px; }
+    p { font-size: 15px; margin: 0; }
+  }
+}

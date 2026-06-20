@@ -1,55 +1,30 @@
-.fondo{
+/* ── Estilos base (móvil) ── */
+
+.fondo {
   background-color: #ffffff;
   --background: #ffffff;
   box-shadow: 0 2px 8px rgba(131, 131, 131, 0.4);
 }
-.menu-superior{
+
+.menu-superior {
   height: 13vh;
   display: flex;
   justify-content: space-around;
   align-items: center;
   border-bottom: 1px solid grey;
 }
-.sub-menu-superior{
-  height: 8vh;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
 
-.caja-menu-sup{
+.caja-menu-sup {
   display: flex;
   justify-content: space-around;
   align-items: center;
   gap: 2vw;
+}
 
-}
-ion-icon{
-  text-align: center;
-}
-.centro{
-  display: flex;
-  justify-content: center;
-  justify-items: center;
-  align-items: center;
-}
-.izquierda{
-  display: flex;
-  justify-content: left;
-  align-items: center;
-}
-.derecha{
-  display: flex;
-  justify-content: right;
-  align-items: center;
-}
-.altura-subarra{
-  height: 66px;
-}
-.margen{
-  margin-left: 2vw;
-  margin-bottom:0;
-}
+ion-icon { text-align: center; }
+.izquierda { display: flex; justify-content: left;  align-items: center; }
+.derecha   { display: flex; justify-content: right; align-items: center; }
+
 .bordes-redondeados {
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
@@ -70,15 +45,21 @@ ion-icon{
   flex-shrink: 0;
 }
 
+.search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 15px;
+  color: #333;
+  &::placeholder { color: #aaa; }
+}
+
 .filtros-row {
   display: flex;
   gap: 8px;
   padding: 4px 0 6px;
-
-  &--secondary {
-    padding-top: 0;
-    padding-bottom: 8px;
-  }
+  &--secondary { padding-top: 0; padding-bottom: 8px; }
 }
 
 .tipo-pill {
@@ -93,31 +74,14 @@ ion-icon{
   cursor: pointer;
   white-space: nowrap;
 
-  &.active-todos        { background: #f0f0f0; color: #333; border-color: #bbb; font-weight: 500; }
+  &.active-todos        { background: #f0f0f0; color: #333;    border-color: #bbb;    font-weight: 500; }
   &.active-intercambio  { background: #FFE2E3; color: #C0246E; border-color: #FF3FBF; font-weight: 500; }
   &.active-prestamo     { background: #C6DFFF; color: #1A3FCC; border-color: #3F6BFF; font-weight: 500; }
   &.active-picker       { background: #FFE2E3; color: #C0246E; border-color: #FF3FBF; font-weight: 500; }
 }
 
-.picker-pill {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.pill-arrow {
-  font-size: 11px;
-}
-
-.cats-row {
-  display: flex;
-  flex-direction: row;
-  overflow-x: auto;
-  gap: 8px;
-  padding: 4px 12px 8px;
-  scrollbar-width: none;
-  &::-webkit-scrollbar { display: none; }
-}
+.picker-pill { display: flex; align-items: center; gap: 4px; }
+.pill-arrow  { font-size: 11px; }
 
 .cat-chips-grid {
   display: flex;
@@ -139,13 +103,56 @@ ion-icon{
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Móvil: grid es lista simple */
+.results-grid {
+  padding: 8px;
+}
 
-.search-input {
-  flex: 1;
-  border: none;
-  background: transparent;
-  outline: none;
-  font-size: 15px;
-  color: #333;
-  &::placeholder { color: #aaa; }
+/* Desktop-only elements: ocultos en móvil */
+.desktop-topbar {
+  display: none;
+}
+
+/* ── Desktop ≥768px ── */
+@media (min-width: 768px) {
+  /* Ocultar header móvil */
+  .mobile-header {
+    display: none !important;
+  }
+
+  /* Topbar: título + buscador */
+  .desktop-topbar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 20px 16px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .desktop-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .desktop-search {
+    flex: 1;
+    max-width: 440px;
+  }
+
+  /* Grid responsivo: 3 columnas en ventanas medianas, 4 en anchas */
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding: 16px 20px;
+  }
+
+  @media (min-width: 1200px) {
+    .results-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
 }

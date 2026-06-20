@@ -1,31 +1,7 @@
-<ion-header class="fondo">
-  <ion-toolbar class="menu-superior fondo">
-    <ion-grid>
-      <ion-row>
-        <ion-col size="1" class="centro">
-          <ion-button fill="clear" (click)="volver()">
-            <ion-icon size="large" name="arrow-back-outline" class="flecha"></ion-icon>
-          </ion-button>
-        </ion-col>
-        <ion-col size="2" class="izquierda">
-          <img [src]="otroUsuario()?.urlImg || 'assets/icon/card-media.png'" class="avatar">
-        </ion-col>
-        <ion-col>
-          <p class="header-nombre">{{ otroUsuario()?.nombre }} {{ otroUsuario()?.apellidos }}</p>
-          <div class="usuario-rating">
-            <p class="rating">{{ otroUsuario()?.raiting ?? 0 }}</p>
-            <ion-icon class="rating-star" name="star"></ion-icon>
-            <p class="separador">·</p>
-            <p class="intercambios">{{ otroUsuario()?.intercambios ?? 0 }} intercambios</p>
-          </div>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-toolbar>
-</ion-header>
+<!-- ══════════════════ TEMPLATES REUTILIZABLES ══════════════════ -->
 
-<ion-content>
-  <!-- Tarjeta del producto -->
+<!-- Lista de mensajes -->
+<ng-template #msgsList>
   @if (producto()) {
     <div class="producto-banner">
       <img class="img_prod" [src]="producto()!.imagenes?.[0]?.urlImg || 'assets/icon/card-media.png'"/>
@@ -38,7 +14,6 @@
   }
 
   <div class="chat-container">
-
     @for (msg of mensajes(); track msg.id) {
 
       <!-- Mensaje de texto -->
@@ -77,12 +52,8 @@
                 <ion-button size="small" color="danger" (click)="rechazarPropuesta(msg.id!)">Rechazar</ion-button>
               </div>
             }
-            @if (msg.aceptado === true) {
-              <p class="aceptado-texto">✓ Fecha acordada</p>
-            }
-            @if (msg.aceptado === false) {
-              <p class="rechazado-texto">✗ Rechazada</p>
-            }
+            @if (msg.aceptado === true)  { <p class="aceptado-texto">✓ Fecha acordada</p> }
+            @if (msg.aceptado === false) { <p class="rechazado-texto">✗ Rechazada</p> }
           </div>
         </div>
       }
@@ -114,7 +85,7 @@
                 <ion-button size="small" color="danger" (click)="rechazarPropuesta(msg.id!)">Rechazar</ion-button>
               </div>
             }
-            @if (msg.aceptado === true) { <p class="aceptado-texto">✓ Fecha de entrega acordada</p> }
+            @if (msg.aceptado === true)  { <p class="aceptado-texto">✓ Fecha de entrega acordada</p> }
             @if (msg.aceptado === false) { <p class="rechazado-texto">✗ Rechazada</p> }
           </div>
         </div>
@@ -148,7 +119,7 @@
                 <ion-button size="small" color="danger" (click)="rechazarPropuesta(msg.id!)">Rechazar</ion-button>
               </div>
             }
-            @if (msg.aceptado === true) { <p class="aceptado-texto">✓ Prenda acordada</p> }
+            @if (msg.aceptado === true)  { <p class="aceptado-texto">✓ Prenda acordada</p> }
             @if (msg.aceptado === false) { <p class="rechazado-texto">✗ Rechazada</p> }
           </div>
         </div>
@@ -175,12 +146,8 @@
               }
             </ion-row>
             <div class="mapa-container">
-              <iframe
-                [src]="getMapUrl(msg.contenido!)"
-                class="mapa-iframe"
-                allowfullscreen
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade">
+              <iframe [src]="getMapUrl(msg.contenido!)" class="mapa-iframe"
+                      allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
               </iframe>
             </div>
             @if (!esMio(msg) && msg.aceptado == null && puedeResponderPropuesta()) {
@@ -189,29 +156,24 @@
                 <ion-button size="small" color="danger" (click)="rechazarPropuesta(msg.id!)">Rechazar</ion-button>
               </div>
             }
-            @if (msg.aceptado === true) {
-              <p class="aceptado-texto">✓ Lugar acordado</p>
-            }
-            @if (msg.aceptado === false) {
-              <p class="rechazado-texto">✗ Rechazado</p>
-            }
+            @if (msg.aceptado === true)  { <p class="aceptado-texto">✓ Lugar acordado</p> }
+            @if (msg.aceptado === false) { <p class="rechazado-texto">✗ Rechazado</p> }
           </div>
         </div>
       }
 
     }
 
-    <!-- Banner de confirmación -->
     @if (chat()?.completado) {
       <div class="centro confirmacion-banner">
         <b>¡SE HA CONFIRMADO EL INTERCAMBIO!</b>
       </div>
     }
-
   </div>
-</ion-content>
+</ng-template>
 
-<ion-footer>
+<!-- Contenido del footer (botones + input) -->
+<ng-template #footerContent>
   @if (!puedeConfirmar() && !yoConfirme() && !chat()?.completado) {
     <div class="aviso-confirmar">
       <ion-icon name="information-circle-outline"></ion-icon>
@@ -241,4 +203,71 @@
       <ion-icon name="send"></ion-icon>
     </button>
   </div>
-</ion-footer>
+</ng-template>
+
+
+<!-- ══════════════════ EMBEDDED (desktop) ══════════════════ -->
+@if (embedded) {
+  <div class="emb-wrapper">
+
+    <!-- Header simplificado -->
+    <div class="emb-header">
+      <img [src]="otroUsuario()?.urlImg || 'assets/icon/card-media.png'" class="emb-avatar" alt="">
+      <div class="emb-user">
+        <b class="emb-nombre">{{ otroUsuario()?.nombre }} {{ otroUsuario()?.apellidos }}</b>
+        <span class="emb-meta">
+          {{ otroUsuario()?.raiting ?? 0 }} ⭐ · {{ otroUsuario()?.intercambios ?? 0 }} intercambios
+        </span>
+      </div>
+      <a class="emb-ver-perfil" [routerLink]="['/perfil', otroUsuario()?.id]">Ver perfil</a>
+    </div>
+
+    <!-- Mensajes -->
+    <div class="emb-body" #mensajesBody>
+      <ng-container *ngTemplateOutlet="msgsList"/>
+    </div>
+
+    <!-- Footer: acciones + input -->
+    <div class="emb-footer">
+      <ng-container *ngTemplateOutlet="footerContent"/>
+    </div>
+
+  </div>
+}
+
+<!-- ══════════════════ STANDALONE (móvil) ══════════════════ -->
+@if (!embedded) {
+  <ion-header class="fondo">
+    <ion-toolbar class="menu-superior fondo">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="1" class="centro">
+            <ion-button fill="clear" (click)="volver()">
+              <ion-icon size="large" name="arrow-back-outline" class="flecha"></ion-icon>
+            </ion-button>
+          </ion-col>
+          <ion-col size="2" class="izquierda">
+            <img [src]="otroUsuario()?.urlImg || 'assets/icon/card-media.png'" class="avatar">
+          </ion-col>
+          <ion-col>
+            <p class="header-nombre">{{ otroUsuario()?.nombre }} {{ otroUsuario()?.apellidos }}</p>
+            <div class="usuario-rating">
+              <p class="rating">{{ otroUsuario()?.raiting ?? 0 }}</p>
+              <ion-icon class="rating-star" name="star"></ion-icon>
+              <p class="separador">·</p>
+              <p class="intercambios">{{ otroUsuario()?.intercambios ?? 0 }} intercambios</p>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ng-container *ngTemplateOutlet="msgsList"/>
+  </ion-content>
+
+  <ion-footer>
+    <ng-container *ngTemplateOutlet="footerContent"/>
+  </ion-footer>
+}

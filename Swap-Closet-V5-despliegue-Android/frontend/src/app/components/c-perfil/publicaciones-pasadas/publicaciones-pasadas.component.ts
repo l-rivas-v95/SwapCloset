@@ -22,6 +22,7 @@ import {
 export class PublicacionesPasadasComponent implements OnInit {
 
   @Input() usuario!: WritableSignal<UsuarioDTO | null>;
+  @Input() showAll = false;
   productos = signal<ProductoDTO[]>([]);
 
   private productoService = inject(ProductoService);

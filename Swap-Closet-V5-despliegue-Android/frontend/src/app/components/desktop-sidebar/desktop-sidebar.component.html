@@ -1,0 +1,178 @@
+<nav class="sidebar" *ngIf="mostrar">
+
+  <!-- Logo -->
+  <a class="sidebar-logo" routerLink="/home">
+    <ion-icon name="shirt-outline" class="logo-icon"></ion-icon>
+    <span class="logo-text">SwapCloset</span>
+  </a>
+
+  <!-- Nav links -->
+  <div class="nav-links">
+    <a class="nav-item"
+       routerLink="/home"
+       routerLinkActive="active"
+       [routerLinkActiveOptions]="{ exact: true }">
+      <ion-icon name="home-outline"></ion-icon>
+      <span>Tendencias</span>
+    </a>
+
+    <a class="nav-item"
+       routerLink="/explorar"
+       routerLinkActive="active">
+      <ion-icon name="search-outline"></ion-icon>
+      <span>Explorar</span>
+    </a>
+
+    <a class="nav-item"
+       routerLink="/publicar"
+       routerLinkActive="active">
+      <ion-icon name="add-circle-outline"></ion-icon>
+      <span>Publicar</span>
+    </a>
+
+    <a class="nav-item"
+       routerLink="/chat"
+       routerLinkActive="active">
+      <ion-icon name="chatbox-outline"></ion-icon>
+      <span>Chats</span>
+      @if (noLeidos > 0) {
+        <span class="badge-notif">{{ noLeidos > 99 ? '99+' : noLeidos }}</span>
+      }
+    </a>
+
+    <a class="nav-item"
+       [routerLink]="['/perfil', usuario?.id]"
+       routerLinkActive="active">
+      <ion-icon name="person-outline"></ion-icon>
+      <span>Perfil</span>
+    </a>
+  </div>
+
+  <!-- ── Filtros Explorar (solo cuando estamos en /explorar) ── -->
+  @if (enExplorar) {
+    <div class="filtros-sidebar">
+      <span class="filtros-sidebar-title">Filtros</span>
+
+      <!-- Tipo -->
+      <div class="fs-section">
+        <button class="fs-hdr" (click)="filtros.toggleSection('tipo')">
+          <span>Tipo</span>
+          <ion-icon [name]="filtros.sectionOpen['tipo'] ? 'chevron-up-outline' : 'chevron-down-outline'"></ion-icon>
+        </button>
+        @if (filtros.sectionOpen['tipo']) {
+          <div class="fs-body">
+            <button class="fs-pill"
+              [class.fs-pill--todos]="filtros.tipoFiltro() === 'todos'"
+              (click)="filtros.tipoFiltro.set('todos')">Todos</button>
+            <button class="fs-pill"
+              [class.fs-pill--intercambio]="filtros.tipoFiltro() === 'intercambio'"
+              (click)="filtros.tipoFiltro.set('intercambio')">Intercambio</button>
+            <button class="fs-pill"
+              [class.fs-pill--prestamo]="filtros.tipoFiltro() === 'prestamo'"
+              (click)="filtros.tipoFiltro.set('prestamo')">Préstamo</button>
+          </div>
+        }
+      </div>
+
+      <!-- Categoría -->
+      <div class="fs-section">
+        <button class="fs-hdr" (click)="filtros.toggleSection('categoria')">
+          <span>Categoría</span>
+          @if (filtros.categoriaFiltro()) { <span class="fs-dot"></span> }
+          <ion-icon [name]="filtros.sectionOpen['categoria'] ? 'chevron-up-outline' : 'chevron-down-outline'"></ion-icon>
+        </button>
+        @if (filtros.sectionOpen['categoria']) {
+          <div class="fs-body fs-cat-grid">
+            @for (c of filtros.categorias; track c.label) {
+              <button class="fs-cat-chip"
+                [style.backgroundColor]="filtros.categoriaFiltro() === c.label ? c.solid : c.alpha"
+                [style.color]="filtros.categoriaFiltro() === c.label ? '#fff' : c.solid"
+                (click)="filtros.seleccionarCategoria(c.label)">{{ c.label }}</button>
+            }
+          </div>
+          @if (filtros.categoriaFiltro()) {
+            <button class="fs-clear" (click)="filtros.seleccionarCategoria(filtros.categoriaFiltro()!)">
+              Quitar filtro
+            </button>
+          }
+        }
+      </div>
+
+      <!-- Talla -->
+      <div class="fs-section">
+        <button class="fs-hdr" (click)="filtros.toggleSection('talla')">
+          <span>Talla</span>
+          @if (filtros.tallaFiltro()) { <span class="fs-dot"></span> }
+          <ion-icon [name]="filtros.sectionOpen['talla'] ? 'chevron-up-outline' : 'chevron-down-outline'"></ion-icon>
+        </button>
+        @if (filtros.sectionOpen['talla']) {
+          <div class="fs-body fs-talla-grid">
+            @for (t of filtros.tallasActivas(); track t) {
+              <button class="fs-talla-btn"
+                [class.fs-talla-btn--active]="filtros.tallaFiltro() === t"
+                (click)="filtros.seleccionarTalla(t)">{{ t }}</button>
+            }
+          </div>
+          @if (filtros.tallaFiltro()) {
+            <button class="fs-clear" (click)="filtros.seleccionarTalla(filtros.tallaFiltro()!)">
+              Quitar filtro
+            </button>
+          }
+        }
+      </div>
+
+      <!-- Estilo -->
+      <div class="fs-section">
+        <button class="fs-hdr" (click)="filtros.toggleSection('estilo')">
+          <span>Estilo</span>
+          @if (filtros.estiloFiltro()) { <span class="fs-dot"></span> }
+          <ion-icon [name]="filtros.sectionOpen['estilo'] ? 'chevron-up-outline' : 'chevron-down-outline'"></ion-icon>
+        </button>
+        @if (filtros.sectionOpen['estilo']) {
+          <div class="fs-body">
+            @for (e of filtros.estilos; track e) {
+              <button class="fs-pill"
+                [class.fs-pill--active]="filtros.estiloFiltro() === e"
+                (click)="filtros.seleccionarEstilo(e)">{{ e }}</button>
+            }
+          </div>
+          @if (filtros.estiloFiltro()) {
+            <button class="fs-clear" (click)="filtros.seleccionarEstilo(filtros.estiloFiltro()!)">
+              Quitar filtro
+            </button>
+          }
+        }
+      </div>
+
+    </div>
+  }
+
+  <!-- ── Filtros Home (solo cuando estamos en /home) ── -->
+  @if (enHome) {
+    <div class="filtros-sidebar">
+      <span class="filtros-sidebar-title">Categoría</span>
+      <div class="fs-cat-grid" style="padding: 4px 12px 8px;">
+        @for (c of homeFiltros.categorias; track c.label) {
+          <button class="fs-cat-chip"
+            [style.backgroundColor]="homeFiltros.categoriaFiltro() === c.label ? c.solid : c.alpha"
+            [style.color]="homeFiltros.categoriaFiltro() === c.label ? '#fff' : c.solid"
+            (click)="homeFiltros.seleccionarCategoria(c.label)">{{ c.label }}</button>
+        }
+      </div>
+      @if (homeFiltros.categoriaFiltro()) {
+        <button class="fs-clear" (click)="homeFiltros.seleccionarCategoria(homeFiltros.categoriaFiltro()!)">
+          Quitar filtro
+        </button>
+      }
+    </div>
+  }
+
+  <!-- Ajustes al fondo -->
+  <div class="nav-bottom">
+    <a class="nav-item" routerLink="/ajustes" routerLinkActive="active">
+      <ion-icon name="settings-outline"></ion-icon>
+      <span>Ajustes</span>
+    </a>
+  </div>
+
+</nav>

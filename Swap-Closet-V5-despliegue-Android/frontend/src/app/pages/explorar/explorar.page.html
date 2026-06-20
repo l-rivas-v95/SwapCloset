@@ -1,4 +1,5 @@
-<ion-header class="bordes-redondeados fondo">
+<!-- ── HEADER: solo visible en móvil ── -->
+<ion-header class="bordes-redondeados fondo mobile-header">
   <ion-toolbar class="menu-superior fondo">
     <ion-grid>
       <ion-row class="caja-menu-sup">
@@ -19,7 +20,8 @@
           <div class="search-box">
             <ion-icon name="search-outline" class="search-icon"></ion-icon>
             <input class="search-input" type="search" placeholder="Buscar prenda"
-              (input)="busqueda.set($any($event.target).value)">
+              [value]="filtros.busqueda()"
+              (input)="filtros.busqueda.set($any($event.target).value)">
           </div>
         </ion-col>
       </ion-row>
@@ -27,14 +29,14 @@
         <ion-col>
           <div class="filtros-row">
             <button class="tipo-pill"
-              [class.active-todos]="tipoFiltro() === 'todos'"
-              (click)="tipoFiltro.set('todos')">Todos</button>
+              [class.active-todos]="filtros.tipoFiltro() === 'todos'"
+              (click)="filtros.tipoFiltro.set('todos')">Todos</button>
             <button class="tipo-pill"
-              [class.active-intercambio]="tipoFiltro() === 'intercambio'"
-              (click)="tipoFiltro.set('intercambio')">Intercambio</button>
+              [class.active-intercambio]="filtros.tipoFiltro() === 'intercambio'"
+              (click)="filtros.tipoFiltro.set('intercambio')">Intercambio</button>
             <button class="tipo-pill"
-              [class.active-prestamo]="tipoFiltro() === 'prestamo'"
-              (click)="tipoFiltro.set('prestamo')">Préstamo</button>
+              [class.active-prestamo]="filtros.tipoFiltro() === 'prestamo'"
+              (click)="filtros.tipoFiltro.set('prestamo')">Préstamo</button>
           </div>
         </ion-col>
       </ion-row>
@@ -42,23 +44,23 @@
         <ion-col>
           <div class="filtros-row filtros-row--secondary">
             <button class="tipo-pill picker-pill"
-              [style.background]="getCatColor(categoriaFiltro())?.solid ?? ''"
-              [style.color]="categoriaFiltro() ? '#fff' : ''"
-              [style.border-color]="getCatColor(categoriaFiltro())?.solid ?? ''"
-              (click)="pickerCategoria.set(true)">
-              {{ categoriaFiltro() ?? 'Categoría' }}
+              [style.background]="filtros.getCatColor(filtros.categoriaFiltro())?.solid ?? ''"
+              [style.color]="filtros.categoriaFiltro() ? '#fff' : ''"
+              [style.border-color]="filtros.getCatColor(filtros.categoriaFiltro())?.solid ?? ''"
+              (click)="filtros.pickerCategoria.set(true)">
+              {{ filtros.categoriaFiltro() ?? 'Categoría' }}
               <ion-icon name="chevron-down-outline" class="pill-arrow"></ion-icon>
             </button>
             <button class="tipo-pill picker-pill"
-              [class.active-picker]="tallaFiltro() !== null"
-              (click)="pickerTalla.set(true)">
-              {{ tallaFiltro() ? 'Talla: ' + tallaFiltro() : 'Talla' }}
+              [class.active-picker]="filtros.tallaFiltro() !== null"
+              (click)="filtros.pickerTalla.set(true)">
+              {{ filtros.tallaFiltro() ? 'Talla: ' + filtros.tallaFiltro() : 'Talla' }}
               <ion-icon name="chevron-down-outline" class="pill-arrow"></ion-icon>
             </button>
             <button class="tipo-pill picker-pill"
-              [class.active-picker]="estiloFiltro() !== null"
-              (click)="pickerEstilo.set(true)">
-              {{ estiloFiltro() ?? 'Estilo' }}
+              [class.active-picker]="filtros.estiloFiltro() !== null"
+              (click)="filtros.pickerEstilo.set(true)">
+              {{ filtros.estiloFiltro() ?? 'Estilo' }}
               <ion-icon name="chevron-down-outline" class="pill-arrow"></ion-icon>
             </button>
           </div>
@@ -68,46 +70,58 @@
   </ion-toolbar>
 </ion-header>
 
+<!-- ── CONTENT ── -->
 <ion-content>
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        @for(pro of productosFiltrados(); track pro.id){
-          @if(pro.id !== undefined && pro.id !== null){
-            <app-carta-horizontal-intercambio
-              [producto]="pro"
-              [routerLink]="['/anuncio', pro.id]"
-              class="contenedor-cartas"/>
-          }
-        }
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+
+  <!-- Topbar desktop: título + buscador (oculto en móvil) -->
+  <div class="desktop-topbar">
+    <h2 class="desktop-title">Explorar</h2>
+    <div class="search-box desktop-search">
+      <ion-icon name="search-outline" class="search-icon"></ion-icon>
+      <input class="search-input" type="search" placeholder="Buscar prenda"
+        [value]="filtros.busqueda()"
+        (input)="filtros.busqueda.set($any($event.target).value)">
+    </div>
+  </div>
+
+  <!-- Grid de resultados -->
+  <div class="results-grid">
+    @for(pro of productosFiltrados(); track pro.id){
+      @if(pro.id !== undefined && pro.id !== null){
+        <app-carta-horizontal-intercambio
+          [producto]="pro"
+          [routerLink]="['/anuncio', pro.id]"
+          class="contenedor-cartas"/>
+      }
+    }
+  </div>
+
 </ion-content>
 
-<!-- Picker Categoría -->
-@if (pickerCategoria()) {
-  <div class="modal-overlay" (click)="pickerCategoria.set(false)">
+<!-- ── Pickers móvil (bottom sheets) ── -->
+
+@if (filtros.pickerCategoria()) {
+  <div class="modal-overlay" (click)="filtros.pickerCategoria.set(false)">
     <div class="modal-sheet modal-sheet--half" (click)="$event.stopPropagation()">
       <div class="modal-handle-bar"></div>
       <div class="modal-header">
         <span class="modal-title">Categoría</span>
-        <button class="modal-close-btn" (click)="pickerCategoria.set(false)">
+        <button class="modal-close-btn" (click)="filtros.pickerCategoria.set(false)">
           <ion-icon name="close-outline"></ion-icon>
         </button>
       </div>
       <div class="cat-chips-grid">
-        @for (c of categorias; track c.label) {
+        @for (c of filtros.categorias; track c.label) {
           <button class="cat-chip"
-            [style.backgroundColor]="categoriaFiltro() === c.label ? c.solid : c.alpha"
-            [style.color]="categoriaFiltro() === c.label ? '#fff' : c.solid"
-            (click)="seleccionarCategoria(c.label)">
+            [style.backgroundColor]="filtros.categoriaFiltro() === c.label ? c.solid : c.alpha"
+            [style.color]="filtros.categoriaFiltro() === c.label ? '#fff' : c.solid"
+            (click)="filtros.seleccionarCategoria(c.label)">
             {{ c.label }}
           </button>
         }
       </div>
-      @if (categoriaFiltro()) {
-        <button class="sheet-btn sheet-btn--cancel" (click)="seleccionarCategoria(categoriaFiltro()!)">
+      @if (filtros.categoriaFiltro()) {
+        <button class="sheet-btn sheet-btn--cancel" (click)="filtros.seleccionarCategoria(filtros.categoriaFiltro()!)">
           Quitar filtro
         </button>
       }
@@ -115,31 +129,30 @@
   </div>
 }
 
-<!-- Picker Talla -->
-@if (pickerTalla()) {
-  <div class="modal-overlay" (click)="pickerTalla.set(false)">
+@if (filtros.pickerTalla()) {
+  <div class="modal-overlay" (click)="filtros.pickerTalla.set(false)">
     <div class="modal-sheet modal-sheet--half" (click)="$event.stopPropagation()">
       <div class="modal-handle-bar"></div>
       <div class="modal-header">
-        <span class="modal-title">Talla {{ categoriaFiltro() === 'Calzado' ? '(calzado)' : '' }}</span>
-        <button class="modal-close-btn" (click)="pickerTalla.set(false)">
+        <span class="modal-title">Talla {{ filtros.categoriaFiltro() === 'Calzado' ? '(calzado)' : '' }}</span>
+        <button class="modal-close-btn" (click)="filtros.pickerTalla.set(false)">
           <ion-icon name="close-outline"></ion-icon>
         </button>
       </div>
       <div class="sheet-buttons">
-        @for (t of tallasActivas(); track t) {
+        @for (t of filtros.tallasActivas(); track t) {
           <button class="sheet-btn"
-            [style.color]="tallaFiltro() === t ? '#FF3FBF' : ''"
-            [style.font-weight]="tallaFiltro() === t ? '600' : ''"
-            (click)="seleccionarTalla(t)">
+            [style.color]="filtros.tallaFiltro() === t ? '#FF3FBF' : ''"
+            [style.font-weight]="filtros.tallaFiltro() === t ? '600' : ''"
+            (click)="filtros.seleccionarTalla(t)">
             {{ t }}
-            @if (tallaFiltro() === t) {
+            @if (filtros.tallaFiltro() === t) {
               <ion-icon name="checkmark-outline" style="margin-left: auto; color: #FF3FBF;"></ion-icon>
             }
           </button>
         }
-        @if (tallaFiltro()) {
-          <button class="sheet-btn sheet-btn--cancel" (click)="seleccionarTalla(tallaFiltro()!)">
+        @if (filtros.tallaFiltro()) {
+          <button class="sheet-btn sheet-btn--cancel" (click)="filtros.seleccionarTalla(filtros.tallaFiltro()!)">
             Quitar filtro
           </button>
         }
@@ -148,31 +161,30 @@
   </div>
 }
 
-<!-- Picker Estilo -->
-@if (pickerEstilo()) {
-  <div class="modal-overlay" (click)="pickerEstilo.set(false)">
+@if (filtros.pickerEstilo()) {
+  <div class="modal-overlay" (click)="filtros.pickerEstilo.set(false)">
     <div class="modal-sheet modal-sheet--half" (click)="$event.stopPropagation()">
       <div class="modal-handle-bar"></div>
       <div class="modal-header">
         <span class="modal-title">Estilo</span>
-        <button class="modal-close-btn" (click)="pickerEstilo.set(false)">
+        <button class="modal-close-btn" (click)="filtros.pickerEstilo.set(false)">
           <ion-icon name="close-outline"></ion-icon>
         </button>
       </div>
       <div class="sheet-buttons">
-        @for (e of estilos; track e) {
+        @for (e of filtros.estilos; track e) {
           <button class="sheet-btn"
-            [style.color]="estiloFiltro() === e ? '#FF3FBF' : ''"
-            [style.font-weight]="estiloFiltro() === e ? '600' : ''"
-            (click)="seleccionarEstilo(e)">
+            [style.color]="filtros.estiloFiltro() === e ? '#FF3FBF' : ''"
+            [style.font-weight]="filtros.estiloFiltro() === e ? '600' : ''"
+            (click)="filtros.seleccionarEstilo(e)">
             {{ e }}
-            @if (estiloFiltro() === e) {
+            @if (filtros.estiloFiltro() === e) {
               <ion-icon name="checkmark-outline" style="margin-left: auto; color: #FF3FBF;"></ion-icon>
             }
           </button>
         }
-        @if (estiloFiltro()) {
-          <button class="sheet-btn sheet-btn--cancel" (click)="seleccionarEstilo(estiloFiltro()!)">
+        @if (filtros.estiloFiltro()) {
+          <button class="sheet-btn sheet-btn--cancel" (click)="filtros.seleccionarEstilo(filtros.estiloFiltro()!)">
             Quitar filtro
           </button>
         }

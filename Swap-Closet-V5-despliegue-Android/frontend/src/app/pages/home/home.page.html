@@ -1,4 +1,5 @@
-<ion-header class="bordes-redondeados fondo">
+<!-- ── Header móvil ── -->
+<ion-header class="bordes-redondeados fondo mobile-header">
   <ion-toolbar class="menu-superior fondo">
     <ion-grid>
       <ion-row class="caja-menu-sup">
@@ -9,17 +10,22 @@
 
   <ion-toolbar class="fondo toolbar-cats">
     <div class="cats-row">
-      @for (cat of categorias; track cat.label) {
+      @for (cat of filtros.categorias; track cat.label) {
         <button class="cat-pill"
-          [style.background]="categoriaFiltro() === cat.label ? cat.solid : cat.alpha"
-          [style.color]="categoriaFiltro() === cat.label ? '#fff' : cat.solid"
-          (click)="seleccionarCategoria(cat.label)">
+          [style.background]="filtros.categoriaFiltro() === cat.label ? cat.solid : cat.alpha"
+          [style.color]="filtros.categoriaFiltro() === cat.label ? '#fff' : cat.solid"
+          (click)="filtros.seleccionarCategoria(cat.label)">
           {{ cat.label }}
         </button>
       }
     </div>
   </ion-toolbar>
 </ion-header>
+
+<!-- ── Topbar desktop ── -->
+<div class="d-topbar desktop-only">
+  <h2 class="d-topbar-title">Tendencias</h2>
+</div>
 
 <ion-content>
   <ion-refresher slot="fixed" (ionRefresh)="onRefresh($event)">
@@ -29,18 +35,14 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <ion-grid>
-    <ion-row>
-      <ion-col class="sin-margen">
-        @for(pro of productosFiltrados(); track pro.productoId){
-          @if(pro.productoId !== undefined && pro.productoId !== null){
-            <app-carta-home-intercambio
-              [producto]="pro"
-              [routerLink]="['/anuncio', pro.productoId]"
-              class="contenedor-cartas"/>
-          }
-        }
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <div class="home-grid">
+    @for(pro of productosFiltrados(); track pro.productoId){
+      @if(pro.productoId !== undefined && pro.productoId !== null){
+        <app-carta-home-intercambio
+          [producto]="pro"
+          [routerLink]="['/anuncio', pro.productoId]"
+          class="contenedor-cartas"/>
+      }
+    }
+  </div>
 </ion-content>

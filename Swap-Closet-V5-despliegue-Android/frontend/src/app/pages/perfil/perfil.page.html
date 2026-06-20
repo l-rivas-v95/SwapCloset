@@ -1,11 +1,11 @@
-<ion-header class="fondo">
+<!-- ── Header móvil ── -->
+<ion-header class="mobile-header fondo">
   <ion-toolbar class="menu-superior fondo">
     <ion-grid>
       <ion-row class="caja-menu-sup">
         <ion-col>
           <h1 class="izquierda"><b>{{ esMiPerfil() ? 'Mi Perfil' : 'Perfil' }}</b></h1>
         </ion-col>
-
         @if (esMiPerfil()) {
           <ion-col class="derecha">
             <ion-icon style="font-size: 28px;" name="settings-outline"></ion-icon>
@@ -18,31 +18,214 @@
 </ion-header>
 
 <ion-content>
-  <app-cabecera-perfil
-    [usuario]="usuarioEstadisticas"
-    [esMiPerfil]="esMiPerfil()"
-    (usuarioActualizado)="usuario.set($event)">
-  </app-cabecera-perfil>
 
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <app-estilos
-          [usuario]="usuario"
-          [esMiPerfil]="esMiPerfil()"/>
+  <!-- ══════════════════ MOBILE LAYOUT ══════════════════ -->
+  <div class="mobile-only">
+    <app-cabecera-perfil
+      [usuario]="usuarioEstadisticas"
+      [esMiPerfil]="esMiPerfil()"
+      (usuarioActualizado)="usuario.set($event)">
+    </app-cabecera-perfil>
 
-        <app-tallas *ngIf="usuario()"
-                    [usuario]="usuario"
-                    [esMiPerfil]="esMiPerfil()"
-                    (usuarioChange)="usuario.set($event)"/>
+    <app-estilos [usuario]="usuario" [esMiPerfil]="esMiPerfil()"/>
 
-        <app-publicaciones-activas [usuario]="usuario"/>
-        <app-publicaciones-pasadas [usuario]="usuario"/>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+    <app-tallas *ngIf="usuario()"
+                [usuario]="usuario"
+                [esMiPerfil]="esMiPerfil()"
+                (usuarioChange)="usuario.set($event)"/>
 
-  @if (esMiPerfil()) {
-    <app-opciones-prefil [usuario]="usuario"/>
-  }
+    <app-publicaciones-activas [usuario]="usuario"/>
+    <app-publicaciones-pasadas [usuario]="usuario"/>
+
+    @if (esMiPerfil()) {
+      <app-opciones-prefil [usuario]="usuario"/>
+    }
+  </div>
+
+  <!-- ══════════════════ DESKTOP LAYOUT ══════════════════ -->
+  <div class="desktop-only">
+
+    <!-- Topbar -->
+    <div class="d-topbar">
+      <ion-icon name="person-circle-outline" class="d-topbar-icon"></ion-icon>
+      <h2 class="d-topbar-title">{{ esMiPerfil() ? 'Mi Perfil' : 'Perfil' }}</h2>
+      @if (esMiPerfil()) {
+        <ion-icon name="settings-outline" class="d-topbar-settings"></ion-icon>
+      }
+    </div>
+
+    <!-- Header: avatar izq + info dcha -->
+    <div class="d-header">
+
+      <!-- Avatar -->
+      <div class="d-avatar-col">
+        <img
+          [src]="usuarioEstadisticas()?.urlImg || 'assets/icon/card-media.png'"
+          class="d-avatar"
+          alt="Foto de perfil"/>
+        @if (esMiPerfil()) {
+          <button class="d-cam-btn">
+            <ion-icon name="camera-outline" color="light"></ion-icon>
+          </button>
+        }
+      </div>
+
+      <!-- Info -->
+      <div class="d-info-col">
+        <h2 class="d-nombre">{{ usuarioEstadisticas()?.nombre }} {{ usuarioEstadisticas()?.apellidos }}</h2>
+
+        @if (usuarioEstadisticas()?.descripcion) {
+          <p class="d-descripcion">{{ usuarioEstadisticas()?.descripcion }}</p>
+        }
+
+        <div class="d-meta">
+          @if (usuarioEstadisticas()?.direccion) {
+            <span class="d-location">
+              <ion-icon name="location-outline"></ion-icon>
+              {{ usuarioEstadisticas()?.direccion }}
+            </span>
+          }
+        </div>
+
+        <!-- Stats con icono arriba -->
+        <div class="d-stats">
+          <div class="d-stat">
+            <ion-icon name="cube-outline" color="tertiary"></ion-icon>
+            <b>{{ usuarioEstadisticas()?.publicaciones ?? 0 }}</b>
+            <span>Publicaciones</span>
+          </div>
+          <div class="d-stat">
+            <ion-icon name="swap-horizontal-outline" color="primary"></ion-icon>
+            <b>{{ usuarioEstadisticas()?.intercambios ?? 0 }}</b>
+            <span>Intercambios</span>
+          </div>
+          <div class="d-stat">
+            <ion-icon name="star-outline" color="warning"></ion-icon>
+            <b>{{ usuarioEstadisticas()?.raiting ?? 0 }}</b>
+            <span>Valoración</span>
+          </div>
+          <div class="d-stat">
+            <ion-icon name="heart-outline" color="danger"></ion-icon>
+            <b>{{ usuarioEstadisticas()?.favoritos ?? 0 }}</b>
+            <span>Favoritos</span>
+          </div>
+          <div class="d-stat">
+            <ion-icon name="people-outline" color="medium"></ion-icon>
+            <b>{{ usuarioEstadisticas()?.seguidores ?? 0 }}</b>
+            <span>Seguidores</span>
+          </div>
+        </div>
+
+        <!-- Estilos y tallas: pills minimalistas con funcionalidad real -->
+        <div class="d-chips-row">
+
+          <!-- Estilos -->
+          <div class="d-chips-group">
+            <span class="d-chips-lbl">Estilos</span>
+            <div class="d-chips">
+              @for (est of getEstilos(); track est) {
+                <span class="d-pill d-pill--estilo">
+                  {{ est }}
+                  @if (esMiPerfil()) {
+                    <button class="d-pill-x" (click)="eliminarEstilo(est)">
+                      <ion-icon name="close-circle" style="font-size:14px;"></ion-icon>
+                    </button>
+                  }
+                </span>
+              }
+              @if (esMiPerfil()) {
+                <button class="d-pill-add" (click)="agregarEstilo()">
+                  <ion-icon name="add-outline"></ion-icon>
+                </button>
+              }
+            </div>
+          </div>
+
+          <!-- Tallas -->
+          <div class="d-chips-group">
+            <span class="d-chips-lbl">Tallas</span>
+            <div class="d-chips">
+              @if (usuario()?.tCamiseta) {
+                <span class="d-pill d-pill--talla"
+                      [class.d-pill--clickable]="esMiPerfil()"
+                      (click)="esMiPerfil() ? elegirTalla('tCamiseta') : null">
+                  {{ usuario()?.tCamiseta }}
+                </span>
+              }
+              @if (usuario()?.tPantalon) {
+                <span class="d-pill d-pill--talla"
+                      [class.d-pill--clickable]="esMiPerfil()"
+                      (click)="esMiPerfil() ? elegirTalla('tPantalon') : null">
+                  {{ usuario()?.tPantalon }}
+                </span>
+              }
+              @if (usuario()?.tCalzado) {
+                <span class="d-pill d-pill--talla"
+                      [class.d-pill--clickable]="esMiPerfil()"
+                      (click)="esMiPerfil() ? elegirTalla('tCalzado') : null">
+                  {{ usuario()?.tCalzado }}
+                </span>
+              }
+            </div>
+          </div>
+
+        </div>
+
+        @if (esMiPerfil()) {
+          <button class="d-edit-btn" (click)="tabActivo.set('opciones')">Editar perfil</button>
+        } @else {
+          <button class="d-follow-btn">Seguir</button>
+        }
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="d-tabs">
+      <button class="d-tab" [class.active]="tabActivo() === 'activas'" (click)="tabActivo.set('activas')">
+        Publicaciones activas
+      </button>
+      <button class="d-tab" [class.active]="tabActivo() === 'pasadas'" (click)="tabActivo.set('pasadas')">
+        Publicaciones pasadas
+      </button>
+      <button class="d-tab" [class.active]="tabActivo() === 'favoritos'" (click)="tabActivo.set('favoritos')">
+        Favoritos
+      </button>
+    </div>
+
+    <!-- Tab content -->
+    <div class="d-tab-content">
+      @if (tabActivo() === 'activas') {
+        <app-publicaciones-activas [usuario]="usuario" [showAll]="true"/>
+      } @else if (tabActivo() === 'pasadas') {
+        <app-publicaciones-pasadas [usuario]="usuario" [showAll]="true"/>
+      } @else if (tabActivo() === 'favoritos') {
+        <!-- Filtros -->
+        <div class="d-fav-filtros">
+          <button class="d-fav-seg" [class.active-blue]="segmentoFavs === 'intercambios'" (click)="segmentoFavs = 'intercambios'">
+            Intercambios
+          </button>
+          <button class="d-fav-seg" [class.active-pink]="segmentoFavs === 'prestamos'" (click)="segmentoFavs = 'prestamos'">
+            Préstamos
+          </button>
+        </div>
+        <!-- Grid de favoritos -->
+        @if (favsFiltrados.length === 0) {
+          <div class="d-fav-vacio">
+            <ion-icon name="heart-outline"></ion-icon>
+            <p>No hay favoritos en esta sección</p>
+          </div>
+        } @else {
+          <div class="d-fav-list">
+            @for (pro of favsFiltrados; track pro.id) {
+              <app-carta-horizontal-intercambio
+                [producto]="pro"
+                [routerLink]="['/anuncio', pro.id]"/>
+            }
+          </div>
+        }
+      }
+    </div>
+
+  </div>
+
 </ion-content>

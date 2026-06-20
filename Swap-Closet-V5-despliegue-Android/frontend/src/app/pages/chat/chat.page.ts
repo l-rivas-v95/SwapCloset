@@ -6,19 +6,21 @@ import {ChatService} from "../../service/chatService/chat.service";
 import {AuthService} from "../../service/authService/auth.service";
 import {ChatDTO} from "../../modelos/ChatDTO";
 import {interval, Subscription} from "rxjs";
+import {MensajesPage} from "../mensajes/mensajes.page";
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.page.html',
   styleUrls: ['./chat.page.scss'],
   standalone: true,
-  imports: [IonicModule, RouterModule, CartaChatComponent]
+  imports: [IonicModule, RouterModule, CartaChatComponent, MensajesPage]
 })
 export class ChatPage implements OnInit, OnDestroy {
 
   chats = signal<ChatDTO[]>([]);
   busqueda = signal<string>('');
   segmento = signal<string>('todos');
+  chatSeleccionadoId = signal<number | null>(null);
   miUsuarioId!: number;
 
   chatsFiltrados = computed(() => {

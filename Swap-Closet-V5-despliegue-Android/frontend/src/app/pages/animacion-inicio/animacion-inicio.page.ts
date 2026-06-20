@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router, RouterModule} from '@angular/router';
 import {IonicModule} from "@ionic/angular";
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-animacion-inicio',
@@ -15,14 +16,14 @@ export class AnimacionInicioPage implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit() {
-    // Después de 2.5s comienza fade out
-    setTimeout(() => {
-      this.desaparecer = true;
-    }, 2500);
-
-    // Después de 3s navega a home
-    setTimeout(() => {
+    // En navegador: saltar la animación directamente
+    if (!Capacitor.isNativePlatform()) {
       this.router.navigateByUrl('/login');
-    }, 3000);
+      return;
+    }
+
+    // En Android/iOS: animación normal
+    setTimeout(() => { this.desaparecer = true; }, 2500);
+    setTimeout(() => { this.router.navigateByUrl('/login'); }, 3000);
   }
 }

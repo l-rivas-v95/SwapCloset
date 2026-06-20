@@ -1,0 +1,19 @@
+<ion-header class="mobile-header">
+  <ion-toolbar>
+    <ion-title>Ajustes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- Desktop header -->
+  <div class="d-topbar desktop-only">
+    <ion-icon name="settings-outline" class="d-topbar-icon"></ion-icon>
+    <h2 class="d-topbar-title">Ajustes</h2>
+  </div>
+
+  <div class="d-content">
+    <app-opciones-prefil [usuario]="usuario"/>
+  </div>
+
+</ion-content>

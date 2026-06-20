@@ -9,6 +9,7 @@ import {RouterLink} from "@angular/router";
 import {FavoritosService} from "../../../service/favoritosService/favoritos.service";
 import {AuthService} from "../../../service/authService/auth.service";
 import {FavoritoDTO} from "../../../modelos/FavoritoDTO";
+import {BtnContactarComponent} from "../btn-contactar/btn-contactar.component";
 
 @Component({
   selector: 'app-componente-anuncio',
@@ -22,7 +23,8 @@ import {FavoritoDTO} from "../../../modelos/FavoritoDTO";
     NgClass,
     NgIf,
     DatePipe,
-    LowerCasePipe
+    LowerCasePipe,
+    BtnContactarComponent,
   ]
 })
 export class ComponenteAnuncioComponent implements OnInit {
@@ -50,6 +52,13 @@ export class ComponenteAnuncioComponent implements OnInit {
     const el = event.target as HTMLElement;
     const index = Math.round(el.scrollLeft / el.offsetWidth);
     this.indiceActivo.set(index);
+  }
+
+  setImageIndex(i: number) {
+    this.indiceActivo.set(i);
+    // Sincronizar el carrusel en móvil
+    const container = document.querySelector('.swipe-container') as HTMLElement;
+    if (container) container.scrollLeft = i * container.offsetWidth;
   }
 
   private favoritosService = inject(FavoritosService);

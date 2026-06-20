@@ -3,7 +3,7 @@
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
   margin: 10px 5px 0px;
 }
-.btn-ver-mas{
+.btn-ver-mas {
   --background: #f0f0f0;
   --border-radius: 15px;
   border-radius: 15px;
@@ -13,13 +13,25 @@
   height: 70%;
   border: 2px dashed grey;
 }
+ion-card-content { padding-bottom: 5px; }
 
-ion-card-content{
-  padding-bottom:5px;
-}
-
-.contendor-tarjetas{
+/* Mobile grid */
+.pub-grid {
   display: flex;
   flex-direction: row;
   gap: 15px;
+}
+
+/* Desktop grid */
+.pub-grid-dsk {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.sin-pub-dsk {
+  color: #999;
+  font-size: 14px;
+  padding: 20px 0;
+  text-align: center;
 }

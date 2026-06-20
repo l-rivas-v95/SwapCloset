@@ -1,9 +1,10 @@
-.fondo{
+.fondo {
   background-color: #ffffff;
   --background: #ffffff;
   box-shadow: 0 2px 8px rgba(131, 131, 131, 0.4);
 }
-.menu-superior{
+
+.menu-superior {
   height: 13vh;
   display: flex;
   justify-content: space-around;
@@ -11,52 +12,85 @@
   background-color: #f6f7f9;
   border-bottom: 1px solid grey;
 }
-.sub-menu-superior{
-  height: 8vh;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  background-color: #f6f7f9;
-}
 
-.caja-menu-sup{
+.caja-menu-sup {
   display: flex;
   justify-content: space-around;
   align-items: center;
   gap: 2vw;
-
-}
-ion-icon{
-  text-align: center;
-}
-.centro{
-  display: flex;
-  justify-content: center;
-  justify-items: center;
-  align-items: center;
-}
-.izquierda{
-  display: flex;
-  justify-content: left;
-  align-items: center;
-}
-.derecha{
-  display: flex;
-  justify-content: right;
-  align-items: center;
-}
-.altura-subarra{
-  height: 66px;
-}
-.margen{
-  margin-left: 2vw;
-}
-.cajas {
-  background-color: #ffffff;
-  border-radius: 15px;
-  gap: 2vh;
-  margin-top: 2vh;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
+ion-icon { text-align: center; }
+.izquierda { display: flex; justify-content: left;  align-items: center; }
+.derecha   { display: flex; justify-content: right; align-items: center; }
 
+/* Mobile: layout en columna (por defecto) */
+.publicar-layout {
+  display: flex;
+  flex-direction: column;
+}
+
+.col-left,
+.col-right {
+  width: 100%;
+}
+
+/* Desktop-only elements: ocultos en móvil */
+.desktop-topbar {
+  display: none;
+}
+
+/* ── Desktop ≥768px ── */
+@media (min-width: 768px) {
+
+  .mobile-header {
+    display: none !important;
+  }
+
+  /* Topbar con título */
+  .desktop-topbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 32px 16px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .desktop-topbar-icon {
+    font-size: 26px;
+    color: #FF3FBF;
+  }
+
+  .desktop-topbar-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111;
+    margin: 0;
+  }
+
+  /* Layout 2 columnas */
+  .publicar-layout {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0;
+    min-height: calc(100% - 73px);
+  }
+
+  /* Columna izquierda: fotos + tipo (sticky) */
+  .col-left {
+    width: 42%;
+    flex-shrink: 0;
+    border-right: 1px solid #f0f0f0;
+    padding: 24px 28px;
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+  }
+
+  /* Columna derecha: formulario scrollable */
+  .col-right {
+    flex: 1;
+    padding: 24px 32px;
+    overflow-y: auto;
+  }
+}

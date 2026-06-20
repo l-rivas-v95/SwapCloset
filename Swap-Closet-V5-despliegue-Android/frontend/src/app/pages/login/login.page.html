@@ -1,11 +1,25 @@
 <ion-content class="fondo">
   <div class="contenedor-central">
+
+    <!-- DESKTOP: split wrapper -->
+    <div class="d-split-login">
+
     <div class="contenedor-logo">
       <img src="assets/icon/logo-app.png" alt="Logo Swap" class="logo" />
       <p class="subtitulo">Renueva tu estilo, sin gastar de más</p>
+
+      <!-- QR descarga app -->
+      <div class="d-qr-box">
+        <img
+          src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://play.google.com/store/apps/details?id=com.swapcloset&color=ffffff&bgcolor=FF3FBF"
+          alt="QR descarga"
+          class="d-qr-img" />
+        <p class="d-qr-label">Descarga la app</p>
+      </div>
     </div>
 
     <div class="card-login">
+      <div class="d-form-inner">
       <h2 class="titulo">
         {{ modoRegistro ? 'Únete a la comunidad' : '¡Bienvenido de vuelta!' }}
       </h2>
@@ -61,7 +75,7 @@
           <a href="#" class="olvide">¿Olvidaste tu contraseña?</a>
 
           <div class="recordar">
-            <ion-checkbox class="checkbox"></ion-checkbox>
+            <ion-checkbox class="checkbox" [(ngModel)]="recordar"></ion-checkbox>
             <label>Recordar contraseña</label>
           </div>
         </div>
@@ -144,11 +158,14 @@
       <!-- Botón Google -->
       <div class="google-box">
         <p class="o">o</p>
-        <ion-button type="button" expand="block" fill="clear" class="btn-google">
+        <ion-button type="button" expand="block" fill="clear" class="btn-google" disabled>
           <ion-icon name="logo-google" class="google-icon" slot="start" aria-hidden="true"></ion-icon>
           Continuar con Google
         </ion-button>
       </div>
+      </div><!-- /d-form-inner -->
     </div>
+
+    </div><!-- /d-split-login -->
   </div>
 </ion-content>

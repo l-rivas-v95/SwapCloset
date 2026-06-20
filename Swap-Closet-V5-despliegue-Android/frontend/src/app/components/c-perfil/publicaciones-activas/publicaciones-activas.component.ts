@@ -20,6 +20,7 @@ import {ProductoDTO} from "../../../modelos/ProductoDTO";
 export class PublicacionesActivasComponent implements OnInit {
 
   @Input() usuario!: WritableSignal<UsuarioDTO | null>;
+  @Input() showAll = false;
   productos = signal<ProductoDTO[]>([]);
 
   private productoService = inject(ProductoService);

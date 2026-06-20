@@ -1,0 +1,223 @@
+/* La visibilidad del host la controla global.scss */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 20px 0 16px;
+  background: #fff;
+  border-right: 1px solid #f0f0f0;
+}
+
+/* Logo */
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px 28px;
+  text-decoration: none;
+
+  .logo-icon {
+    font-size: 26px;
+    color: #FF3FBF;
+  }
+
+  .logo-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: #FF3FBF;
+    letter-spacing: -0.3px;
+  }
+}
+
+/* Nav links */
+.nav-links {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 16px;
+  text-decoration: none;
+  color: #555;
+  font-size: 14px;
+  border-radius: 12px;
+  margin: 2px 8px;
+  transition: background 0.15s;
+
+  ion-icon {
+    font-size: 22px;
+    color: #aaa;
+    flex-shrink: 0;
+    transition: color 0.15s;
+  }
+
+  &.active {
+    font-weight: 600;
+    color: #111;
+
+    ion-icon {
+      color: #FF3FBF;
+    }
+  }
+
+  &:hover:not(.active) {
+    background: #fafafa;
+  }
+}
+
+/* Badge mensajes no leídos */
+.badge-notif {
+  margin-left: auto;
+  background: #e53935;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 10px;
+  line-height: 18px;
+}
+
+/* ── Filtros Explorar ── */
+.filtros-sidebar {
+  flex: 1;
+  overflow-y: auto;
+  border-top: 1px solid #f0f0f0;
+  padding: 8px 0;
+}
+
+.filtros-sidebar-title {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #aaa;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 8px 16px 4px;
+}
+
+.fs-section {
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.fs-hdr {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  font-family: inherit;
+  gap: 6px;
+
+  span:first-child { flex: 1; text-align: left; }
+  ion-icon { font-size: 13px; color: #bbb; }
+}
+
+.fs-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #FF3FBF;
+  flex-shrink: 0;
+}
+
+.fs-body {
+  padding: 4px 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Pills de tipo / estilo */
+.fs-pill {
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  background: transparent;
+  color: #777;
+  font-size: 12px;
+  padding: 5px 10px;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+
+  &--todos        { background: #f0f0f0; color: #333;    border-color: #bbb;    font-weight: 500; }
+  &--intercambio  { background: #FFE2E3; color: #C0246E; border-color: #FF3FBF; font-weight: 500; }
+  &--prestamo     { background: #C6DFFF; color: #1A3FCC; border-color: #3F6BFF; font-weight: 500; }
+  &--active       { background: #FFE2E3; color: #C0246E; border-color: #FF3FBF; font-weight: 500; }
+}
+
+/* Chips de categoría */
+.fs-cat-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  flex-direction: row;
+}
+
+.fs-cat-chip {
+  border: none;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 10px;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+}
+
+/* Grid de tallas */
+.fs-talla-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  flex-direction: unset;
+}
+
+.fs-talla-btn {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: transparent;
+  color: #555;
+  font-size: 12px;
+  padding: 5px 4px;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: center;
+
+  &--active {
+    background: #FFE2E3;
+    color: #C0246E;
+    border-color: #FF3FBF;
+    font-weight: 600;
+  }
+}
+
+/* Botón quitar filtro */
+.fs-clear {
+  display: block;
+  width: calc(100% - 24px);
+  margin: 0 12px 8px;
+  padding: 5px;
+  background: none;
+  border: 1px solid #FF3FBF;
+  border-radius: 20px;
+  color: #FF3FBF;
+  font-size: 11px;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: center;
+}
+
+/* Ajustes al fondo */
+.nav-bottom {
+  border-top: 1px solid #f0f0f0;
+  padding-top: 8px;
+}

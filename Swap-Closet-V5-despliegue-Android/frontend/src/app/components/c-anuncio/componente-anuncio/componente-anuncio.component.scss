@@ -241,6 +241,209 @@
   color: #FF3FBF;
 }
 
+/* Thumbnails: ocultos en móvil */
+.thumbnails-strip {
+  display: none;
+}
+
+/* Botón Contactar desktop: oculto en móvil */
+.desktop-contactar {
+  display: none;
+}
+
+/* ── Layout desktop: 2 columnas ── */
+@media (min-width: 768px) {
+  .producto-card {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 40px;
+    padding: 24px 32px 32px;
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+    margin-bottom: 0;
+  }
+
+  /* Columna izquierda: imagen + miniaturas (sticky) */
+  .imagen-detalle-wrapper {
+    width: 44%;
+    flex-shrink: 0;
+    position: sticky;
+    top: 16px;
+    align-self: flex-start;
+  }
+
+  .imagen-container,
+  .detalle-imagen-container {
+    height: 420px !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+  }
+
+  /* Tira de miniaturas */
+  .thumbnails-strip {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  .thumb-btn {
+    flex-shrink: 0;
+    width: 72px;
+    height: 72px;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 0;
+    background: #f2f2f2;
+    cursor: pointer;
+    transition: border-color 0.15s;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    &--active {
+      border-color: #FF3FBF;
+    }
+  }
+
+  /* Ocultar dots del carrusel (se reemplazan por thumbnails) */
+  .dots-container {
+    display: none;
+  }
+
+  /* ── Columna derecha ── */
+  .info-container {
+    flex: 1;
+    margin-top: 0;
+    min-width: 0;
+    padding-top: 4px;
+  }
+
+  /* Título */
+  .producto-titulo {
+    font-size: 26px !important;
+    font-weight: 800 !important;
+    color: #111 !important;
+    margin: 0 0 6px !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Descripción */
+  .producto-descripcion {
+    font-size: 14px !important;
+    color: #666 !important;
+    line-height: 1.6 !important;
+    margin: 0 0 14px !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Chips de estilo */
+  .chip-group {
+    margin: 0 0 16px !important;
+    padding: 0 !important;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .chip-estilo {
+    font-size: 13px;
+    padding: 5px 14px;
+    margin: 0;
+    box-shadow: none;
+    border: 1px solid rgba(0,0,0,0.08);
+  }
+
+  /* Grid de detalles */
+  .detalle-item {
+    height: auto !important;
+    padding: 10px 14px !important;
+    border-radius: 10px !important;
+    background: #f6f6f6 !important;
+    gap: 2px !important;
+    margin: 0 !important;
+  }
+
+  .detalle-label {
+    font-size: 10px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.6px !important;
+    color: #999 !important;
+    margin-top: 0 !important;
+    margin-left: 0 !important;
+    font-weight: 600 !important;
+  }
+
+  .detalle-valor {
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    color: #222 !important;
+    margin-left: 0 !important;
+  }
+
+  /* Rows de detalles */
+  ion-row {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  ion-col {
+    padding: 4px !important;
+  }
+
+  /* Sección fecha/ubicación */
+  .fecha-section {
+    margin: 4px 0 !important;
+    height: auto !important;
+    padding: 4px 4px !important;
+  }
+
+  .fecha-texto {
+    font-size: 14px;
+    color: #555;
+    margin: 0 4px 0 0;
+  }
+
+  .fecha-date {
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .icon {
+    font-size: 18px !important;
+    margin-right: 8px !important;
+    margin-left: 4px !important;
+    color: #aaa !important;
+  }
+
+  /* Tarjeta de usuario */
+  .usuario-card-container {
+    margin: 16px 0 0 !important;
+    padding: 14px !important;
+    border-radius: 14px !important;
+  }
+
+  .usuario-card-nombre {
+    font-size: 1rem !important;
+  }
+
+  /* Botón Contactar: visible en desktop */
+  .desktop-contactar {
+    display: block;
+    margin-top: 16px;
+  }
+}
+
 .centro{
   display: flex;
   justify-content: center;

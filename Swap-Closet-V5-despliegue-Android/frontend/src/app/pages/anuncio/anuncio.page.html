@@ -1,4 +1,5 @@
-<ion-header class="fondo bordes-redondeados">
+<!-- Header móvil -->
+<ion-header class="fondo bordes-redondeados mobile-header">
   <ion-toolbar class="menu-superior fondo">
     <ion-grid>
       <ion-row class="caja-menu-sup">
@@ -32,6 +33,21 @@
 
 <ion-content>
 
+  <!-- Topbar desktop: atrás + título + opciones -->
+  <div class="desktop-topbar">
+    <button class="desktop-back-btn" (click)="volver()">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </button>
+    <h2 class="desktop-topbar-title">
+      {{ modoEdicion() ? 'Editar anuncio' : 'Detalle del anuncio' }}
+    </h2>
+    @if (usuario()?.id === idUsuarioLogueado && !modoEdicion()) {
+      <button class="desktop-options-btn" (click)="mostrarOpciones()">
+        <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+      </button>
+    }
+  </div>
+
   @if (!modoEdicion()) {
     <app-componente-anuncio
       [producto]="producto()"
@@ -50,7 +66,6 @@
       (cancelar)="onCancelar()">
     </app-formulario-anuncio>
   }
-
 
 </ion-content>
 
@@ -77,8 +92,9 @@
   </div>
 }
 
+<!-- Footer móvil: botón Contactar (en desktop el botón está dentro del componente) -->
 @if (!modoEdicion() && usuario()?.id !== idUsuarioLogueado) {
-  <ion-footer>
+  <ion-footer class="mobile-footer">
     <app-btn-contactar
       [productoId]="producto()?.id!"
       [propietarioId]="usuario()?.id!">

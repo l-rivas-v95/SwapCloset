@@ -1,9 +1,19 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <!-- Layout wrapper: flex en desktop, transparente (display:contents) en móvil -->
+  <div class="app-layout">
+    @if (mostrarShell()) {
+      <app-desktop-sidebar></app-desktop-sidebar>
+    }
+    <div class="page-area">
+      <ion-router-outlet></ion-router-outlet>
+    </div>
+  </div>
 
-  <ion-footer>
-    <app-menu-footer></app-menu-footer>
-  </ion-footer>
+  @if (mostrarShell()) {
+    <ion-footer>
+      <app-menu-footer></app-menu-footer>
+    </ion-footer>
+  }
 
   @if (overlay.overlayConfig(); as config) {
     <div class="modal-overlay" (click)="overlay.close(null)">
