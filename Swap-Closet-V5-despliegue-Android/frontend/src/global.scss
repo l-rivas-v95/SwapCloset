@@ -10,7 +10,7 @@
 @import "@ionic/angular/css/flex-utils.css";
 @import "@ionic/angular/css/display.css";
 
-@import "@ionic/angular/css/palettes/dark.system.css";
+/* dark.system.css eliminado: la app usa colores fijos y no tiene soporte de dark mode */
 
 ion-content {
   --padding-bottom: calc(90px + env(safe-area-inset-bottom));
@@ -288,6 +288,7 @@ app-desktop-sidebar {
     position: relative;
     height: 100%;
     overflow: hidden;
+    background: #ffffff;
   }
 
   /* Quitar padding inferior del footer ya oculto */
@@ -300,8 +301,4 @@ app-desktop-sidebar {
     display: none !important;
   }
 
-  /* Modal overlay dentro del área de contenido */
-  .modal-overlay {
-    left: 220px;
-  }
-}
+  /* Modal overlay dentro del área de
