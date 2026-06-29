@@ -42,6 +42,17 @@
 .chip-azul { background-color: #C6DFFF; color: #5056FF; }
 .chip-rosa { background-color: #FFE2E3; color: #FF3FBF; }
 
+/* Base chip styles */
+.chip-overlay, .chip-below {
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
 /* ── Desktop ≥768px ── */
 @media (min-width: 768px) {
   .carta-pub {

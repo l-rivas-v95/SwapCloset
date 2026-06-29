@@ -50,7 +50,7 @@ public class ProductoDTO {
 
     private List<ImagenProductoDTO> imagenes;
     //private List<FavoritoDTO> favoritos;
-    //private List<ChatDTO> chatsProducto1;
-    //private List<ChatDTO> chatsProducto2;
+    private List<ChatDTO> chatsProducto1;
+    private List<ChatDTO> chatsProducto2;
 
 }

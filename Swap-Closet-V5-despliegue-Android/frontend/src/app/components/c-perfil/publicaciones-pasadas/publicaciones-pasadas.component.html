@@ -2,27 +2,24 @@
 @if (!showAll) {
   <ion-card class="info-card">
     <h2 class="section-title">Publicaciones pasadas</h2>
-    <ion-card-content>
+    <div class="card-body" style="padding: 0 16px 12px;">
       @if (productos().length === 0) {
         <p class="sin-publicaciones">Sin publicaciones pasadas</p>
       } @else {
         <div class="pub-grid">
           @for(pro of productos().slice(0, 2); track pro.id){
-            <app-carta-publicaciones-activas-intercambio
+            <app-carta-publicaciones-pasadas-intercambio
               [producto]="pro"
               [routerLink]="['/anuncio', pro.id]"/>
           }
           @if (productos().length > 2) {
-            <ion-button
-              fill="clear"
-              class="btn-ver-mas"
-              [routerLink]="['/publicaciones-pasadas', usuario()?.id]">
-              <p class="margen">Ver más</p>
-            </ion-button>
+            <button class="btn-ver-mas" [routerLink]="['/publicaciones-pasadas', usuario()?.id]">
+              Ver más
+            </button>
           }
         </div>
       }
-    </ion-card-content>
+    </div>
   </ion-card>
 }
 
@@ -33,7 +30,7 @@
   } @else {
     <div class="pub-grid-dsk">
       @for(pro of productos(); track pro.id){
-        <app-carta-publicaciones-activas-intercambio
+        <app-carta-publicaciones-pasadas-intercambio
           [producto]="pro"
           [routerLink]="['/anuncio', pro.id]"/>
       }

@@ -172,6 +172,14 @@ ion-input::part(native) {
   margin-right: 8px;
 }
 
+/* Centrado en móvil */
+.d-split-login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
 /* ══════════════════ DESKTOP ≥768px ══════════════════ */
 @media (min-width: 768px) {
 

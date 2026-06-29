@@ -1,79 +1,117 @@
-.card{
+.card {
   border-radius: 15px;
-  margin:0px;
+  margin: 0;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+  overflow: hidden;
+  cursor: pointer;
 }
-.col-avatar{
+
+.card-row {
   display: flex;
-  justify-content: center;
+  align-items: center;
+  padding: 10px 12px;
+  gap: 10px;
+}
+
+.col-avatar {
+  flex-shrink: 0;
+  display: flex;
   align-items: center;
 }
+
 .avatar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 50%;
-  margin-top: 0rem;
-  margin-right: 0rem;
-  margin-left: 1rem;
+  object-fit: cover;
 }
 
-.texto{
-  color:black;
-  font-size:1.2rem;
-}
-
-.col-boton{
+.col-texto {
+  flex: 1;
+  min-width: 0;
   display: flex;
-  justify-content: center;
-  align-items: center;
-
-}
-.boton {
-  width: 5.5rem;
-  height: 2.5rem; /* aumenta la altura */
-  margin-right: 1rem;
-  --background: linear-gradient(360deg, #f45097, #b0d2ff);
-  --color: #fff;
-  font-size: 0.9rem; /* ajusta tamaño de texto */
-  --border-radius: 10px;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.boton-seguido {
-  width: 6rem;
-  height: 2.5rem;
-  margin-right: 1rem;
-  --background: #F0F0F0;
-  --color: #2c2c2c;
-  font-size: 0.9rem;
-
-}
-.izquierda{
-  display:flex;
-  justify-content: left;
-  align-items: center;
-}
-.sin-margen{
+.texto {
+  color: black;
+  font-size: 1rem;
+  font-weight: 600;
   margin: 0;
-  padding: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.margen-top{
-  margin-top:1vh;
-  margin-left: 1vh;
+
+.meta-row {
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #666;
 }
-.margen-left{
-  margin-left: 1vh;
+
+.loc-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
 }
-.estrella-color{
+
+.estrella-color {
   color: #D7BF3B;
 }
 
-.margen-lateral{
-  margin-left: 3vw;
-  margin-right: 3vw;
+.margen-left {
+  margin-left: 4px;
 }
 
-.margen-icono{
-  margin-left: 4vw;
+.margen-icono {
+  margin-left: 10px;
+}
+
+.col-boton {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.boton {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 2.2rem;
+  padding: 0 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.boton-rosa {
+  background: linear-gradient(360deg, #f45097, #b0d2ff);
+  color: #fff;
+}
+
+.boton-seguido {
+  background: #F0F0F0;
+  color: #2c2c2c;
+}
+
+.boton:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.margen-lateral {
+  margin: 0 3vw;
+}
+
+@media (min-width: 768px) {
+  .margen-lateral {
+    margin: 0;
+  }
 }

@@ -69,6 +69,47 @@ ion-icon{
   color: #303030;
 }
 
+.search-wrapper {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  padding: 4px 8px 8px;
+  box-sizing: border-box;
+}
+
+.search-box {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  background: #f2f2f2;
+  border-radius: 30px;
+  padding: 8px 14px;
+  gap: 8px;
+  min-width: 0;
+}
+
+.search-icon {
+  font-size: 18px;
+  color: #888;
+  flex-shrink: 0;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 15px;
+  color: #333;
+  &::placeholder { color: #aaa; }
+}
+
+.cards-list {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 12px;
+}
+
 .botones-seleccion {
   --background: #ffffff;
   border-radius: 30px;
@@ -84,13 +125,14 @@ ion-icon{
 }
 
 ::ng-deep .botones-seleccion ion-segment-button[value="prestamos"] {
+  --background-checked: #C6DFFF;
+  --color-checked: #3F42FF;
+}
+
+::ng-deep .botones-seleccion ion-segment-button[value="intercambios"] {
   --background-checked: #FFE2E3;
   --color-checked: #FF3FBF;
 }
 
-::ng-deep .botones-seleccion ion-segment-button[value="intercambios"] {
-  --background-checked: #C6DFFF;
-  --color-checked: #3F42FF;
-}
 
 

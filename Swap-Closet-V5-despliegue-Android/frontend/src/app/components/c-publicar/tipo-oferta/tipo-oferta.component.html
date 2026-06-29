@@ -3,40 +3,34 @@
     <h2 class="section-title">Tipo de oferta</h2>
 
     <ion-row>
-      <ion-col>
-        <div class="botones-seleccion">
-          <button class="seg-btn fuente"
-            [style.background]="tipoOferta === 'intercambio' ? '#ffd6e0' : 'transparent'"
-            [style.color]="tipoOferta === 'intercambio' ? '#ff3f84' : '#7a7a7a'"
-            (click)="seleccionarTipo('intercambio')"><b>Intercambio</b></button>
-          <button class="seg-btn fuente"
-            [style.background]="tipoOferta === 'prestamo' ? '#d6e8ff' : 'transparent'"
-            [style.color]="tipoOferta === 'prestamo' ? '#3f6bff' : '#7a7a7a'"
-            (click)="seleccionarTipo('prestamo')"><b>Prestamo</b></button>
-        </div>
-      </ion-col>
+      <div class="botones-seleccion">
+        <button class="seg-btn"
+          [style.background]="tipoOferta === 'intercambio' ? '#ffd6e0' : 'transparent'"
+          [style.color]="tipoOferta === 'intercambio' ? '#ff3f84' : '#7a7a7a'"
+          (click)="seleccionarTipo('intercambio')"><b>Intercambio</b></button>
+        <button class="seg-btn"
+          [style.background]="tipoOferta === 'prestamo' ? '#d6e8ff' : 'transparent'"
+          [style.color]="tipoOferta === 'prestamo' ? '#3f6bff' : '#7a7a7a'"
+          (click)="seleccionarTipo('prestamo')"><b>Prestamo</b></button>
+      </div>
     </ion-row>
 
-    <ion-row class="centro">
-      <ion-col>
-        <ion-button (click)="abrirFechaModal()" fill="clear" class="btn-fecha">
+    <ion-row>
+      <div class="fecha-row">
+        <button (click)="abrirFechaModal()" class="btn-fecha">
           <ion-icon size="large" name="calendar-number"></ion-icon>
-          <p class="margen">{{ fechaDevolucion ? (fechaDevolucion | date:'dd/MM/yy') : 'Devolucion' }}</p>
-        </ion-button>
-      </ion-col>
+          <span class="margen">{{ fechaDevolucion ? (fechaDevolucion | date:'dd/MM/yy') : 'Devolucion' }}</span>
+        </button>
 
-      <ion-col *ngIf="tipoOferta === 'prestamo'" class="centro precio-box">
-        <ion-button class="btn-precio">
-          <ion-input
+        <button *ngIf="tipoOferta === 'prestamo'" class="btn-precio">
+          <input
             class="interior-precio"
             placeholder="euros/dia"
-            fill="outline"
             type="number"
             [(ngModel)]="precio"
-            (ionInput)="onPrecioChange($event)">
-          </ion-input>
-        </ion-button>
-      </ion-col>
+            (input)="onPrecioChange($event)">
+        </button>
+      </div>
     </ion-row>
 
   </ion-grid>

@@ -10,7 +10,7 @@ import {ProductoPickerModalComponent} from "../../components/producto-picker-mod
 import {FormsModule} from "@angular/forms";
 import {CommonModule, DatePipe} from "@angular/common";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
-import {interval, Subscription} from "rxjs";
+import {interval, Subscription, switchMap} from "rxjs";
 
 import {ChatService} from "../../service/chatService/chat.service";
 import {MensajeService} from "../../service/mensajeService/mensaje.service";
@@ -100,8 +100,10 @@ export class MensajesPage implements OnInit, OnChanges, OnDestroy {
 
   private iniciarChat() {
     this.cargarChat(this.chatId);
-    this.pollSub = interval(5000).subscribe(() => {
-      this.mensajeService.getMensajesByChat(this.chatId).subscribe(msgs => this.mensajes.set(msgs));
+    this.pollSub = interval(5000).pipe(
+      switchMap(() => this.mensajeService.getMensajesByChat(this.chatId))
+    ).subscribe(msgs => {
+      this.mensajes.set(msgs);
       this.chatService.getChat(this.chatId).subscribe(c => this.chat.set(c));
       this.mensajeService.marcarLeidos(this.chatId, this.miUsuarioId).subscribe();
     });
@@ -193,7 +195,9 @@ export class MensajesPage implements OnInit, OnChanges, OnDestroy {
   }
 
   proponerPrenda() {
-    const otroId = this.chat()?.usuario1Id;
+    const chat = this.chat();
+    if (!chat) return;
+    const otroId = chat.usuario1Id === this.miUsuarioId ? chat.usuario2Id : chat.usuario1Id;
     if (!otroId) return;
     this.overlayService.open(ProductoPickerModalComponent, { usuarioId: otroId }, (data) => {
       if (data?.id) this.enviarPropuesta('PRODUCTO', String(data.id));
@@ -295,7 +299,9 @@ export class MensajesPage implements OnInit, OnChanges, OnDestroy {
         this.overlayService.open(LocalModalComponentComponent, {}, (data) => { if (data) guardar(data); });
         break;
       case 'PRODUCTO': {
-        const otroId = this.chat()?.usuario1Id;
+        const chat = this.chat();
+        if (!chat) return;
+        const otroId = chat.usuario1Id === this.miUsuarioId ? chat.usuario2Id : chat.usuario1Id;
         if (!otroId) return;
         this.overlayService.open(ProductoPickerModalComponent, { usuarioId: otroId }, (data) => {
           if (data?.id) guardar(String(data.id));

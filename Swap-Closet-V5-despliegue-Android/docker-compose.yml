@@ -1,0 +1,56 @@
+services:
+
+  # ── Base de datos ────────────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    container_name: swapcloset-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB:       ${POSTGRES_DB:-swap_closet}
+      POSTGRES_USER:     ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Backend Spring Boot ──────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: swapcloset-backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL:      jdbc:postgresql://db:5432/${POSTGRES_DB:-swap_closet}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-postgres}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      CLOUDINARY_CLOUD_NAME:      ${CLOUDINARY_CLOUD_NAME}
+      CLOUDINARY_API_KEY:         ${CLOUDINARY_API_KEY}
+      CLOUDINARY_API_SECRET:      ${CLOUDINARY_API_SECRET}
+      PORT:                       8080
+    expose:
+      - "8080"
+
+  # ── Frontend Angular/Ionic + Nginx ───────────────────────────
+  frontend:
+    image: luisrivi95/swapcloset-frontend:latest
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: swapcloset-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+      - "443:443"
+
+volumes:
+  postgres_data:

@@ -1,49 +1,29 @@
-<ion-card class="card margen-lateral" (click)="irAPerfil()">
-  <ion-row class="sin-margen">
+<div class="card margen-lateral" (click)="irAPerfil()">
+  <div class="card-row">
 
-    <ion-col class="col-avatar" size="3">
+    <div class="col-avatar">
       <img [src]="usuario?.urlImg || 'assets/icon/card-media.png'" class="avatar" alt="Foto user"/>
-    </ion-col> <ion-col class="sin-margen">
+    </div>
 
-    <ion-row class="col-texto sin-margen">
-      <p class="texto sin-margen margen-top">{{usuario?.nombre}} {{usuario?.apellidos}}</p>
-    </ion-row>
+    <div class="col-texto">
+      <p class="texto">{{usuario?.nombre}} {{usuario?.apellidos}}</p>
+      <div class="meta-row">
+        <ion-icon class="estrella-color" name="star"></ion-icon>
+        <span class="margen-left">{{usuario?.raiting ?? 0}}</span>
+        <ion-icon class="margen-icono" name="location-outline"></ion-icon>
+        <span class="margen-left loc-text">{{usuario?.direccion}}</span>
+      </div>
+    </div>
 
-    <ion-row class="sin-margen">
-
-      <ion-col size="3" class="izquierda sin-margen">
-        <ion-icon class="margen-left estrella-color" name="star"></ion-icon>
-        <p class="margen-left">{{usuario?.raiting ?? 0}}</p>
-      </ion-col>
-
-      <ion-col class="izquierda sin-margen">
-        <ion-icon class="margen-icono" size="small" name="location-outline"></ion-icon>
-        <p class="margen-left">{{usuario?.direccion}}</p>
-      </ion-col>
-
-    </ion-row>
-
-  </ion-col>
-
-
-    <ion-col class="col-boton sin-margen" size="3">
-      <ion-button
-        fill="clear"
-        class="boton"
-
-        [ngClass]="seguido ? 'boton-seguido' : 'boton-rosa'"
-
+    <div class="col-boton">
+      <button
+        [class]="seguido ? 'boton boton-seguido' : 'boton boton-rosa'"
         (click)="$event.stopPropagation(); toggleSeguir($event)"
-
         [disabled]="isOwnProfile || !usuario?.id">
-
-        <ion-icon slot="end" [name]="seguido ? 'person-remove-outline' : 'person-add-outline'"/>
-
+        <ion-icon [name]="seguido ? 'person-remove-outline' : 'person-add-outline'"></ion-icon>
         {{ seguido ? 'Seguido' : 'Seguir' }}
-      </ion-button>
-    </ion-col>
+      </button>
+    </div>
 
-
-  </ion-row>
-
-</ion-card>
+  </div>
+</div>

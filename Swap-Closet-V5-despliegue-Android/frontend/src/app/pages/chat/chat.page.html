@@ -3,12 +3,12 @@
   <ion-toolbar class="menu-superior fondo">
     <ion-grid>
       <ion-row class="caja-menu-sup">
-        <ion-col>
+        <div style="flex:1">
           <h1 class="izquierda"><b>Mensajes</b></h1>
-        </ion-col>
-        <ion-col class="derecha">
+        </div>
+        <div class="derecha" style="flex-shrink:0">
           <ion-icon style="font-size: 28px;" name="chatbubble-outline"></ion-icon>
-        </ion-col>
+        </div>
       </ion-row>
     </ion-grid>
   </ion-toolbar>
@@ -16,31 +16,29 @@
   <ion-toolbar class="fondo">
     <ion-grid>
       <ion-row>
-        <ion-col>
-          <div class="botones-seleccion">
-            <button class="seg-btn"
-              [style.background]="segmento() === 'todos' ? '#ffd6e0' : 'transparent'"
-              [style.color]="segmento() === 'todos' ? '#ff3f84' : '#7a7a7a'"
-              (click)="segmento.set('todos')">Todos</button>
-            <button class="seg-btn"
-              [style.background]="segmento() === 'Activos' ? '#ffd6e0' : 'transparent'"
-              [style.color]="segmento() === 'Activos' ? '#ff3f84' : '#7a7a7a'"
-              (click)="segmento.set('Activos')">Activos</button>
-            <button class="seg-btn"
-              [style.background]="segmento() === 'Completados' ? '#ffd6e0' : 'transparent'"
-              [style.color]="segmento() === 'Completados' ? '#ff3f84' : '#7a7a7a'"
-              (click)="segmento.set('Completados')">Listos</button>
-          </div>
-        </ion-col>
+        <div class="botones-seleccion">
+          <button class="seg-btn"
+            [style.background]="segmento() === 'todos' ? '#ffd6e0' : 'transparent'"
+            [style.color]="segmento() === 'todos' ? '#ff3f84' : '#7a7a7a'"
+            (click)="segmento.set('todos')">Todos</button>
+          <button class="seg-btn"
+            [style.background]="segmento() === 'Activos' ? '#ffd6e0' : 'transparent'"
+            [style.color]="segmento() === 'Activos' ? '#ff3f84' : '#7a7a7a'"
+            (click)="segmento.set('Activos')">Activos</button>
+          <button class="seg-btn"
+            [style.background]="segmento() === 'Completados' ? '#ffd6e0' : 'transparent'"
+            [style.color]="segmento() === 'Completados' ? '#ff3f84' : '#7a7a7a'"
+            (click)="segmento.set('Completados')">Listos</button>
+        </div>
       </ion-row>
-      <ion-row class="centro">
-        <ion-col>
+      <ion-row>
+        <div class="search-wrapper">
           <div class="search-box">
             <ion-icon name="search-outline" class="search-icon"></ion-icon>
             <input class="search-input" type="search" placeholder="Buscar mensaje"
               (input)="busqueda.set($any($event.target).value)">
           </div>
-        </ion-col>
+        </div>
       </ion-row>
     </ion-grid>
   </ion-toolbar>

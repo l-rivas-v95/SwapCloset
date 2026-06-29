@@ -1,32 +1,30 @@
 <!-- Información básica -->
   <ion-card class="info-card">
-    
-      <h2 class="section-title">Información básica</h2>
-    
+    <h2 class="section-title">Información básica</h2>
 
-    <ion-card-content>
+    <div class="card-body" style="padding: 0 16px 16px;">
+
       <div class="form-group">
-        <ion-label>Título *</ion-label>
-        <ion-input
+        <label class="native-label">Título *</label>
+        <input
           type="text"
           placeholder="Introduce un título"
           [(ngModel)]="titulo"
           (ngModelChange)="onTituloChange($event)"
           required
-          class="input-text"
-        ></ion-input>
-
+          class="native-input"
+        >
       </div>
 
       <div class="form-group">
-        <ion-label>Marca</ion-label>
-        <ion-input
+        <label class="native-label">Marca</label>
+        <input
           type="text"
           placeholder="Marca del producto"
           [(ngModel)]="marca"
           (ngModelChange)="onMarcaChange($event)"
-          class="input-text"
-        ></ion-input>
+          class="native-input"
+        >
       </div>
 
       <div class="form-group">
@@ -39,5 +37,6 @@
           class="native-textarea"
         ></textarea>
       </div>
-    </ion-card-content>
+
+    </div>
   </ion-card>

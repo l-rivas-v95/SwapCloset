@@ -36,7 +36,7 @@ export class HomePage implements OnInit, ViewWillEnter {
     this.productos().filter(p => this.filtros.matchProducto(p))
   );
 
-  ngOnInit() { this.cargarProductos(); }
+  ngOnInit() { }
   ionViewWillEnter() { this.cargarProductos(); }
 
   cargarProductos() {

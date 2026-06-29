@@ -3,14 +3,13 @@
   <ion-toolbar class="menu-superior fondo">
     <ion-grid>
       <ion-row class="caja-menu-sup">
-        <ion-col>
+        <div style="flex:1">
           <h1 class="izquierda"><b>{{ esMiPerfil() ? 'Mi Perfil' : 'Perfil' }}</b></h1>
-        </ion-col>
+        </div>
         @if (esMiPerfil()) {
-          <ion-col class="derecha">
-            <ion-icon style="font-size: 28px;" name="settings-outline"></ion-icon>
-            <ion-button fill="clear" routerLink="/test-modal" style="font-size:11px;">🧪 Test</ion-button>
-          </ion-col>
+          <div class="derecha" style="flex-shrink:0">
+            <ion-icon style="font-size: 28px;" name="person-circle-outline"></ion-icon>
+          </div>
         }
       </ion-row>
     </ion-grid>
@@ -24,7 +23,8 @@
     <app-cabecera-perfil
       [usuario]="usuarioEstadisticas"
       [esMiPerfil]="esMiPerfil()"
-      (usuarioActualizado)="usuario.set($event)">
+      (usuarioActualizado)="usuario.set($event)"
+>
     </app-cabecera-perfil>
 
     <app-estilos [usuario]="usuario" [esMiPerfil]="esMiPerfil()"/>
@@ -49,9 +49,6 @@
     <div class="d-topbar">
       <ion-icon name="person-circle-outline" class="d-topbar-icon"></ion-icon>
       <h2 class="d-topbar-title">{{ esMiPerfil() ? 'Mi Perfil' : 'Perfil' }}</h2>
-      @if (esMiPerfil()) {
-        <ion-icon name="settings-outline" class="d-topbar-settings"></ion-icon>
-      }
     </div>
 
     <!-- Header: avatar izq + info dcha -->
@@ -190,6 +187,9 @@
       <button class="d-tab" [class.active]="tabActivo() === 'favoritos'" (click)="tabActivo.set('favoritos')">
         Favoritos
       </button>
+      <button class="d-tab" [class.active]="tabActivo() === 'seguidores'" (click)="tabActivo.set('seguidores')">
+        Seguidores
+      </button>
     </div>
 
     <!-- Tab content -->
@@ -198,6 +198,19 @@
         <app-publicaciones-activas [usuario]="usuario" [showAll]="true"/>
       } @else if (tabActivo() === 'pasadas') {
         <app-publicaciones-pasadas [usuario]="usuario" [showAll]="true"/>
+      } @else if (tabActivo() === 'seguidores') {
+        <div class="d-seg-tabs">
+          <button class="d-seg-pill" [class.active-pink]="segmentoSeg === 'seguidores'" (click)="segmentoSeg = 'seguidores'">Seguidores</button>
+          <button class="d-seg-pill" [class.active-blue]="segmentoSeg === 'siguiendo'" (click)="segmentoSeg = 'siguiendo'">Siguiendo</button>
+        </div>
+        <div class="d-seg-grid">
+          @for (u of (segmentoSeg === 'seguidores' ? seguidores() : siguiendo()); track u.id) {
+            <app-tarjeta-seguidor [usuario]="u"></app-tarjeta-seguidor>
+          }
+          @if ((segmentoSeg === 'seguidores' ? seguidores() : siguiendo()).length === 0) {
+            <p class="d-seg-vacio">Sin {{ segmentoSeg }}</p>
+          }
+        </div>
       } @else if (tabActivo() === 'favoritos') {
         <!-- Filtros -->
         <div class="d-fav-filtros">

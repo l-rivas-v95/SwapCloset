@@ -5,8 +5,11 @@
 
 .info-card {
   border-radius: 16px;
+  margin: 10px 16px 0;
+}
 
-  margin: 10px 5px 0px;
+.card-body {
+  padding: 0 16px 16px;
 }
 
 ion-card-title {;
@@ -68,6 +71,28 @@ ion-textarea {
   color: #333;
   margin-bottom: 6px;
   font-size: 14px;
+}
+
+.native-input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background: #f8f8f8;
+  padding: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #333;
+  outline: none;
+  -webkit-appearance: none;
+
+  &:focus {
+    border-color: #007aff;
+    background: #fff;
+  }
+
+  &::placeholder { color: #aaa; }
 }
 
 .native-textarea {

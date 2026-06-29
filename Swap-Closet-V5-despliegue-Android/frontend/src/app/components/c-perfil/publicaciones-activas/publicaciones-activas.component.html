@@ -2,7 +2,7 @@
 @if (!showAll) {
   <ion-card class="info-card">
     <h2 class="section-title">Publicaciones activas</h2>
-    <ion-card-content>
+    <div class="card-body" style="padding: 0 16px 12px;">
       @if (productos().length === 0) {
         <p class="sin-publicaciones">Sin publicaciones activas</p>
       } @else {
@@ -13,16 +13,13 @@
               [routerLink]="['/anuncio', pro.id]"/>
           }
           @if (productos().length > 2) {
-            <ion-button
-              fill="clear"
-              class="btn-ver-mas"
-              [routerLink]="['/publicaciones-activas', usuario()?.id]">
-              <p class="margen">Ver más</p>
-            </ion-button>
+            <button class="btn-ver-mas" [routerLink]="['/publicaciones-activas', usuario()?.id]">
+              Ver más
+            </button>
           }
         </div>
       }
-    </ion-card-content>
+    </div>
   </ion-card>
 }
 

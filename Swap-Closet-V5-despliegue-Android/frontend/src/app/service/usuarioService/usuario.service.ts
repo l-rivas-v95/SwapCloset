@@ -31,7 +31,7 @@ export class UsuarioService {
   }
 
   verificarEmail(email: string): Observable<boolean> {
-    return this.http.get<boolean>(`${this.apiUrl}/exists/email/${email}`);
+    return this.http.get<boolean>(`${this.apiUrl}/exists/email`, { params: { email } });
   }
 
   loginUsuario(email: string, password: string): Observable<LoginDTO> {

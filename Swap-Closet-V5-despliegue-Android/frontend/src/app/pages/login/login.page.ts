@@ -1,4 +1,4 @@
-import {booleanAttribute, Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {Router, RouterLink} from '@angular/router';
 
@@ -59,10 +59,9 @@ export class LoginPage implements OnInit {
   ngOnInit() {
     const saved = localStorage.getItem('sc_recordar');
     if (saved) {
-      const { email, pwd } = JSON.parse(saved);
-      this.correoSign   = email ?? '';
-      this.passwordSign = pwd   ?? '';
-      this.recordar     = true;
+      const { email } = JSON.parse(saved);
+      this.correoSign = email ?? '';
+      this.recordar   = true;
     }
   }
 
@@ -77,39 +76,32 @@ export class LoginPage implements OnInit {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(this.correo)) { this.toast.show('Correo electrónico inválido'); return; }
 
-    try {
-      if (!booleanAttribute(this.usuarioService.verificarEmail(this.correo))) {
-        this.toast.show('El correo electrónico ya existe');
-        this.correo = '';
-        return;
-      }
-    } catch (err) {
-      console.error('Error al verificar el email', err);
-      this.toast.show('Error al verificar el correo electrónico');
-      this.correo = '';
-      return;
-    }
+    this.usuarioService.verificarEmail(this.correo).subscribe({
+      next: (existe) => {
+        if (existe) {
+          this.toast.show('El correo electrónico ya está registrado');
+          this.correo = '';
+          return;
+        }
+        const usuario: UsuarioDTO = {
+          nombre: this.nombre,
+          apellidos: this.apellidos,
+          email: this.correo,
+          password: this.password,
+          urlImg: 'assets/icon/img-perfil-circular-pref.png'
+        } as UsuarioDTO;
 
-    this.usuario = {
-      nombre: this.nombre,
-      apellidos: this.apellidos,
-      email: this.correo,
-      password: this.password,
-      urlImg: "assets/icon/img-perfil-circular-pref.png"
-    } as UsuarioDTO;
-
-    this.usuarioService.guardarUsuario(this.usuario).subscribe({
-      next: async (res) => {
-        console.log('Usuario guardado:', res);
-        this.authService.setUsuario(res);
-        this.nombre = ''; this.apellidos = ''; this.correo = ''; this.password = '';
-        this.toast.show('Usuario registrado correctamente');
-        await this.router.navigate(['/perfil', res]);
+        this.usuarioService.guardarUsuario(usuario).subscribe({
+          next: async (res) => {
+            this.authService.setUsuario(res);
+            this.nombre = ''; this.apellidos = ''; this.correo = ''; this.password = '';
+            this.toast.show('Usuario registrado correctamente');
+            await this.router.navigate(['/perfil', res]);
+          },
+          error: () => this.toast.show('Error al registrar usuario')
+        });
       },
-      error: (err) => {
-        console.error('Error al guardar usuario', err);
-        this.toast.show('Error al registrar usuario');
-      }
+      error: () => this.toast.show('Error al verificar el correo electrónico')
     });
   }
 
@@ -119,7 +111,7 @@ export class LoginPage implements OnInit {
     this.usuarioService.loginUsuario(this.correoSign, this.passwordSign).subscribe({
       next: async (res) => {
         if (this.recordar) {
-          localStorage.setItem('sc_recordar', JSON.stringify({ email: this.correoSign, pwd: this.passwordSign }));
+          localStorage.setItem('sc_recordar', JSON.stringify({ email: this.correoSign }));
         } else {
           localStorage.removeItem('sc_recordar');
         }

@@ -3,7 +3,7 @@
     <h2 class="section-title">{{ esMiPerfil ? 'Mi estilo' : 'Estilo' }}</h2>
   
 
-  <ion-card-content>
+  <div class="card-body" style="padding: 0 16px 16px;">
     <div class="section">
       <div class="chip-group">
         <span class="chip-rosa" *ngFor="let est of estilosSeleccionados">
@@ -18,5 +18,5 @@
         </button>
       </div>
     </div>
-  </ion-card-content>
+  </div>
 </ion-card>

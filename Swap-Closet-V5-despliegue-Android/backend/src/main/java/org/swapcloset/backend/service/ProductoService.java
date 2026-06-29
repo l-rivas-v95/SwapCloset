@@ -100,9 +100,35 @@ public class ProductoService {
 
     @Transactional(readOnly = true)
     public List<CartaProductoDTO> getAllCartasProductosDTOActivos() {
-        return productoRepository.findByActivoTrueOrderByIdDesc()
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        return productoRepository.findByActivoTrueWithUsuarioOrderByIdDesc()
                 .stream()
-                .map(producto -> getCartaProductoDTOidProducto(producto.getId()))
+                .map(producto -> {
+                    Usuario usuario = producto.getUsuario();
+                    String imagenUrl = imagenProductoService.getPrimeraImagen(producto.getId());
+                    Double raiting = raitingService.obtenerMediaPuntuacionUsuario(usuario.getId());
+
+                    CartaProductoDTO dto = new CartaProductoDTO();
+                    BigDecimal precio = producto.getPrecio();
+                    dto.setProductoId(producto.getId());
+                    dto.setTipo(producto.getTipo().toString());
+                    dto.setPrecio(precio != null ? productoMapper.convertBigDecimalToString(precio) : null);
+                    dto.setTitulo(producto.getTitulo());
+                    dto.setEstado(producto.getEstado());
+                    dto.setTalla(producto.getTalla());
+                    dto.setCategoria(producto.getCategoria());
+                    dto.setFechaDevolucion(producto.getFechaDevolucion() != null ? producto.getFechaDevolucion().format(formatter) : null);
+                    dto.setFechaCreacion(producto.getFechaCreacion() != null ? producto.getFechaCreacion().format(formatter) : null);
+                    dto.setActivo(producto.getActivo());
+                    dto.setUrlImgProducto(imagenUrl);
+                    dto.setUsuarioId(usuario.getId());
+                    dto.setNombreUsuario(usuario.getNombre());
+                    dto.setApellidosUsuario(usuario.getApellidos());
+                    dto.setUrlImgUsuario(usuario.getUrlImg());
+                    dto.setUbicacionUsuario(usuario.getDireccion());
+                    dto.setRaiting(raiting);
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -219,7 +245,7 @@ public class ProductoService {
 
     @Transactional(readOnly = true)
     public List<ProductoDTO> getProductosPorUsuarioId(Integer usuarioId) {
-        return productoMapper.toDTOsList(productoRepository.findByUsuarioIdOrderByFechaCreacionDesc(usuarioId));
+        return productoMapper.toDTOsConChats(productoRepository.findByUsuarioIdOrderByFechaCreacionDesc(usuarioId));
     }
 
     @Transactional(readOnly = true)

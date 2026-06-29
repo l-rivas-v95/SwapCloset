@@ -5,8 +5,8 @@ import {UsuarioDTO} from "../../../modelos/UsuarioDTO";
 import {ProductoService} from "../../../service/productoService/producto.service";
 import {ProductoDTO} from "../../../modelos/ProductoDTO";
 import {
-  CartaPublicacionesActivasIntercambioComponent
-} from "../publicaciones-activas/carta-publicaciones-activas-intercambio/carta-publicaciones-activas-intercambio.component";
+  CartaPublicacionesPasadasIntercambioComponent
+} from "./carta-publicaciones-pasadas-intercambio/carta-publicaciones-pasadas-intercambio.component";
 
 @Component({
   selector: 'app-publicaciones-pasadas',
@@ -16,7 +16,7 @@ import {
   imports: [
     IonicModule,
     RouterLink,
-    CartaPublicacionesActivasIntercambioComponent
+    CartaPublicacionesPasadasIntercambioComponent
   ]
 })
 export class PublicacionesPasadasComponent implements OnInit {

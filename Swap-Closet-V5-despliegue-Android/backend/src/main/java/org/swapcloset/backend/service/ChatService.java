@@ -91,7 +91,7 @@ public class ChatService {
         if (dto.getProducto2Id() != null && !productoRepository.existsById(dto.getProducto2Id())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto 2 no encontrado con ID: " + dto.getProducto2Id());
         }
-        if(!dto.getEstadoIntercambio().equalsIgnoreCase("pendiente") & !dto.getEstadoIntercambio().equalsIgnoreCase("aceptado") & !dto.getEstadoIntercambio().equalsIgnoreCase("devuelto")) {
+        if(!dto.getEstadoIntercambio().equalsIgnoreCase("pendiente") && !dto.getEstadoIntercambio().equalsIgnoreCase("aceptado") && !dto.getEstadoIntercambio().equalsIgnoreCase("devuelto")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El estado de intercambio debe ser: pendiente, aceptado o devuelto");
         }
 

@@ -40,13 +40,19 @@
   color: #111;
 }
 
-ion-footer {
-  overflow: hidden;
+.contactar-fixed {
+  position: fixed;
   bottom: 56px;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: #fff;
+  padding: 8px 16px;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.08);
 }
 
 ion-content {
-  --padding-bottom: 70px;
+  --padding-bottom: 120px;
 }
 
 /* Desktop-only elements: ocultos en móvil */

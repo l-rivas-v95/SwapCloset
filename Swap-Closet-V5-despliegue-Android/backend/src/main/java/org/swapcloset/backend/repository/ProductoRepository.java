@@ -44,6 +44,9 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
     List<Producto> findByActivoTrueOrderByIdDesc();
 
+    @Query("SELECT p FROM Producto p JOIN FETCH p.usuario WHERE p.activo = true ORDER BY p.id DESC")
+    List<Producto> findByActivoTrueWithUsuarioOrderByIdDesc();
+
     List<Producto> findByCategoria(String categoria);
 
     List<Producto> findByMarca(String marca);

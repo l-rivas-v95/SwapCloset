@@ -1,0 +1,23 @@
+<div class="carta-pub">
+  <div class="contenedor-imagen-producto">
+    <img [src]="getPrimeraImagen()" (error)="onImgError($event)" class="imagen-producto" alt="Imagen del producto"/>
+    <!-- Overlay desactivado -->
+    <div class="overlay-pasada"></div>
+    <!-- Badge overlaid en la imagen: visible solo en desktop -->
+    <span class="chip-overlay" [ngClass]="producto?.tipo === 'Intercambio' ? 'chip-rosa' : 'chip-azul'">
+      {{ producto?.tipo }}
+    </span>
+  </div>
+  <!-- Badge debajo de la imagen: visible solo en móvil -->
+  <span class="chip-below" [ngClass]="producto?.tipo === 'Intercambio' ? 'chip-rosa' : 'chip-azul'">
+    {{ producto?.tipo }}
+  </span>
+  <!-- Info adicional: visible solo en desktop -->
+  <div class="carta-info">
+    <p class="carta-titulo">{{ producto?.titulo }}</p>
+    <p class="carta-detalle">
+      {{ producto?.talla ? 'Talla ' + producto?.talla : '' }}{{ producto?.talla && producto?.estado ? ' · ' : '' }}{{ producto?.estado }}
+    </p>
+    <span class="badge-pasada">Pasada</span>
+  </div>
+</div>

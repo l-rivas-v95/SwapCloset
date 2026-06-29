@@ -1,10 +1,28 @@
-.toolbar-rosa {
-  --background: #fff;
-  --border-color: #f0f0f0;
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fff;
 }
+
 .titulo-modal { font-size: 16px; font-weight: 700; color: #333; }
-.btn-cancelar { --color: #888; }
-.fondo-modal { --background: #f8f8f8; }
+
+.btn-cancelar {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 15px;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 4px 0;
+}
+
+.modal-body {
+  background: #f8f8f8;
+  min-height: 200px;
+}
 
 .loading-center {
   display: flex;
@@ -31,15 +49,20 @@
 }
 
 .lista-prendas {
-  padding: 0 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 8px 12px 16px;
 }
 
 .carta-prenda {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
   border-radius: 14px;
-  margin-bottom: 10px;
+  padding: 10px 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-  cursor: pointer;
-  --background: #fff;
 }
 
 .img-prenda {
@@ -47,22 +70,42 @@
   height: 56px;
   border-radius: 10px;
   object-fit: cover;
-  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.info-prenda {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .titulo-prenda {
   font-weight: 600;
   font-size: 15px;
   color: #222;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .detalle-prenda {
-  font-size: 13px;
+  font-size: 12px;
   color: #888;
-  margin: 1px 0;
 }
 
-.flecha {
-  color: #ccc;
-  font-size: 18px;
+.btn-elegir {
+  flex-shrink: 0;
+  background: #3F42FF;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+
+  &:active { opacity: 0.8; }
 }

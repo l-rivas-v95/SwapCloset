@@ -1,65 +1,56 @@
-<ion-card class="carta-redonda">
-  <ion-grid>
-    <ion-row>
+<div class="carta-redonda">
 
+  <!-- Esquina superior derecha -->
+  <div class="top-right-icons">
+    @if(producto()?.tipo === 'Préstamo') {
+      <!-- Precio a la izquierda, círculo a la derecha -->
+      <span class="precio-badge">{{producto()?.precio}}€</span>
       <div class="circulo-inter">
-        @if(producto()?.tipo === 'Préstamo') {
-          <ion-icon class="logo" name="cash-outline" color="black"></ion-icon>
-        } @else {
+        <ion-icon name="cash-outline"></ion-icon>
+      </div>
+    } @else {
+      <!-- Miniatura con círculo en su esquina superior derecha -->
+      <div class="thumb-wrapper">
+        <div class="circulo-inter">
           <img src="assets/icon/icono-intercambio.png" alt="icono intercambio"/>
-        }
+        </div>
+        <img [src]="imagenIntercambio()" class="img-inter-small" alt="prenda intercambiada" (error)="onImgError($event)"/>
+      </div>
+    }
+  </div>
+
+  <div class="card-row">
+
+    <!-- Columna imagen fija con bordes redondeados -->
+    <div class="col-img">
+      <img class="img_prod" [src]="getPrimeraImagen()" (error)="onImgError($event)" alt="Imagen del producto"/>
+    </div>
+
+    <!-- Columna info -->
+    <div class="col-info">
+      <p class="letra">{{producto()?.titulo}}</p>
+      <p class="nombre-propietario">por {{(usuario$ | async)?.nombre}} {{(usuario$ | async)?.apellidos}}</p>
+
+      <div class="meta-row">
+        <span>Talla {{producto()?.talla}}</span>
+        <span class="separador">•</span>
+        <span class="estado-color">{{producto()?.estado}}</span>
+        <ion-icon name="calendar-number-outline" class="cal-icon"></ion-icon>
+        <span>{{producto()?.fechaDevolucion | date:'dd/MM/yyyy'}}</span>
       </div>
 
-      <div class="cuadrado-inter">
-        @if(producto()?.tipo === 'Préstamo') {
-          <p class="precio-color">{{producto()?.precio}}€</p>
-        } @else {
-          <img src="assets/icon/card-media.png" class="icono-cuadrado" alt="producto intercambiado"/>
-        }
+      <div class="bottom-row">
+        <div class="loc-row">
+          <ion-icon name="location-outline"></ion-icon>
+          <span>{{(usuario$ | async)?.direccion}}</span>
+        </div>
+        <span class="chip-tipo"
+          [style.background]="producto()?.tipo === 'Préstamo' ? '#C6DFFF' : '#FFE2E3'"
+          [style.color]="producto()?.tipo === 'Préstamo' ? '#3F42FF' : '#FF3FBF'">
+          {{producto()?.tipo === 'Préstamo' ? 'Prestado' : 'Intercambiado'}}
+        </span>
       </div>
+    </div>
 
-      <ion-col class="centro" size="3.5">
-        <img class="img_prod" [src]="getPrimeraImagen()" (error)="onImgError($event)" alt="Imagen del producto" />
-      </ion-col>
-
-      <ion-col>
-
-        <ion-col class="titulo sin-margen">
-          <ion-card-title class="letra">{{producto()?.titulo}}</ion-card-title>
-        </ion-col>
-
-        <ion-row style="margin-top:3px;">
-          <ion-col class="izquierda sin-margen">
-            <p class="sin-margen">por {{(usuario$ | async)?.nombre}} {{(usuario$ | async)?.apellidos}}</p>
-          </ion-col>
-        </ion-row>
-
-        <ion-row>
-          <ion-col class="izquierda">
-            <p class="sin-margen">Talla {{producto()?.talla}} •</p>
-            <p class="margen estado-color">{{producto()?.estado}}</p>
-          </ion-col>
-          <ion-col class="derecha">
-            <ion-icon class=" margen para-iconos" name="calendar-number-outline"></ion-icon>
-            <p class="margen">{{producto()?.fechaDevolucion | date:'dd/MM/yyyy' }}</p>
-          </ion-col>
-        </ion-row>
-
-        <ion-row>
-          <ion-col class="izquierda">
-            <ion-icon size="small" name="location-outline"></ion-icon>
-            <p class="margen">{{(usuario$ | async)?.direccion}}</p>
-          </ion-col>
-
-          <ion-col class="centro sin-margen">
-            <ion-chip style="margin-bottom: 0; margin-top: 0;">
-              <b>{{producto()?.tipo === 'Préstamo' ? 'Prestado' : 'Intercambiado'}}</b>
-            </ion-chip>
-          </ion-col>
-        </ion-row>
-
-      </ion-col>
-
-    </ion-row>
-  </ion-grid>
-</ion-card>
+  </div>
+</div>

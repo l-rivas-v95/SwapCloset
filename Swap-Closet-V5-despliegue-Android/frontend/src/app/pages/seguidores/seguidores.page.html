@@ -4,19 +4,19 @@
 
       <ion-row class="caja-menu-sup">
 
-        <ion-col size="2">
+        <div style="flex-shrink:0">
           <ion-button fill="clear" (click)="volver()">
             <ion-icon size="large" name="arrow-back-outline"></ion-icon>
           </ion-button>
-        </ion-col>
+        </div>
 
-        <ion-col>
+        <div style="flex:1">
           <h2 class="titulo"><b>Seguidores</b></h2>
-        </ion-col>
+        </div>
 
-        <ion-col size="2" class="derecha">
+        <div class="derecha" style="flex-shrink:0">
           <ion-icon style="font-size: 28px;" name="people"></ion-icon>
-        </ion-col>
+        </div>
 
       </ion-row>
     </ion-grid>
@@ -25,28 +25,26 @@
   <ion-toolbar class="fondo">
     <ion-grid>
       <ion-row>
-        <ion-col>
-          <div class="botones-seleccion">
-            <button class="seg-btn"
-              [style.background]="segmentoSeleccionado === 'seguidores' ? '#FFE2E3' : 'transparent'"
-              [style.color]="segmentoSeleccionado === 'seguidores' ? '#FF3FBF' : '#7a7a7a'"
-              (click)="segmentoSeleccionado = 'seguidores'">Seguidores</button>
-            <button class="seg-btn"
-              [style.background]="segmentoSeleccionado === 'siguiendo' ? '#C6DFFF' : 'transparent'"
-              [style.color]="segmentoSeleccionado === 'siguiendo' ? '#3F42FF' : '#7a7a7a'"
-              (click)="segmentoSeleccionado = 'siguiendo'">Siguiendo</button>
-          </div>
-        </ion-col>
+        <div class="botones-seleccion">
+          <button class="seg-btn"
+            [style.background]="segmentoSeleccionado === 'seguidores' ? '#FFE2E3' : 'transparent'"
+            [style.color]="segmentoSeleccionado === 'seguidores' ? '#FF3FBF' : '#7a7a7a'"
+            (click)="segmentoSeleccionado = 'seguidores'">Seguidores</button>
+          <button class="seg-btn"
+            [style.background]="segmentoSeleccionado === 'siguiendo' ? '#C6DFFF' : 'transparent'"
+            [style.color]="segmentoSeleccionado === 'siguiendo' ? '#3F42FF' : '#7a7a7a'"
+            (click)="segmentoSeleccionado = 'siguiendo'">Siguiendo</button>
+        </div>
       </ion-row>
 
-      <ion-row class="centro">
-        <ion-col>
+      <ion-row>
+        <div class="search-wrapper">
           <div class="search-box">
             <ion-icon name="search-outline" class="search-icon"></ion-icon>
             <input class="search-input" type="search" placeholder="Buscar persona"
               (input)="busqueda = $any($event.target).value">
           </div>
-        </ion-col>
+        </div>
       </ion-row>
 
     </ion-grid>
@@ -58,26 +56,22 @@
   <ion-grid>
 
     <!-- SEGUIDORES -->
-    <ion-row *ngIf="segmentoSeleccionado === 'seguidores'">
-      <ion-col size="12" *ngFor="let seguidor of filtrar(seguidores())">
-        <app-tarjeta-seguidor [usuario]="seguidor"></app-tarjeta-seguidor>
-      </ion-col>
-
-      <ion-col size="12" *ngIf="seguidores().length === 0">
-        <p>No tienes seguidores.</p>
-      </ion-col>
-    </ion-row>
+    <div class="seg-list" *ngIf="segmentoSeleccionado === 'seguidores'">
+      <app-tarjeta-seguidor
+        *ngFor="let seguidor of filtrar(seguidores())"
+        [usuario]="seguidor">
+      </app-tarjeta-seguidor>
+      <p *ngIf="seguidores().length === 0" class="vacio">No tienes seguidores.</p>
+    </div>
 
     <!-- SIGUIENDO -->
-    <ion-row *ngIf="segmentoSeleccionado === 'siguiendo'">
-      <ion-col size="12" *ngFor="let seguido of filtrar(seguidos())">
-        <app-tarjeta-seguidor [usuario]="seguido"></app-tarjeta-seguidor>
-      </ion-col>
-
-      <ion-col size="12" *ngIf="seguidos().length === 0">
-        <p>No estás siguiendo a nadie.</p>
-      </ion-col>
-    </ion-row>
+    <div class="seg-list" *ngIf="segmentoSeleccionado === 'siguiendo'">
+      <app-tarjeta-seguidor
+        *ngFor="let seguido of filtrar(seguidos())"
+        [usuario]="seguido">
+      </app-tarjeta-seguidor>
+      <p *ngIf="seguidos().length === 0" class="vacio">No estás siguiendo a nadie.</p>
+    </div>
 
   </ion-grid>
 </ion-content>

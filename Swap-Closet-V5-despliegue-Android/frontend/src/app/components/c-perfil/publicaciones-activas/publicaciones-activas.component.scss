@@ -1,18 +1,19 @@
 .info-card {
   border-radius: 16px;
-  margin: 10px 5px 0px;
+  margin: 10px 16px 0;
 }
 .btn-ver-mas {
-  --background: #f0f0f0;
-  --border-radius: 15px;
+  background: #f0f0f0;
   border-radius: 15px;
   color: grey;
   font-weight: bold;
+  font-family: inherit;
   width: 100%;
-  height: 70%;
+  height: 100%;
+  min-height: 80px;
   border: 2px dashed grey;
+  cursor: pointer;
 }
-ion-card-content { padding-bottom: 5px; }
 
 /* Mobile grid: flex row con 2 items */
 .pub-grid {

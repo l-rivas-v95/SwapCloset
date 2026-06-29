@@ -80,44 +80,34 @@
       ><b>{{ est }}</b></span>
     </div>
 
-    <ion-row>
-      <ion-col>
-        <div class="detalle-item">
-          <span class="detalle-label">Categoría</span>
-          <span class="detalle-valor">{{ producto?.categoria }}</span>
-        </div>
-      </ion-col>
-    </ion-row>
+    <div class="detalle-row-full">
+      <div class="detalle-item">
+        <span class="detalle-label">Categoría</span>
+        <span class="detalle-valor">{{ producto?.categoria }}</span>
+      </div>
+    </div>
 
     <div class="detalles-section">
-      <ion-row>
-        <ion-col>
-          <div class="detalle-item">
-            <span class="detalle-label">Talla</span>
-            <span class="detalle-valor">{{ producto?.talla }}</span>
-          </div>
-        </ion-col>
-        <ion-col>
-          <div class="detalle-item">
-            <span class="detalle-label">Estado</span>
-            <span class="detalle-valor">{{ producto?.estado }}</span>
-          </div>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <div class="detalle-item">
-            <span class="detalle-label">Marca</span>
-            <span class="detalle-valor">{{ producto?.marca }}</span>
-          </div>
-        </ion-col>
-        <ion-col>
-          <div class="detalle-item">
-            <span class="detalle-label">Color</span>
-            <span class="detalle-valor">{{ producto?.color }}</span>
-          </div>
-        </ion-col>
-      </ion-row>
+      <div class="detalle-row-half">
+        <div class="detalle-item">
+          <span class="detalle-label">Talla</span>
+          <span class="detalle-valor">{{ producto?.talla }}</span>
+        </div>
+        <div class="detalle-item">
+          <span class="detalle-label">Estado</span>
+          <span class="detalle-valor">{{ producto?.estado }}</span>
+        </div>
+      </div>
+      <div class="detalle-row-half">
+        <div class="detalle-item">
+          <span class="detalle-label">Marca</span>
+          <span class="detalle-valor">{{ producto?.marca }}</span>
+        </div>
+        <div class="detalle-item">
+          <span class="detalle-label">Color</span>
+          <span class="detalle-valor">{{ producto?.color }}</span>
+        </div>
+      </div>
     </div>
 
     <div class="fecha-section">
@@ -158,19 +148,19 @@
         </div>
       </ion-row>
 
-      <ion-row class="usuario-card-bottom-row">
-        <ion-col class="usuario-card-button-col">
+      <div class="usuario-card-bottom-row">
+        <div class="usuario-card-button-col">
           @if (usuario?.id !== idUsuarioLogueado) {
-            <ion-button fill="clear" class="usuario-card-btn-perfil" [routerLink]="['/perfil', usuario?.id]">
+            <button class="usuario-card-btn-perfil" [routerLink]="['/perfil', usuario?.id]">
               Ver perfil
-            </ion-button>
+            </button>
           } @else {
-            <ion-button fill="clear" class="usuario-card-btn-perfil" [routerLink]="['/perfil']">
+            <button class="usuario-card-btn-perfil" [routerLink]="['/perfil']">
               Ver perfil
-            </ion-button>
+            </button>
           }
-        </ion-col>
-      </ion-row>
+        </div>
+      </div>
     </div>
 
     <!-- Botón Contactar: solo visible en desktop (en móvil va en ion-footer de anuncio.page) -->

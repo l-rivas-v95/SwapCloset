@@ -3,29 +3,29 @@
   <ion-toolbar class="menu-superior fondo">
     <ion-grid>
       <ion-row class="caja-menu-sup">
-        <ion-col size="2" class="centro">
+        <div style="flex-shrink:0" class="centro">
           @if (!modoEdicion()) {
-            <ion-button fill="clear" style="--color: #111" (click)="volver()">
+            <button style="background:none;border:none;cursor:pointer;display:flex;align-items:center;" (click)="volver()">
               <ion-icon name="arrow-back-outline" style="font-size: 22px; color: #111;"></ion-icon>
-            </ion-button>
+            </button>
           } @else {
             <ion-icon name="pencil" style="font-size: 22px; color: #111;"></ion-icon>
           }
-        </ion-col>
-        <ion-col>
+        </div>
+        <div style="flex:1">
           @if (!modoEdicion()) {
             <h1 class="titulo-header"><b>Detalle del anuncio</b></h1>
           } @else {
             <h1 class="titulo-header"><b>Editar anuncio</b></h1>
           }
-        </ion-col>
-        <ion-col size="3" class="centro-opciones">
+        </div>
+        <div style="flex-shrink:0" class="centro-opciones">
           @if (usuario()?.id === idUsuarioLogueado && !modoEdicion()) {
-            <ion-button fill="clear" style="--color: #FF3FBF" (click)="mostrarOpciones()">
+            <button style="background:none;border:none;cursor:pointer;display:flex;align-items:center;" (click)="mostrarOpciones()">
               <ion-icon name="ellipsis-vertical-outline" style="font-size: 22px; color: #FF3FBF;"></ion-icon>
-            </ion-button>
+            </button>
           }
-        </ion-col>
+        </div>
       </ion-row>
     </ion-grid>
   </ion-toolbar>
@@ -94,10 +94,10 @@
 
 <!-- Footer móvil: botón Contactar (en desktop el botón está dentro del componente) -->
 @if (!modoEdicion() && usuario()?.id !== idUsuarioLogueado) {
-  <ion-footer class="mobile-footer">
+  <div class="mobile-footer contactar-fixed">
     <app-btn-contactar
       [productoId]="producto()?.id!"
       [propietarioId]="usuario()?.id!">
     </app-btn-contactar>
-  </ion-footer>
+  </div>
 }

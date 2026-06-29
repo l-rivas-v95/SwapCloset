@@ -36,7 +36,7 @@ export class ImagenProductoService {
   }
 
   getImagenPrincipal(id: number): Observable<string> {
-    return this.http.get<string>(`${this.apiUrl}/img-principal/${id}`);
+    return this.http.get(`${this.apiUrl}/img-principal/${id}`, { responseType: 'text' });
   }
 
   actualizarImagenPrincipal(idProducto: number, ruta: string) {

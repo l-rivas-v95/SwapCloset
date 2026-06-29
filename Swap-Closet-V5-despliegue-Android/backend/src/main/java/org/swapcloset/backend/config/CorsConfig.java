@@ -18,7 +18,8 @@ public class CorsConfig implements WebMvcConfigurer {
                         "http://127.0.0.1:*",
                         "capacitor://localhost",
                         "https://front-end-fwtp.onrender.com",
-                        "https://*.onrender.com"
+                        "https://*.onrender.com",
+                        "https://lrivasvilla95.duckdns.org"
                 )
 
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")

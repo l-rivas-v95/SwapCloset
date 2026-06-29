@@ -76,7 +76,7 @@ export class ProductoFormService {
       fechaCreacion: undefined,
       imagenes: undefined,
       favoritos: undefined,
-      chatProducto1: undefined,
+      chatsProducto1: undefined,
       chatsProducto2: undefined
     };
   }

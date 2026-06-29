@@ -12,11 +12,13 @@ import {PublicacionesActivasComponent} from "../../components/c-perfil/publicaci
 import {PublicacionesPasadasComponent} from "../../components/c-perfil/publicaciones-pasadas/publicaciones-pasadas.component";
 import {OpcionesPrefilComponent} from "../../components/c-perfil/opciones-prefil/opciones-prefil.component";
 import {CartaHorizontalIntercambioComponent} from "../../components/c-explorar/carta-horizontal-intercambio/carta-horizontal-intercambio.component";
+import {TarjetaSeguidorComponent} from "../../components/c-seguidores/tarjeta-seguidor/tarjeta-seguidor.component";
 import {AuthService} from "../../service/authService/auth.service";
 import {UsuarioEstadisticasDTO} from "../../modelos/UsuarioEstadisticasDTO";
 import {OverlayService} from "../../service/overlay/overlay.service";
 import {NativeToastService} from "../../service/nativeToastService/native-toast.service";
 import {FavoritosService} from "../../service/favoritosService/favoritos.service";
+import {SeguidoresService} from "../../service/seguidoresService/seguidores.service";
 import {EstiloPickerModalComponent} from "../../components/estilo-picker-modal/estilo-picker-modal.component";
 import {TallaCamisetaPickerModalComponent} from "../../components/talla-camiseta-picker-modal/talla-camiseta-picker-modal.component";
 import {TallaPantalonPickerModalComponent} from "../../components/talla-pantalon-picker-modal/talla-pantalon-picker-modal.component";
@@ -37,7 +39,8 @@ import {TallaCalzadoPickerModalComponent} from "../../components/talla-calzado-p
     PublicacionesActivasComponent,
     PublicacionesPasadasComponent,
     OpcionesPrefilComponent,
-    CartaHorizontalIntercambioComponent
+    CartaHorizontalIntercambioComponent,
+    TarjetaSeguidorComponent
   ]
 })
 export class PerfilPage implements OnInit, ViewWillEnter {
@@ -50,6 +53,10 @@ export class PerfilPage implements OnInit, ViewWillEnter {
   favoritos = signal<ProductoDTO[]>([]);
   segmentoFavs: 'intercambios' | 'prestamos' = 'intercambios';
 
+  seguidores = signal<UsuarioDTO[]>([]);
+  siguiendo = signal<UsuarioDTO[]>([]);
+  segmentoSeg: 'seguidores' | 'siguiendo' = 'seguidores';
+
   get favsFiltrados(): ProductoDTO[] {
     const tipo = this.segmentoFavs === 'intercambios' ? 'intercambio' : 'préstamo';
     return this.favoritos().filter(p => p.tipo?.toLowerCase() === tipo);
@@ -60,6 +67,7 @@ export class PerfilPage implements OnInit, ViewWillEnter {
   private overlayService = inject(OverlayService);
   private toast = inject(NativeToastService);
   private favoritosService = inject(FavoritosService);
+  private seguidoresService = inject(SeguidoresService);
   private route = inject(ActivatedRoute);
 
   getEstilos(): string[] {
@@ -140,6 +148,7 @@ export class PerfilPage implements OnInit, ViewWillEnter {
     this.cargarUsuario(idUsuario);
     this.cargarEstadisticas(idUsuario);
     this.cargarFavoritos(idUsuario);
+    this.cargarSeguidores(idUsuario);
   }
 
   private cargarUsuario(idUsuario: number) {
@@ -162,4 +171,16 @@ export class PerfilPage implements OnInit, ViewWillEnter {
       error: (err) => console.error('Error al cargar favoritos:', err)
     });
   }
+
+  private cargarSeguidores(idUsuario: number) {
+    this.seguidoresService.getSeguidores(idUsuario).subscribe({
+      next: (s) => this.seguidores.set(s),
+      error: (err) => console.error('Error al cargar seguidores:', err)
+    });
+    this.seguidoresService.getSiguiendo(idUsuario).subscribe({
+      next: (s) => this.siguiendo.set(s),
+      error: (err) => console.error('Error al cargar siguiendo:', err)
+    });
+  }
+
 }

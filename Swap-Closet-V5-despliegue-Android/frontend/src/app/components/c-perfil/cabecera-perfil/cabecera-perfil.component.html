@@ -32,49 +32,43 @@
       </ion-icon>
     </div>
 
-    <ion-grid class="perfil-stats">
-      <ion-row>
-        <ion-col>
-          <ion-icon name="cube-outline" color="tertiary"></ion-icon>
-          <p class="numero">{{usuario()!.publicaciones ?? 0}}</p>
-          <p class="label">Publicaciones</p>
-        </ion-col>
-        <ion-col>
-          <ion-icon name="swap-horizontal-outline" color="primary"></ion-icon>
-          <p class="numero">{{usuario()!.intercambios ?? 0}}</p>
-          <p class="label">Intercambios</p>
-        </ion-col>
-        <ion-col>
-          <ion-icon name="star-outline" color="warning"></ion-icon>
-          <p class="numero">{{usuario()!.raiting ?? 0}}</p>
-          <p class="label">Valoración</p>
-        </ion-col>
-        <ion-col [routerLink]="['/favoritos', usuario()!.id]">
-          <ion-icon name="heart-outline" color="danger"></ion-icon>
-          <p class="numero">{{usuario()!.favoritos ?? 0}}</p>
-          <p class="label">Favoritos</p>
-        </ion-col>
-        <ion-col [routerLink]="['/seguidores', usuario()!.id]">
-          <ion-icon name="people-outline" color="medium"></ion-icon>
-          <p class="numero">{{usuario()!.seguidores ?? 0}}</p>
-          <p class="label">Seguidores</p>
-        </ion-col>
-      </ion-row>
+    <div class="perfil-stats">
+      <div class="stat-col" style="cursor:pointer" [routerLink]="['/publicaciones-activas', usuario()!.id]">
+        <ion-icon name="cube-outline" color="tertiary"></ion-icon>
+        <p class="numero">{{usuario()!.publicaciones ?? 0}}</p>
+        <p class="label">Publicaciones</p>
+      </div>
+      <div class="stat-col" style="cursor:pointer" [routerLink]="['/publicaciones-pasadas', usuario()!.id]">
+        <ion-icon name="swap-horizontal-outline" color="primary"></ion-icon>
+        <p class="numero">{{usuario()!.intercambios ?? 0}}</p>
+        <p class="label">Intercambios</p>
+      </div>
+      <div class="stat-col">
+        <ion-icon name="star-outline" color="warning"></ion-icon>
+        <p class="numero">{{usuario()!.raiting ?? 0}}</p>
+        <p class="label">Valoración</p>
+      </div>
+      <div class="stat-col" [routerLink]="['/favoritos', usuario()!.id]" style="cursor:pointer">
+        <ion-icon name="heart-outline" color="danger"></ion-icon>
+        <p class="numero">{{usuario()!.favoritos ?? 0}}</p>
+        <p class="label">Favoritos</p>
+      </div>
+      <div class="stat-col" [routerLink]="['/seguidores', usuario()!.id]" style="cursor:pointer">
+        <ion-icon name="people-outline" color="medium"></ion-icon>
+        <p class="numero">{{usuario()!.seguidores ?? 0}}</p>
+        <p class="label">Seguidores</p>
+      </div>
+    </div>
 
-      @if (!esMiPerfil) {
-        <div class="caja-boton">
-          <ion-button
-            fill="clear" expand="block"
-            [class]="isFollowing() ? 'btn-seguido' : 'btn-publicar'"
-            (click)="toggleFollow()">
-            <b>{{ isFollowing() ? 'Dejar de seguir' : 'Seguir' }}</b>
-            <ion-icon class="margen-left" slot="end"
-              [name]="isFollowing() ? 'person-remove-outline' : 'person-add-outline'">
-            </ion-icon>
-          </ion-button>
-        </div>
-      }
-    </ion-grid>
+    @if (!esMiPerfil) {
+      <div class="caja-boton">
+        <button
+          [class]="isFollowing() ? 'btn-seguido' : 'btn-publicar'"
+          (click)="toggleFollow()">
+          <b>{{ isFollowing() ? 'Dejar de seguir' : 'Seguir' }}</b>
+        </button>
+      </div>
+    }
   } @else {
     <div class="perfil-estrellas skeleton"></div>
   }

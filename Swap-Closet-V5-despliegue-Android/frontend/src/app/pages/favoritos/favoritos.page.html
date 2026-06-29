@@ -4,19 +4,19 @@
 
       <ion-row class="caja-menu-sup">
 
-        <ion-col size="2" >
-          <ion-button fill="clear" (click)="volver()" >
+        <div style="flex-shrink:0">
+          <ion-button fill="clear" (click)="volver()">
             <ion-icon size="large" name="arrow-back-outline"></ion-icon>
           </ion-button>
-        </ion-col>
+        </div>
 
-        <ion-col>
+        <div style="flex:1">
           <h2 class="titulo"><b>Favoritos</b></h2>
-        </ion-col>
+        </div>
 
-        <ion-col size="2" class="derecha">
+        <div class="derecha" style="flex-shrink:0">
           <ion-icon style="font-size: 28px;" name="heart"></ion-icon>
-        </ion-col>
+        </div>
 
       </ion-row>
     </ion-grid>
@@ -25,18 +25,16 @@
   <ion-toolbar class="fondo">
     <ion-grid>
       <ion-row>
-        <ion-col>
-          <div class="botones-seleccion">
-            <button class="seg-btn"
-              [style.background]="segmentoSeleccionado === 'intercambios' ? '#C6DFFF' : 'transparent'"
-              [style.color]="segmentoSeleccionado === 'intercambios' ? '#3F42FF' : '#7a7a7a'"
-              (click)="segmentoSeleccionado = 'intercambios'">Intercambios</button>
-            <button class="seg-btn"
-              [style.background]="segmentoSeleccionado === 'prestamos' ? '#FFE2E3' : 'transparent'"
-              [style.color]="segmentoSeleccionado === 'prestamos' ? '#FF3FBF' : '#7a7a7a'"
-              (click)="segmentoSeleccionado = 'prestamos'">Préstamos</button>
-          </div>
-        </ion-col>
+        <div class="botones-seleccion">
+          <button class="seg-btn"
+            [style.background]="segmentoSeleccionado === 'intercambios' ? '#C6DFFF' : 'transparent'"
+            [style.color]="segmentoSeleccionado === 'intercambios' ? '#3F42FF' : '#7a7a7a'"
+            (click)="segmentoSeleccionado = 'intercambios'">Intercambios</button>
+          <button class="seg-btn"
+            [style.background]="segmentoSeleccionado === 'prestamos' ? '#FFE2E3' : 'transparent'"
+            [style.color]="segmentoSeleccionado === 'prestamos' ? '#FF3FBF' : '#7a7a7a'"
+            (click)="segmentoSeleccionado = 'prestamos'">Préstamos</button>
+        </div>
       </ion-row>
 
       <ion-row class="centro">

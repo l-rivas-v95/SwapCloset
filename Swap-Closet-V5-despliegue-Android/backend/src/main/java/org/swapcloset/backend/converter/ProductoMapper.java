@@ -1,8 +1,10 @@
 package org.swapcloset.backend.converter;
 
 import org.mapstruct.*;
+import org.swapcloset.backend.dto.ChatDTO;
 import org.swapcloset.backend.dto.ImagenProductoDTO;
 import org.swapcloset.backend.dto.ProductoDTO;
+import org.swapcloset.backend.modelos.Chat;
 import org.swapcloset.backend.modelos.ImagenProducto;
 import org.swapcloset.backend.modelos.Producto;
 import org.swapcloset.backend.modelos.TipoProducto;
@@ -15,24 +17,55 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {DateTimeMapper.class})
 public interface ProductoMapper {
 
     //@Mapping(target = "fechaDevolucion", source = "fechaDevolucion", dateFormat = "dd/MM/yy")
     //@Mapping(target = "fechaCreacion", source = "fechaCreacion", dateFormat = "dd/MM/yy")
+    /** Mapeo genérico — sin chats para no afectar otros endpoints */
+    @Named("sinChats")
     @Mapping(target = "precio", source = "precio", qualifiedByName = "convertBigDecimalToString")
     @Mapping(target = "tipo", source = "tipo", qualifiedByName = "tipoProductoToString")
     @Mapping(target = "idUsuario", source = "usuario.id")
+    @Mapping(target = "chatsProducto1", ignore = true)
+    @Mapping(target = "chatsProducto2", ignore = true)
     ProductoDTO toDTO(Producto producto);
+
+    /** Solo para publicaciones pasadas — incluye chats para obtener producto2Id */
+    @Named("conChats")
+    @Mapping(target = "precio", source = "precio", qualifiedByName = "convertBigDecimalToString")
+    @Mapping(target = "tipo", source = "tipo", qualifiedByName = "tipoProductoToString")
+    @Mapping(target = "idUsuario", source = "usuario.id")
+    ProductoDTO toDTOConChats(Producto producto);
+
+    @IterableMapping(qualifiedByName = "sinChats")
+    List<ProductoDTO> toDTOsList(List<Producto> productos);
+
+    @IterableMapping(qualifiedByName = "conChats")
+    List<ProductoDTO> toDTOsConChats(List<Producto> productos);
 
     @Mapping(target = "fechaDevolucion", source = "fechaDevolucion", qualifiedByName = "stringToLocalDateTime")
     @Mapping(target = "fechaCreacion", source = "fechaCreacion", qualifiedByName = "stringToLocalDateTime")
     @Mapping(target = "precio", source = "precio", qualifiedByName = "convertStringToBigDecimal")
     @Mapping(target = "tipo", source = "tipo", qualifiedByName = "stringToTipoProducto")
     @Mapping(target = "usuario.id", source = "idUsuario")
+    @Mapping(target = "chatsProducto1", ignore = true)
+    @Mapping(target = "chatsProducto2", ignore = true)
     Producto toEntity(ProductoDTO productoDTO);
 
-    List<ProductoDTO> toDTOsList(List<Producto> productos);
+    /** Mapea Chat → ChatDTO sin incluir mensajes (evita queries innecesarias) */
+    @Mapping(source = "usuario1.id", target = "usuario1Id")
+    @Mapping(source = "usuario2.id", target = "usuario2Id")
+    @Mapping(source = "producto1.id", target = "producto1Id")
+    @Mapping(source = "producto2.id", target = "producto2Id")
+    @Mapping(source = "fechaCreacion", target = "fechaCreacion", qualifiedByName = "formatDateTime")
+    @Mapping(source = "fechaQuedada", target = "fechaQuedada", qualifiedByName = "formatDateTime")
+    @Mapping(source = "fechaDevolucion", target = "fechaDevolucion", qualifiedByName = "formatDateTime")
+    @Mapping(target = "mensajes", ignore = true)
+    @Mapping(target = "mensajesNoLeidos", ignore = true)
+    @Mapping(target = "fechaUltimoMensaje", ignore = true)
+    ChatDTO chatToDTO(Chat chat);
+
     List<Producto> toEntitiesList(List<ProductoDTO> productoDTOS);
 
     @Mapping(target = "idProducto", source = "producto.id")

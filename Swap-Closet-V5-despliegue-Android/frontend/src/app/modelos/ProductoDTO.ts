@@ -25,6 +25,6 @@ export interface ProductoDTO {
   //usuario?: UsuarioDTO;
   imagenes?: ImagenProductoDTO[];
   favoritos?: FavoritoDTO[];
-  chatProducto1?: ChatDTO[];
+  chatsProducto1?: ChatDTO[];
   chatsProducto2?: ChatDTO[];
 }

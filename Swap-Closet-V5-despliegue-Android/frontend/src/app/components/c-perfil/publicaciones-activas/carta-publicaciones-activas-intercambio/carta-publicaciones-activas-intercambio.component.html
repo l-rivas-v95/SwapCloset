@@ -2,14 +2,14 @@
   <div class="contenedor-imagen-producto">
     <img [src]="getPrimeraImagen()" (error)="onImgError($event)" class="imagen-producto" alt="Imagen del producto"/>
     <!-- Badge overlaid en la imagen: visible solo en desktop -->
-    <ion-chip class="chip-overlay" [ngClass]="producto?.tipo === 'Intercambio' ? 'chip-rosa' : 'chip-azul'">
+    <span class="chip-overlay" [ngClass]="producto?.tipo === 'Intercambio' ? 'chip-rosa' : 'chip-azul'">
       {{ producto?.tipo }}
-    </ion-chip>
+    </span>
   </div>
   <!-- Badge debajo de la imagen: visible solo en móvil -->
-  <ion-chip class="chip-below" [ngClass]="producto?.tipo === 'Intercambio' ? 'chip-rosa' : 'chip-azul'">
+  <span class="chip-below" [ngClass]="producto?.tipo === 'Intercambio' ? 'chip-rosa' : 'chip-azul'">
     {{ producto?.tipo }}
-  </ion-chip>
+  </span>
   <!-- Info adicional: visible solo en desktop -->
   <div class="carta-info">
     <p class="carta-titulo">{{ producto?.titulo }}</p>

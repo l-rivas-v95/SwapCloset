@@ -66,14 +66,23 @@ ion-icon{
   margin-top:0.5rem;
 }
 
+.search-wrapper {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  padding: 4px 8px 8px;
+  box-sizing: border-box;
+}
+
 .search-box {
   display: flex;
+  flex: 1;
   align-items: center;
   background: #f2f2f2;
   border-radius: 30px;
   padding: 8px 14px;
   gap: 8px;
-  margin-top: 0.5rem;
+  min-width: 0;
 }
 
 .search-icon {
@@ -93,6 +102,19 @@ ion-icon{
 }
 .fuente{
   color: #303030;
+}
+
+.seg-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.vacio {
+  text-align: center;
+  color: #bbb;
+  padding: 32px 0;
 }
 
 /* ---------------------------

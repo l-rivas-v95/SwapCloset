@@ -111,6 +111,30 @@
   width: 90%;
 }
 
+/* Layout filas nativas (reemplazo de ion-row/ion-col) */
+.detalle-row-full {
+  display: flex;
+  padding: 4px 1rem;
+  box-sizing: border-box;
+
+  .detalle-item {
+    flex: 1;
+    margin: 0;
+  }
+}
+
+.detalle-row-half {
+  display: flex;
+  gap: 8px;
+  padding: 4px 1rem;
+  box-sizing: border-box;
+
+  .detalle-item {
+    flex: 1;
+    margin: 0;
+  }
+}
+
 .detalle-item {
   display: flex;
   flex-direction: column;
@@ -392,13 +416,9 @@
   }
 
   /* Rows de detalles */
-  ion-row {
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  ion-col {
-    padding: 4px !important;
+  .detalle-row-full,
+  .detalle-row-half {
+    padding: 4px 0 !important;
   }
 
   /* Sección fecha/ubicación */
@@ -523,20 +543,23 @@
 }
 
 .usuario-card-button-col {
-  text-align: center;
+  display: flex;
+  justify-content: center;
 }
 
 .usuario-card-btn-perfil {
-  --color: #FF3FBF;
-  --border-color: #FF3FBF;
-  --border-width: 2px;
-  --border-style: solid;
-  --border-radius: 30px;
-  --background: transparent;
-  --background-activated: rgba(255, 63, 132, 0.1);
+  display: block;
+  background: transparent;
+  border: 2px solid #FF3FBF;
+  border-radius: 30px;
+  color: #FF3FBF;
   font-weight: 600;
   font-size: 1.05rem;
   height: 48px;
   width: 85%;
   max-width: 280px;
+  cursor: pointer;
+  font-family: inherit;
+
+  &:hover { background: rgba(255, 63, 132, 0.1); }
 }
