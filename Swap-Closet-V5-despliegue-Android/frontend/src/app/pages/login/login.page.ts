@@ -115,7 +115,8 @@ export class LoginPage implements OnInit {
         } else {
           localStorage.removeItem('sc_recordar');
         }
-        this.authService.setUsuario(res);
+        this.authService.setToken(res.token);
+        this.authService.setUsuario(res.usuario);
         await this.router.navigate(['/home']);
       },
       error: (err) => {

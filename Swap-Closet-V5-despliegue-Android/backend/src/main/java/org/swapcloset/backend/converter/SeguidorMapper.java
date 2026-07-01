@@ -1,8 +1,6 @@
 package org.swapcloset.backend.converter;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 import org.swapcloset.backend.dto.SeguidorDTO;
 import org.swapcloset.backend.modelos.Seguidor;
 
@@ -23,5 +21,6 @@ public interface SeguidorMapper {
 
     List<Seguidor> toEntitysList(List<SeguidorDTO> SeguidorDTO);
 
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateEntityFromDTO(SeguidorDTO dto, @MappingTarget Seguidor entity);
 }

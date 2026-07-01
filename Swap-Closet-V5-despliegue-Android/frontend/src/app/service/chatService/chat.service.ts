@@ -26,10 +26,7 @@ export class ChatService {
     );
   }
 
-  confirmar(chatId: number, usuarioId: number): Observable<ChatDTO> {
-    return this.http.patch<ChatDTO>(
-      `${this.apiUrl}/${chatId}/confirmar?usuarioId=${usuarioId}`,
-      {}
-    );
+  confirmar(chatId: number): Observable<ChatDTO> {
+    return this.http.patch<ChatDTO>(`${this.apiUrl}/${chatId}/confirmar`, {});
   }
 }

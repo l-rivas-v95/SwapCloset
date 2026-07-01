@@ -51,6 +51,7 @@ public interface ProductoMapper {
     @Mapping(target = "usuario.id", source = "idUsuario")
     @Mapping(target = "chatsProducto1", ignore = true)
     @Mapping(target = "chatsProducto2", ignore = true)
+    @Mapping(target = "imagenes", ignore = true)
     Producto toEntity(ProductoDTO productoDTO);
 
     /** Mapea Chat → ChatDTO sin incluir mensajes (evita queries innecesarias) */

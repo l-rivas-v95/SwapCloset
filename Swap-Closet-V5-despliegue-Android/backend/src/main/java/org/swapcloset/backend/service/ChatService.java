@@ -45,22 +45,22 @@ public class ChatService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Integer getCantidadIntercambios(Integer id) {
         return chatRepository.getCantidadIntercambios(id);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Integer getCantidadPrestamos(Integer id) {
         return chatRepository.getCantidadPrestamos(id);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Integer getCantidadTotalIntercambios(Integer id) {
         return chatRepository.getCantidadTotalIntercambiosIdUsuario(id);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Integer getCantidadTotalIntercambiosPorProducto(Integer id) {
         return chatRepository.getCantidadTotalIntercambiosIdProducto(id);
     }
@@ -228,8 +228,7 @@ public class ChatService {
     @Transactional(readOnly = true)
     public List<ChatDTO> findByUsuarioId(Integer usuarioId) {
         if (usuarioId == null) return List.of();
-        Usuario uRef = em.getReference(Usuario.class, usuarioId);
-        return getAllChatByUsuario(uRef).stream()
+        return chatRepository.findAllByUsuarioIdWithMensajes(usuarioId).stream()
                 .map(chat -> {
                     ChatDTO dto = chatMapper.toDTO(chat);
                     List<Mensaje> msgs = chat.getMensajes();

@@ -18,6 +18,8 @@ public interface ChatMapper {
     @Mapping(source = "fechaCreacion", target = "fechaCreacion", qualifiedByName = "formatDateTime")
     @Mapping(source = "fechaQuedada", target = "fechaQuedada", qualifiedByName = "formatDateTime")
     @Mapping(source = "fechaDevolucion", target = "fechaDevolucion", qualifiedByName = "formatDateTime")
+    @Mapping(target = "mensajesNoLeidos", ignore = true)
+    @Mapping(target = "fechaUltimoMensaje", ignore = true)
     ChatDTO toDTO(Chat chat);
 
     @Mapping(target = "usuario1", ignore = true)

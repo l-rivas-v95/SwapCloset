@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,10 +14,16 @@ import org.swapcloset.backend.dto.UsuarioDTO;
 import org.swapcloset.backend.dto.UsuarioEstadisticaDTO;
 import org.swapcloset.backend.dto.UsuarioEstadisticaProductosDTO;
 import org.swapcloset.backend.modelos.Usuario;
+import org.swapcloset.backend.repository.ChatRepository;
+import org.swapcloset.backend.repository.FavoritoRepository;
 import org.swapcloset.backend.repository.ProductoRepository;
+import org.swapcloset.backend.repository.RaitingRepository;
+import org.swapcloset.backend.repository.SeguidorRepository;
 import org.swapcloset.backend.repository.UsuarioRepository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -29,13 +34,17 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
     private final RaitingService raitingService;
+    private final RaitingRepository raitingRepository;
     private final ProductoRepository productoRepository;
     private final ChatService chatService;
+    private final ChatRepository chatRepository;
     private final SeguidorService seguidorService;
+    private final SeguidorRepository seguidorRepository;
     private final ProductoService productoService;
     private final FavoritoService favoritoService;
+    private final FavoritoRepository favoritoRepository;
 
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final PasswordEncoder passwordEncoder;
 
     // ── Helpers internos ──────────────────────────────────────────────────────
 
@@ -121,10 +130,52 @@ public class UsuarioService {
 
     @Transactional(readOnly = true)
     public List<UsuarioEstadisticaDTO> obtenerTodosUsuariosEstadisticas() {
-        return usuarioRepository.findAll()
-                .stream()
-                .map(usuario -> obtenerUsuarioEstadisticas(usuario.getId()))
-                .collect(Collectors.toList());
+        // Cargamos todos los agregados en bulk (5 queries para todos los usuarios)
+        Map<Integer, Double> raitingMap = toMap(raitingRepository.findAveragePuntuacionTodosUsuarios());
+        Map<Integer, Long> publicacionesMap = toLongMap(productoRepository.countPublicacionesTodosUsuarios());
+        Map<Integer, Long> favoritosMap = toLongMap(favoritoRepository.countFavoritosTodosUsuarios());
+        Map<Integer, Long> seguidoresMap = toLongMap(seguidorRepository.countSeguidoresTodosUsuarios());
+
+        Map<Integer, Long> intercambiosMap = new HashMap<>();
+        chatRepository.countCompletadosPorUsuario1()
+                .forEach(r -> intercambiosMap.merge((Integer) r[0], (Long) r[1], Long::sum));
+        chatRepository.countCompletadosPorUsuario2()
+                .forEach(r -> intercambiosMap.merge((Integer) r[0], (Long) r[1], Long::sum));
+
+        return usuarioRepository.findAll().stream().map(usuario -> {
+            Integer id = usuario.getId();
+            UsuarioEstadisticaDTO dto = new UsuarioEstadisticaDTO();
+            dto.setId(id);
+            dto.setNombre(usuario.getNombre());
+            dto.setApellidos(usuario.getApellidos());
+            dto.setEmail(usuario.getEmail());
+            dto.setDescripcion(usuario.getDescripcion());
+            dto.setEstilo(usuario.getEstilo());
+            dto.setUrlImg(usuario.getUrlImg());
+            dto.setDireccion(usuario.getDireccion());
+            dto.setTCamiseta(usuario.getTCamiseta());
+            dto.setTPantalon(usuario.getTPantalon());
+            dto.setTCalzado(usuario.getTCalzado());
+            Double media = raitingMap.getOrDefault(id, 0.0);
+            dto.setRaiting(Math.round(media * 2) / 2.0);
+            dto.setPublicaciones(publicacionesMap.getOrDefault(id, 0L).intValue());
+            dto.setIntercambios(intercambiosMap.getOrDefault(id, 0L).intValue());
+            dto.setSeguidores(seguidoresMap.getOrDefault(id, 0L).intValue());
+            dto.setFavoritos(favoritosMap.getOrDefault(id, 0L).intValue());
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
+    private Map<Integer, Double> toMap(List<Object[]> rows) {
+        Map<Integer, Double> map = new HashMap<>();
+        for (Object[] r : rows) map.put((Integer) r[0], (Double) r[1]);
+        return map;
+    }
+
+    private Map<Integer, Long> toLongMap(List<Object[]> rows) {
+        Map<Integer, Long> map = new HashMap<>();
+        for (Object[] r : rows) map.put((Integer) r[0], (Long) r[1]);
+        return map;
     }
 
     @Transactional(readOnly = true)

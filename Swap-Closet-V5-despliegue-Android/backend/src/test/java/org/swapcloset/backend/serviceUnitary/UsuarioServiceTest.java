@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.swapcloset.backend.dto.*;
 import org.swapcloset.backend.service.*;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -307,5 +308,73 @@ class UsuarioServiceTest {
 
         Optional<UsuarioEstadisticaDTO> usuarioOpt = usuarioService.obtenerUsuarioConMasIntercambios();
         assertTrue(usuarioOpt.isEmpty());
+    }
+
+    // TEST - LOGIN
+
+    @Test
+    @DisplayName("TEST POSITIVO - LOGIN CREDENCIALES CORRECTAS")
+    void loginCorrecto() {
+        Optional<UsuarioDTO> resultado = usuarioService.login("prueba@gmail.com", "1234");
+        assertTrue(resultado.isPresent());
+        assertEquals("prueba@gmail.com", resultado.get().getEmail());
+        assertNull(resultado.get().getPassword()); // nunca se expone
+    }
+
+    @Test
+    @DisplayName("TEST NEGATIVO - LOGIN CONTRASEÑA INCORRECTA")
+    void loginContrasenaIncorrecta() {
+        Optional<UsuarioDTO> resultado = usuarioService.login("prueba@gmail.com", "wrongpassword");
+        assertTrue(resultado.isEmpty());
+    }
+
+    @Test
+    @DisplayName("TEST NEGATIVO - LOGIN EMAIL NO EXISTENTE")
+    void loginEmailNoExistente() {
+        Optional<UsuarioDTO> resultado = usuarioService.login("noexiste@gmail.com", "1234");
+        assertTrue(resultado.isEmpty());
+    }
+
+    @Test
+    @DisplayName("TEST NEGATIVO - LOGIN EMAIL NULL")
+    void loginEmailNull() {
+        Optional<UsuarioDTO> resultado = usuarioService.login(null, "1234");
+        assertTrue(resultado.isEmpty());
+    }
+
+    // TEST - EXISTS BY EMAIL
+
+    @Test
+    @DisplayName("TEST POSITIVO - EXISTS BY EMAIL")
+    void existsByEmailExistente() {
+        assertTrue(usuarioService.existsByEmail("prueba@gmail.com"));
+    }
+
+    @Test
+    @DisplayName("TEST NEGATIVO - EXISTS BY EMAIL NO EXISTENTE")
+    void existsByEmailNoExistente() {
+        assertFalse(usuarioService.existsByEmail("noexiste@gmail.com"));
+    }
+
+    @Test
+    @DisplayName("TEST NEGATIVO - EXISTS BY EMAIL NULL")
+    void existsByEmailNull() {
+        assertFalse(usuarioService.existsByEmail(null));
+    }
+
+    // TEST - TODOS LOS USUARIOS CON ESTADÍSTICAS (BULK)
+
+    @Test
+    @DisplayName("TEST POSITIVO - OBTENER TODOS USUARIOS ESTADISTICAS")
+    void obtenerTodosUsuariosEstadisticas() {
+        List<UsuarioEstadisticaDTO> lista = usuarioService.obtenerTodosUsuariosEstadisticas();
+        assertNotNull(lista);
+        assertEquals(3, lista.size());
+        // El usuario 1 tiene 2 intercambios completados
+        UsuarioEstadisticaDTO u1 = lista.stream()
+                .filter(u -> "prueba@gmail.com".equals(u.getEmail()))
+                .findFirst()
+                .orElseThrow();
+        assertTrue(u1.getIntercambios() >= 2);
     }
 }

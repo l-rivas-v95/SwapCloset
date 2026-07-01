@@ -24,4 +24,7 @@ public interface FavoritoRepository extends JpaRepository<Favorito, FavoritoId> 
 
     @Query("SELECT COUNT(f.producto.id) FROM Favorito f WHERE f.usuario.id = :idUsuario")
     Double findCountFavoritosByUsuarioId(@Param("idUsuario") Integer idUsuario);
+
+    @Query("SELECT f.usuario.id, COUNT(f) FROM Favorito f GROUP BY f.usuario.id")
+    List<Object[]> countFavoritosTodosUsuarios();
 }

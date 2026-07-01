@@ -1,12 +1,14 @@
 package org.swapcloset.backend.controller;
 
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.swapcloset.backend.dto.ChatDTO;
 import org.swapcloset.backend.service.ChatService;
+
 import java.util.List;
-import org.springframework.http.HttpStatus;
 
 @RestController
 @RequestMapping("/api/chats")
@@ -66,7 +68,11 @@ public class ChatController {
     }
 
     @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<List<ChatDTO>> getByUsuario(@PathVariable Integer usuarioId) {
+    public ResponseEntity<List<ChatDTO>> getByUsuario(@PathVariable Integer usuarioId, Authentication auth) {
+        Integer tokenUserId = (Integer) auth.getCredentials();
+        if (!usuarioId.equals(tokenUserId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         return ResponseEntity.ok(chatService.findByUsuarioId(usuarioId));
     }
 
@@ -74,20 +80,20 @@ public class ChatController {
     public ResponseEntity<ChatDTO> findOrCreate(
             @RequestParam Integer usuario1Id,
             @RequestParam Integer usuario2Id,
-            @RequestParam Integer producto1Id) {
+            @RequestParam Integer producto1Id,
+            Authentication auth) {
+        Integer tokenUserId = (Integer) auth.getCredentials();
+        if (!usuario1Id.equals(tokenUserId) && !usuario2Id.equals(tokenUserId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         ChatDTO chat = chatService.findOrCreate(usuario1Id, usuario2Id, producto1Id);
         return ResponseEntity.ok(chat);
     }
 
     @PatchMapping("/{id}/confirmar")
-    public ResponseEntity<ChatDTO> confirmar(
-            @PathVariable Integer id,
-            @RequestParam Integer usuarioId) {
-        try {
-            ChatDTO updated = chatService.confirmar(id, usuarioId);
-            return ResponseEntity.ok(updated);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<ChatDTO> confirmar(@PathVariable Integer id, Authentication auth) {
+        Integer tokenUserId = (Integer) auth.getCredentials();
+        ChatDTO updated = chatService.confirmar(id, tokenUserId);
+        return ResponseEntity.ok(updated);
     }
 }

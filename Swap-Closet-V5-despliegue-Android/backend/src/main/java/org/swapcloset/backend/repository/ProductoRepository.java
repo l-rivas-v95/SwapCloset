@@ -32,6 +32,9 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
     Integer countByUsuarioId(Integer usuarioId);
 
+    @Query("SELECT p.usuario.id, COUNT(p) FROM Producto p GROUP BY p.usuario.id")
+    List<Object[]> countPublicacionesTodosUsuarios();
+
     Page<Producto> findByActivoTrue(Pageable pageable);
 
     Optional<Producto> findByIdAndActivoTrue(Integer id);

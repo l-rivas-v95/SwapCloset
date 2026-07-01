@@ -21,5 +21,6 @@ public interface FavoritoMapper {
 
     List<Favorito> toEntitysList(List<FavoritoDTO> favoritoDTOS);
 
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateEntityFromDTO(FavoritoDTO dto, @MappingTarget Favorito entity);
 }

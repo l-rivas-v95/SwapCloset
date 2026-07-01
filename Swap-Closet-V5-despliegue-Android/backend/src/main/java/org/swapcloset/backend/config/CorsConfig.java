@@ -11,14 +11,9 @@ public class CorsConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
                 .allowedOriginPatterns(
-                        "https://localhost",
                         "http://localhost:8100",
-                        "http://localhost:8101",
-                        "http://localhost:*",
-                        "http://127.0.0.1:*",
+                        "http://localhost:4200",
                         "capacitor://localhost",
-                        "https://front-end-fwtp.onrender.com",
-                        "https://*.onrender.com",
                         "https://lrivasvilla95.duckdns.org"
                 )
 

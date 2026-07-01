@@ -12,6 +12,7 @@ public interface UsuarioMapper {
 
     @Mapping(target = "productos", ignore = true)
     @Mapping(target = "password", ignore = true)
+    @Mapping(target = "raiting", ignore = true)
     UsuarioDTO toDTO(Usuario usuario);
 
     @Mapping(target = "productos", ignore = true)
@@ -26,8 +27,7 @@ public interface UsuarioMapper {
      * No modifica colecciones/relaciones.
      */
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(target = "productos")
-
-
+    @Mapping(target = "productos", ignore = true)
+    @Mapping(target = "password", ignore = true)
     void updateEntityFromDTO(UsuarioDTO dto, @MappingTarget Usuario entidad);
 }

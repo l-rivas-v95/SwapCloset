@@ -15,6 +15,10 @@ public interface RaitingRepository extends JpaRepository<Raiting, RaitingId> {
     List<Raiting> findByPuntuador_Id(Integer idPuntuador);
     @Query("SELECT AVG(r.puntuacion) FROM Raiting r WHERE r.puntuado.id = :idUsuario")
     Double findAveragePuntuacionByPuntuadoId(@Param("idUsuario") Integer idUsuario);
+
+    @Query("SELECT r.puntuado.id, AVG(r.puntuacion) FROM Raiting r GROUP BY r.puntuado.id")
+    List<Object[]> findAveragePuntuacionTodosUsuarios();
+
     Optional<Raiting> findByPuntuado_IdAndPuntuador_Id(Integer idPuntuado, Integer idPuntuador);
     boolean existsByPuntuado_IdAndPuntuador_Id(Integer idPuntuado, Integer idPuntuador);
     long countByPuntuado_Id(Integer idPuntuado);

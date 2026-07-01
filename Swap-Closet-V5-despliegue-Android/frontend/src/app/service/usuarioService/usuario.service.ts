@@ -5,6 +5,7 @@ import {UsuarioDTO} from "../../modelos/UsuarioDTO";
 import {LoginDTO} from "../../modelos/LoginDTO";
 import {UsuarioEstadisticasDTO} from "../../modelos/UsuarioEstadisticasDTO";
 import {CartaUsuarioDTO} from "../../modelos/CartaUsuarioDTO";
+import {LoginResponseDTO} from "../../modelos/LoginResponseDTO";
 import {environment} from "../../../environments/environment";
 
 @Injectable({
@@ -34,8 +35,8 @@ export class UsuarioService {
     return this.http.get<boolean>(`${this.apiUrl}/exists/email`, { params: { email } });
   }
 
-  loginUsuario(email: string, password: string): Observable<LoginDTO> {
-    return this.http.post<LoginDTO>(`${this.apiUrl}/login`, { email, password });
+  loginUsuario(email: string, password: string): Observable<LoginResponseDTO> {
+    return this.http.post<LoginResponseDTO>(`${this.apiUrl}/login`, { email, password });
   }
 
   getUsuarioEstadisticas(id: number): Observable<UsuarioEstadisticasDTO> {

@@ -1,7 +1,6 @@
 package org.swapcloset.backend.converter;
 
 import org.mapstruct.*;
-import org.mapstruct.factory.Mappers;
 import org.swapcloset.backend.dto.RaitingDTO;
 import org.swapcloset.backend.dto.UsuarioDTO;
 import org.swapcloset.backend.modelos.Raiting;
@@ -24,5 +23,6 @@ public interface RaitingMapper {
 
     List<Raiting> toEntitiesList(List<RaitingDTO> raitingDTOS);
 
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateEntityFromDTO(RaitingDTO dto, @MappingTarget Raiting entidad);
 }

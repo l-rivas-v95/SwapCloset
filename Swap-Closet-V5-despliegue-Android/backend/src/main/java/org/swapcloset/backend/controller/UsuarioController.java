@@ -3,9 +3,11 @@ package org.swapcloset.backend.controller;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.swapcloset.backend.dto.*;
+import org.swapcloset.backend.security.JwtUtil;
 import org.swapcloset.backend.service.CloudinaryService;
 import org.swapcloset.backend.service.FavoritoService;
 import org.swapcloset.backend.service.ProductoService;
@@ -22,16 +24,13 @@ public class UsuarioController {
     private final UsuarioService usuarioService;
     private final ProductoService productoService;
     private final CloudinaryService cloudinaryService;
+    private final JwtUtil jwtUtil;
 
-    public UsuarioController(UsuarioService usuarioService, FavoritoService favoritoService, ProductoService productoService, CloudinaryService cloudinaryService) {
+    public UsuarioController(UsuarioService usuarioService, FavoritoService favoritoService, ProductoService productoService, CloudinaryService cloudinaryService, JwtUtil jwtUtil) {
         this.usuarioService = usuarioService;
         this.productoService = productoService;
         this.cloudinaryService = cloudinaryService;
-    }
-
-    @GetMapping
-    public ResponseEntity<List<UsuarioDTO>> getAll() {
-        return ResponseEntity.ok(usuarioService.findAll());
+        this.jwtUtil = jwtUtil;
     }
 
     @GetMapping("/{id}")
@@ -89,13 +88,13 @@ public class UsuarioController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UsuarioDTO> login(@RequestBody LoginDTO loginRequest) {
-        Optional<UsuarioDTO> usuarioOpt = usuarioService.login(loginRequest.getEmail(), loginRequest.getPassword());
-        if (usuarioOpt.isPresent()) {
-            return ResponseEntity.ok(usuarioOpt.get());
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginDTO loginRequest) {
+        return usuarioService.login(loginRequest.getEmail(), loginRequest.getPassword())
+                .map(usuario -> {
+                    String token = jwtUtil.generarToken(usuario.getEmail(), usuario.getId());
+                    return ResponseEntity.ok(new LoginResponseDTO(token, usuario));
+                })
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
 
     @PostMapping("/{id}/foto-perfil")
@@ -158,9 +157,14 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+    public ResponseEntity<Void> delete(@PathVariable Integer id, Authentication auth) {
         if (!usuarioService.existsById(id)) {
             return ResponseEntity.notFound().build();
+        }
+        // Solo el propio usuario puede borrar su cuenta
+        Integer tokenUserId = (Integer) auth.getCredentials();
+        if (!id.equals(tokenUserId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         usuarioService.deleteById(id);
         return ResponseEntity.noContent().build();

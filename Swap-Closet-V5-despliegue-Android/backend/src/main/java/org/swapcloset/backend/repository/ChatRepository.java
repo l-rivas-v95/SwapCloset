@@ -16,6 +16,9 @@ public interface ChatRepository extends JpaRepository<Chat, Integer> {
     @Query("select c from Chat c where c.usuario1 = :usuario or c.usuario2 = :usuario")
     List<Chat> findAllByUsuario(@Param("usuario") Usuario usuario);
 
+    @Query("SELECT c FROM Chat c LEFT JOIN FETCH c.mensajes WHERE c.usuario1.id = :usuarioId OR c.usuario2.id = :usuarioId")
+    List<Chat> findAllByUsuarioIdWithMensajes(@Param("usuarioId") Integer usuarioId);
+
     @Query("SELECT COUNT(c) FROM Chat c WHERE (c.usuario1.id = :userId OR c.usuario2.id = :userId) AND c.completado = true AND c.producto2 IS NOT NULL")
     Integer getCantidadIntercambios(@Param("userId") Integer userId);
 
@@ -24,6 +27,12 @@ public interface ChatRepository extends JpaRepository<Chat, Integer> {
 
     @Query("SELECT COUNT(c) FROM Chat c WHERE (c.usuario1.id = :userId OR c.usuario2.id = :userId) AND c.completado = true")
     Integer getCantidadTotalIntercambiosIdUsuario(@Param("userId") Integer userId);
+
+    @Query("SELECT c.usuario1.id, COUNT(c) FROM Chat c WHERE c.completado = true GROUP BY c.usuario1.id")
+    List<Object[]> countCompletadosPorUsuario1();
+
+    @Query("SELECT c.usuario2.id, COUNT(c) FROM Chat c WHERE c.completado = true GROUP BY c.usuario2.id")
+    List<Object[]> countCompletadosPorUsuario2();
 
     @Query("SELECT COUNT(c) FROM Chat c WHERE (c.producto1.id = :prodId OR c.producto2.id = :prodId) AND c.completado = true")
     Integer getCantidadTotalIntercambiosIdProducto(@Param("prodId") Integer prodId);

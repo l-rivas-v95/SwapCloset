@@ -248,7 +248,7 @@ export class MensajesPage implements OnInit, OnChanges, OnDestroy {
     };
     this.mensajeService.enviar(aviso).subscribe();
 
-    this.chatService.confirmar(chatId, this.miUsuarioId).subscribe({
+    this.chatService.confirmar(chatId).subscribe({
       next: (chatActualizado) => {
         this.chat.set(chatActualizado);
         if (chatActualizado.completado) {

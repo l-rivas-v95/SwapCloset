@@ -1,0 +1,125 @@
+name: CI/CD — Test, Build y Deploy
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  # ── 1. Tests backend (solo si cambia el backend) ──────────────────────────────
+  test-backend:
+    name: Tests Backend
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.filter.outputs.backend }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detectar cambios en backend
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'Swap-Closet-V5-despliegue-Android/backend/**'
+
+      - name: Configurar Java 21
+        if: steps.filter.outputs.backend == 'true'
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: temurin
+          cache: maven
+
+      - name: Ejecutar tests
+        if: steps.filter.outputs.backend == 'true'
+        working-directory: Swap-Closet-V5-despliegue-Android/backend
+        run: mvn test
+
+  # ── 2. Build y push Backend ───────────────────────────────────────────────────
+  build-backend:
+    name: Build Backend
+    runs-on: ubuntu-latest
+    needs: test-backend
+    if: needs.test-backend.outputs.changed == 'true'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login en Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Configurar Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build y push Backend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./Swap-Closet-V5-despliegue-Android/backend
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/swapcloset-backend:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # ── 3. Build y push Frontend ──────────────────────────────────────────────────
+  build-frontend:
+    name: Build Frontend
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.filter.outputs.frontend }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detectar cambios en frontend
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            frontend:
+              - 'Swap-Closet-V5-despliegue-Android/frontend/**'
+              - '!Swap-Closet-V5-despliegue-Android/frontend/node_modules/**'
+
+      - name: Login en Docker Hub
+        if: steps.filter.outputs.frontend == 'true'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Configurar Docker Buildx
+        if: steps.filter.outputs.frontend == 'true'
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build y push Frontend
+        if: steps.filter.outputs.frontend == 'true'
+        uses: docker/build-push-action@v5
+        with:
+          context: ./Swap-Closet-V5-despliegue-Android/frontend
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/swapcloset-frontend:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # ── 4. Deploy en servidor ─────────────────────────────────────────────────────
+  deploy:
+    name: Deploy al Servidor
+    runs-on: ubuntu-latest
+    needs: [build-backend, build-frontend]
+    if: |
+      always() &&
+      (needs.build-backend.result == 'success' || needs.build-backend.result == 'skipped') &&
+      (needs.build-frontend.result == 'success' || needs.build-frontend.result == 'skipped') &&
+      (needs.build-backend.result == 'success' || needs.build-frontend.result == 'success')
+    steps:
+      - name: SSH → pull y reiniciar contenedores
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /opt/swapcloset
+            docker compose pull
+            docker compose up -d --remove-orphans
+            docker image prune -f

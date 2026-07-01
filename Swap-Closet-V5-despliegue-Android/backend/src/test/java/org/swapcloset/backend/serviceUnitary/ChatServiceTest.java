@@ -15,6 +15,7 @@ import org.swapcloset.backend.service.ChatService;
 import org.swapcloset.backend.service.ProductoService;
 import org.swapcloset.backend.service.UsuarioService;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -291,6 +292,91 @@ public class ChatServiceTest {
         assertThrows(ResponseStatusException.class, () -> {
             chatService.update(creado);
         });
+    }
+
+    // TESTS - CONFIRMAR CHAT
+
+    private ChatDTO crearChatBase() {
+        ChatDTO chat = new ChatDTO();
+        chat.setUsuario1Id(1);
+        chat.setUsuario2Id(2);
+        chat.setProducto1Id(1);
+        chat.setActivo(true);
+        chat.setFechaQuedada("2026-10-27T14:00:00");
+        chat.setFechaDevolucion("2026-12-04T14:00:00");
+        chat.setUbicacion("Jaen");
+        chat.setCompletado(false);
+        chat.setEstadoIntercambio("pendiente");
+        return chatService.save(chat);
+    }
+
+    @Test
+    @DisplayName("CASO POSITIVO - USUARIO1 CONFIRMA CHAT")
+    void confirmarChatUsuario1() {
+        ChatDTO creado = crearChatBase();
+        ChatDTO confirmado = chatService.confirmar(creado.getId(), 1);
+        assertTrue(confirmado.getConfirmado1());
+        assertFalse(Boolean.TRUE.equals(confirmado.getCompletado()));
+    }
+
+    @Test
+    @DisplayName("CASO POSITIVO - USUARIO2 CONFIRMA CHAT")
+    void confirmarChatUsuario2() {
+        ChatDTO creado = crearChatBase();
+        ChatDTO confirmado = chatService.confirmar(creado.getId(), 2);
+        assertTrue(confirmado.getConfirmado2());
+        assertFalse(Boolean.TRUE.equals(confirmado.getCompletado()));
+    }
+
+    @Test
+    @DisplayName("CASO POSITIVO - AMBOS CONFIRMAN → COMPLETADO")
+    void confirmarChatAmbosMarcaCompletado() {
+        ChatDTO creado = crearChatBase();
+        chatService.confirmar(creado.getId(), 1);
+        ChatDTO completado = chatService.confirmar(creado.getId(), 2);
+        assertTrue(Boolean.TRUE.equals(completado.getCompletado()));
+    }
+
+    @Test
+    @DisplayName("CASO NEGATIVO - USUARIO AJENO INTENTA CONFIRMAR")
+    void confirmarChatUsuarioAjeno() {
+        ChatDTO creado = crearChatBase();
+        assertThrows(ResponseStatusException.class,
+                () -> chatService.confirmar(creado.getId(), 999));
+    }
+
+    @Test
+    @DisplayName("CASO NEGATIVO - CHAT NO EXISTENTE AL CONFIRMAR")
+    void confirmarChatNoExistente() {
+        assertThrows(ResponseStatusException.class,
+                () -> chatService.confirmar(9999, 1));
+    }
+
+    // TESTS - FIND BY USUARIO ID (JOIN FETCH)
+
+    @Test
+    @DisplayName("CASO POSITIVO - BUSCAR CHATS POR USUARIO")
+    void findByUsuarioIdDevuelveChats() {
+        crearChatBase();
+        List<ChatDTO> chats = chatService.findByUsuarioId(1);
+        assertNotNull(chats);
+        assertFalse(chats.isEmpty());
+    }
+
+    @Test
+    @DisplayName("CASO POSITIVO - USUARIO SIN CHATS DEVUELVE LISTA VACIA")
+    void findByUsuarioIdSinChats() {
+        List<ChatDTO> chats = chatService.findByUsuarioId(99999);
+        assertNotNull(chats);
+        assertTrue(chats.isEmpty());
+    }
+
+    @Test
+    @DisplayName("CASO POSITIVO - ID NULL DEVUELVE LISTA VACIA")
+    void findByUsuarioIdNull() {
+        List<ChatDTO> chats = chatService.findByUsuarioId(null);
+        assertNotNull(chats);
+        assertTrue(chats.isEmpty());
     }
 
 }
