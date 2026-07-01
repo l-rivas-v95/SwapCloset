@@ -31,25 +31,14 @@
       ><b>{{ producto?.tipo }}</b></span>
 
       @if (usuario?.id !== idUsuarioLogueado) {
-        <ion-fab
-          horizontal="end"
-          vertical="top"
-          class="fab-favorito-anuncio"
-          (click)="$event.stopPropagation()">
-          <ion-fab-button
-            size="small"
-            color="transparent"
-            (click)="toggleFavorite()"
-            [disabled]="!producto?.id || !idUsuarioLogueado"
-          >
-            <ion-icon
-              size="large"
-              [name]="isFavorite() ? 'heart' : 'heart-outline'"
-              [color]="isFavorite() ? 'danger' : 'light'"
-            >
-            </ion-icon>
-          </ion-fab-button>
-        </ion-fab>
+        <button class="heart-btn-anuncio"
+          (click)="$event.stopPropagation(); toggleFavorite()"
+          [disabled]="!producto?.id || !idUsuarioLogueado">
+          <ion-icon
+            [name]="isFavorite() ? 'heart' : 'heart-outline'"
+            [style.color]="isFavorite() ? '#e53935' : '#fff'">
+          </ion-icon>
+        </button>
       }
     </div>
 
