@@ -9,7 +9,7 @@ RUN npm install
 COPY . .
 
 # Forzamos build production (aunque tu script "build" esté en development)
-RUN npm run build -- --configuration=production
+RUN npm run build -- --configuration=production --base-href /swapcloset/
 
 # ---------- RUNTIME ----------
 FROM nginx:1.27-alpine
