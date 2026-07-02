@@ -14,6 +14,7 @@ public class CorsConfig implements WebMvcConfigurer {
                         "http://localhost:8100",
                         "http://localhost:4200",
                         "capacitor://localhost",
+                        "https://localhost",      // Capacitor Android WebView
                         "https://lrivasvilla95.duckdns.org"
                 )
 
