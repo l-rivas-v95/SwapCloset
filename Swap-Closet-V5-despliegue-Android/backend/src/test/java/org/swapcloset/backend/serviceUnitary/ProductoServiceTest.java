@@ -507,9 +507,9 @@ public class ProductoServiceTest {
         var resultados = productoService.filtrar(categoria, talla, estado);
 
         assertNotNull(resultados);
-
-        assertEquals(resultados.size() >= 1, true);
-        assertEquals(resultados.get(0).getId() == 1, true);
+        assertFalse(resultados.isEmpty());
+        // Verifica que el producto con ID=1 está en los resultados (sin asumir orden)
+        assertTrue(resultados.stream().anyMatch(p -> p.getId() == 1));
     }
 
     // TEST 5 - EDITAR PRODUCTO
