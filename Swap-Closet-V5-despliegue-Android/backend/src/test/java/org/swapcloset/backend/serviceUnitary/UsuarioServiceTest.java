@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.web.server.ResponseStatusException;
 import org.swapcloset.backend.dto.*;
 import org.swapcloset.backend.service.*;
@@ -19,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class UsuarioServiceTest {
 
     @Autowired
@@ -93,6 +95,23 @@ class UsuarioServiceTest {
         producto1.setActivo(true);
 
         productoService.save(producto1);
+
+        // Segundo producto para usuario 1 (necesario para que el test de estadísticas espere 2)
+        ProductoDTO productoUsuario1b = new ProductoDTO();
+        productoUsuario1b.setIdUsuario(1);
+        productoUsuario1b.setTitulo("Producto de Prueba 2");
+        productoUsuario1b.setTipo("Intercambio");
+        productoUsuario1b.setDescripcion("Segundo producto del usuario de prueba");
+        productoUsuario1b.setEstilo("Casual");
+        productoUsuario1b.setMarca("MarcaY");
+        productoUsuario1b.setEstado("Bueno");
+        productoUsuario1b.setCategoria("CategoriaY");
+        productoUsuario1b.setTalla("L");
+        productoUsuario1b.setColor("ColorY");
+        productoUsuario1b.setFechaDevolucion("2025-11-25T07:35:11");
+        productoUsuario1b.setActivo(true);
+
+        productoService.save(productoUsuario1b);
 
         ProductoDTO productoIntercambio2 = new ProductoDTO();
         productoIntercambio2.setIdUsuario(3);
