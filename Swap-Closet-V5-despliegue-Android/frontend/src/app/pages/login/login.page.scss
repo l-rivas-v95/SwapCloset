@@ -180,6 +180,11 @@ ion-input::part(native) {
   width: 100%;
 }
 
+/* QR oculto en móvil (el usuario ya tiene la app) */
+.d-qr-box {
+  display: none;
+}
+
 /* ══════════════════ DESKTOP ≥768px ══════════════════ */
 @media (min-width: 768px) {
 
@@ -253,7 +258,7 @@ ion-input::part(native) {
     margin: 0 auto;
   }
 
-  /* QR */
+  /* QR — visible solo en desktop */
   .d-qr-box {
     display: flex;
     flex-direction: column;
